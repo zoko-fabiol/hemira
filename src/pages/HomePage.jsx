@@ -69,7 +69,7 @@ export default function HomePage({ onNavigate, lang = 'fr', content }) {
             <div className="eyebrow">{h.commitmentsEyebrow}</div>
             <h2>{h.commitmentsTitle}</h2>
           </div>
-          <div className="grid-3" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))' }}>
+          <div className="grid-3 reveal-stagger" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))' }}>
             {(h.commitments || []).map((com, idx) => {
               const icons = [
                 // 1. Un point de contact, plusieurs solutions (Target / Bullseye)
@@ -145,7 +145,7 @@ export default function HomePage({ onNavigate, lang = 'fr', content }) {
             <div className="eyebrow">{h.servicesEyebrow}</div>
             <h2>{h.servicesTitle}</h2>
           </div>
-          <div className="grid-6">
+          <div className="grid-6 reveal-stagger">
             {h.services.map((item, idx) => (
               <div key={idx} className={`mini-card ${item.highlight ? 'highlight' : ''}`}>
                 <span className="step-num">{item.num}</span>

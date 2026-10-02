@@ -33,7 +33,7 @@ export default function AboutPage({ onNavigate, lang = 'fr', content }) {
             </div>
           </div>
           <div>
-            <div className="bullet-list">
+            <div className="bullet-list reveal-stagger">
               {a.bullets.map((item, i) => (
                 <div key={i} className="bullet-item">
                   <span className={`bullet-marker sq ${item.color}`}></span>
@@ -64,7 +64,7 @@ export default function AboutPage({ onNavigate, lang = 'fr', content }) {
           <div className="section-head center">
             <h2>{a.teamTitle}</h2>
           </div>
-          <div className="grid-2">
+          <div className="grid-2 reveal-stagger">
             <div className="card" style={{ textAlign: 'center' }}>
               <img 
                 src="/assets/img/uploads/avatar-jeanne.svg" 

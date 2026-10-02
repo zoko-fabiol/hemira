@@ -16,7 +16,7 @@ export default function CaseStudiesPage({ onNavigate, lang = 'fr', content }) {
       </section>
 
       <section className="reveal">
-        <div className="wrap">
+        <div className="wrap reveal-stagger">
           {(cs.cases || []).map((c, idx) => (
             <div key={c.id || idx} className="case-card" id={c.id || `case-${idx}`}>
               <div className={`case-media ${c.media ? '' : 'logo-only'}`}>

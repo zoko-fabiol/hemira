@@ -37,7 +37,7 @@ export default function ServicesPage({ onNavigate, lang = 'fr', content }) {
             </p>
           </div>
 
-          <div className="grid-3" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))' }}>
+          <div className="grid-3 reveal-stagger" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))' }}>
             {(h.commitments || []).map((com, idx) => {
               const icons = [
                 // 1. Un point de contact (Bullseye)
@@ -88,7 +88,7 @@ export default function ServicesPage({ onNavigate, lang = 'fr', content }) {
             </p>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '24px' }}>
+          <div className="reveal-stagger" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '24px' }}>
             {(s.servicesList || s.services || []).map((item, idx) => (
               <div 
                 key={idx} 

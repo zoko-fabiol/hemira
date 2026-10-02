@@ -61,54 +61,65 @@ function AppContent() {
   useEffect(() => {
     if (currentPage === 'admin') return;
 
-    // 1. Scroll reveal (IntersectionObserver)
-    const reveals = document.querySelectorAll('.reveal, .reveal-stagger');
-    if ('IntersectionObserver' in window) {
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-            observer.unobserve(entry.target);
-          }
-        });
-      }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
-      reveals.forEach(el => observer.observe(el));
-    } else {
-      reveals.forEach(el => el.classList.add('visible'));
-    }
+    let observer = null;
+    let counterObserver = null;
 
-    // 2. Animated counters
-    const counters = document.querySelectorAll('[data-count-to]');
-    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (counters.length && !prefersReduced && 'IntersectionObserver' in window) {
-      const animateCounter = (el) => {
-        const raw = el.getAttribute('data-count-to');
-        const match = raw.match(/^(\D*)(\d+)(\D*)$/);
-        if (!match) return;
-        const prefix = match[1], target = parseInt(match[2], 10), suffix = match[3];
-        const duration = 1200;
-        let start = null;
-        const step = (ts) => {
-          if (start === null) start = ts;
-          const progress = Math.min((ts - start) / duration, 1);
-          const eased = 1 - Math.pow(1 - progress, 3);
-          el.textContent = prefix + Math.round(eased * target) + suffix;
-          if (progress < 1) requestAnimationFrame(step);
-          else el.textContent = raw;
+    const timer = setTimeout(() => {
+      // 1. Scroll reveal (IntersectionObserver)
+      const reveals = document.querySelectorAll('.reveal, .reveal-stagger');
+      if ('IntersectionObserver' in window) {
+        observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+              observer.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+        reveals.forEach(el => observer.observe(el));
+      } else {
+        reveals.forEach(el => el.classList.add('visible'));
+      }
+
+      // 2. Animated counters
+      const counters = document.querySelectorAll('[data-count-to]');
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (counters.length && !prefersReduced && 'IntersectionObserver' in window) {
+        const animateCounter = (el) => {
+          const raw = el.getAttribute('data-count-to');
+          const match = raw.match(/^(\D*)(\d+)(\D*)$/);
+          if (!match) return;
+          const prefix = match[1], target = parseInt(match[2], 10), suffix = match[3];
+          const duration = 1200;
+          let start = null;
+          const step = (ts) => {
+            if (start === null) start = ts;
+            const progress = Math.min((ts - start) / duration, 1);
+            const eased = 1 - Math.pow(1 - progress, 3);
+            el.textContent = prefix + Math.round(eased * target) + suffix;
+            if (progress < 1) requestAnimationFrame(step);
+            else el.textContent = raw;
+          };
+          requestAnimationFrame(step);
         };
-        requestAnimationFrame(step);
-      };
 
-      const io = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            animateCounter(entry.target);
-            io.unobserve(entry.target);
-          }
-        });
-      }, { threshold: 0.4 });
-      counters.forEach(el => io.observe(el));
-    }
+        counterObserver = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              animateCounter(entry.target);
+              counterObserver.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.25 });
+        counters.forEach(el => counterObserver.observe(el));
+      }
+    }, 50);
+
+    return () => {
+      clearTimeout(timer);
+      observer?.disconnect();
+      counterObserver?.disconnect();
+    };
   }, [currentPage]);
 
   // Back to top button & header scroll listener
