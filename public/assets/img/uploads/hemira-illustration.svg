@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 520">
+  <defs>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0E1F3D"/>
+      <stop offset="100%" stop-color="#1B3A63"/>
+    </linearGradient>
+  </defs>
+  <rect x="0" y="0" width="700" height="520" rx="24" fill="url(#bgGrad)"/>
+
+  <!-- decorative dotted arc -->
+  <circle cx="350" cy="260" r="190" fill="none" stroke="#4A7FB8" stroke-opacity="0.35" stroke-width="2" stroke-dasharray="2 10"/>
+
+  <!-- six service icons arranged in a circle -->
+  <g stroke="#F5F3EE" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <!-- plane (voyages) top -->
+    <g transform="translate(320,70)">
+      <circle cx="30" cy="30" r="34" fill="#16294C" stroke="#C9A968"/>
+      <path d="M12 30l36 0M18 20l24 0M18 40l24 0M22 14l16 32" transform="translate(0,0)"/>
+      <path d="M14 30l32-10-6 10 6 10z" fill="#F5F3EE" stroke="none"/>
+    </g>
+    <!-- heart/health (transport-sante) upper right -->
+    <g transform="translate(500,150)">
+      <circle cx="30" cy="30" r="34" fill="#16294C" stroke="#C9A968"/>
+      <path d="M30 44s-16-10-16-22a10 10 0 0116-8 10 10 0 0116 8c0 12-16 22-16 22z" fill="#F5F3EE" stroke="none"/>
+    </g>
+    <!-- wallet (finances) lower right -->
+    <g transform="translate(500,300)">
+      <circle cx="30" cy="30" r="34" fill="#16294C" stroke="#C9A968"/>
+      <rect x="12" y="18" width="36" height="26" rx="4" fill="none"/>
+      <circle cx="38" cy="31" r="3" fill="#F5F3EE" stroke="none"/>
+    </g>
+    <!-- calendar (evenementiel) bottom -->
+    <g transform="translate(320,380)">
+      <circle cx="30" cy="30" r="34" fill="#16294C" stroke="#C9A968"/>
+      <rect x="14" y="16" width="32" height="28" rx="3" fill="none"/>
+      <path d="M14 24h32M21 12v8M39 12v8"/>
+    </g>
+    <!-- utensils (restauration) lower left -->
+    <g transform="translate(140,300)">
+      <circle cx="30" cy="30" r="34" fill="#16294C" stroke="#C9A968"/>
+      <path d="M20 14v14M24 14v14M20 28c0 3 4 3 4 0M22 28v18"/>
+      <path d="M38 14c-4 0-6 4-6 9s2 8 6 9v10"/>
+    </g>
+    <!-- sparkle (assainissement / nettoyage) upper left -->
+    <g transform="translate(140,150)">
+      <circle cx="30" cy="30" r="34" fill="#16294C" stroke="#C9A968"/>
+      <path d="M30 14l4 12 12 4-12 4-4 12-4-12-12-4 12-4z" fill="#F5F3EE" stroke="none"/>
+    </g>
+  </g>
+
+  <!-- centre mark -->
+  <circle cx="350" cy="260" r="46" fill="#C9A968" opacity="0.15"/>
+  <text x="350" y="252" font-family="'Sora', sans-serif" font-weight="800" font-size="26" fill="#F5F3EE" text-anchor="middle">HEMIRA</text>
+  <text x="350" y="276" font-family="'Inter', sans-serif" font-size="12" fill="#C9A968" text-anchor="middle" letter-spacing="1.5">6 PÔLES • 1 AGENCE</text>
+</svg>

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="gM" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#4A7FB8"/>
+      <stop offset="100%" stop-color="#1B3A63"/>
+    </linearGradient>
+  </defs>
+  <circle cx="100" cy="100" r="100" fill="url(#gM)"/>
+  <text x="100" y="122" font-family="'Sora', sans-serif" font-weight="800" font-size="68" fill="#F5F3EE" text-anchor="middle">MN</text>
+</svg>
