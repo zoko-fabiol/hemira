@@ -5,6 +5,33 @@ export default function AboutPage({ onNavigate, lang = 'fr', content }) {
   const a = content?.about || t[lang].about;
   const cta = content?.ctaBand || t[lang].ctaBand;
 
+  React.useEffect(() => {
+    const items = document.querySelectorAll('.bullet-item');
+    if (!items.length) return;
+
+    if (!('IntersectionObserver' in window)) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('active');
+          } else {
+            entry.target.classList.remove('active');
+          }
+        });
+      },
+      {
+        rootMargin: '-15% 0px -40% 0px',
+        threshold: 0.1
+      }
+    );
+
+    items.forEach((el) => observer.observe(el));
+
+    return () => observer.disconnect();
+  }, [a.bullets]);
+
   return (
     <>
       <section className="page-hero">
@@ -15,7 +42,7 @@ export default function AboutPage({ onNavigate, lang = 'fr', content }) {
         </div>
       </section>
 
-      <section className="reveal">
+      <section className="about-founders-section">
         <div className="wrap about-layout">
           <div className="about-photo-wrap">
             <img 

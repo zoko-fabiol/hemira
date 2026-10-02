@@ -34,7 +34,7 @@
 }
 html {
   scroll-behavior: smooth;
-  overflow-x: hidden;
+  overflow-x: clip;
   width: 100%;
 }
 body {
@@ -44,8 +44,9 @@ body {
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
+  overflow-x: clip;
   width: 100%;
+  min-height: 100vh;
 }
 img { max-width: 100%; display: block; }
 a { text-decoration: none; color: inherit; }
@@ -389,15 +390,28 @@ section { padding: 100px 0; }
 .card.highlight .card-icon { background: rgba(245,197,24,0.2); color: #8a6d02; }
 .card.highlight:hover .card-icon { background: var(--gold); color: #4a3a00; }
 
-/* ===== ABOUT LAYOUT ===== */
+/* ===== ABOUT LAYOUT & SCROLLING STICKY ===== */
+.about-founders-section {
+  position: relative;
+  overflow: visible !important;
+  padding: 60px 0;
+}
 .about-layout {
-  display: grid; grid-template-columns: 0.8fr 1.2fr;
-  gap: 64px; align-items: start;
+  display: grid; 
+  grid-template-columns: 0.8fr 1.2fr;
+  gap: 64px; 
+  align-items: start !important;
+  position: relative;
 }
 .about-photo-wrap {
-  position: sticky; top: 120px;
+  position: -webkit-sticky !important;
+  position: sticky !important;
+  top: 110px !important;
   text-align: center;
   perspective: 1000px;
+  z-index: 5;
+  height: fit-content;
+  align-self: start;
 }
 .about-photo {
   width: 220px; height: 220px;
@@ -458,13 +472,14 @@ section { padding: 100px 0; }
 .bullet-item {
   display: grid; grid-template-columns: 32px 1fr; gap: 16px;
   align-items: start;
-  padding: 10px 14px;
+  padding: 12px 16px;
   border-radius: 12px;
   transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   border: 1px solid transparent;
   cursor: default;
 }
-.bullet-item:hover {
+.bullet-item:hover,
+.bullet-item.active {
   background: rgba(255, 255, 255, 0.95);
   border-color: rgba(74, 127, 184, 0.18);
   transform: translateX(8px);
@@ -483,10 +498,12 @@ section { padding: 100px 0; }
   transition: all 0.35s ease;
   opacity: 0;
 }
-.bullet-item:hover .bullet-marker {
+.bullet-item:hover .bullet-marker,
+.bullet-item.active .bullet-marker {
   transform: scale(1.4) rotate(12deg);
 }
-.bullet-item:hover .bullet-marker::after {
+.bullet-item:hover .bullet-marker::after,
+.bullet-item.active .bullet-marker::after {
   opacity: 1;
   inset: -5px;
 }
@@ -495,7 +512,8 @@ section { padding: 100px 0; }
   box-shadow: 0 3px 10px rgba(240, 98, 77, 0.35);
 }
 .bullet-marker.coral::after { border-color: rgba(240, 98, 77, 0.5); }
-.bullet-item:hover .bullet-marker.coral {
+.bullet-item:hover .bullet-marker.coral,
+.bullet-item.active .bullet-marker.coral {
   box-shadow: 0 4px 18px rgba(240, 98, 77, 0.7);
 }
 
@@ -504,7 +522,8 @@ section { padding: 100px 0; }
   box-shadow: 0 3px 10px rgba(201, 169, 104, 0.4);
 }
 .bullet-marker.gold::after { border-color: rgba(201, 169, 104, 0.55); }
-.bullet-item:hover .bullet-marker.gold {
+.bullet-item:hover .bullet-marker.gold,
+.bullet-item.active .bullet-marker.gold {
   box-shadow: 0 4px 18px rgba(201, 169, 104, 0.8);
 }
 
@@ -513,7 +532,8 @@ section { padding: 100px 0; }
   box-shadow: 0 3px 10px rgba(74, 127, 184, 0.4);
 }
 .bullet-marker.teal::after { border-color: rgba(74, 127, 184, 0.55); }
-.bullet-item:hover .bullet-marker.teal {
+.bullet-item:hover .bullet-marker.teal,
+.bullet-item.active .bullet-marker.teal {
   box-shadow: 0 4px 18px rgba(74, 127, 184, 0.8);
 }
 
@@ -521,7 +541,8 @@ section { padding: 100px 0; }
   font-size: 17px; margin-bottom: 4px;
   transition: color 0.3s ease;
 }
-.bullet-item:hover h4 { color: var(--navy); }
+.bullet-item:hover h4,
+.bullet-item.active h4 { color: var(--navy); }
 .bullet-item p { color: var(--slate); font-size: 14.5px; line-height: 1.55; }
 
 /* ===== GRID 6 ===== */
@@ -918,7 +939,8 @@ section { padding: 100px 0; }
 }
 .reveal.visible {
   opacity: 1;
-  transform: translateY(0);
+  transform: none !important;
+  will-change: auto !important;
 }
 .reveal-stagger > * {
   opacity: 0;
