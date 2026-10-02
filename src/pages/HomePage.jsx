@@ -190,7 +190,7 @@ export default function HomePage({ onNavigate, lang = 'fr', content }) {
             <h2>{h.casesTitle}</h2>
             <p>{h.casesLead}</p>
           </div>
-          <div className="grid-3">
+          <div className="grid-3 reveal-stagger">
             {h.casesPreview.map((item, idx) => (
               <div key={idx} className="card">
                 <div className="case-tag">{item.tag}</div>
@@ -226,7 +226,7 @@ export default function HomePage({ onNavigate, lang = 'fr', content }) {
             <div className="eyebrow">{h.localEyebrow}</div>
             <h2>{h.localTitle}</h2>
           </div>
-          <div className="grid-3">
+          <div className="grid-3 reveal-stagger">
             <div className="card">
               <div className="card-icon">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">

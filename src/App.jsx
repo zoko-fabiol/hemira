@@ -11,32 +11,87 @@ import Chatbot from './components/Chatbot';
 import AdminView from './admin/AdminView';
 import { trackVisitor } from './services/analyticsService';
 
+const PAGE_ROUTES = {
+  home: '/',
+  about: '/about',
+  services: '/services',
+  'case-studies': '/case-studies',
+  contact: '/contact',
+  admin: '/admin'
+};
+
+const normalizePage = (p) => {
+  if (!p) return 'home';
+  const clean = p.toLowerCase().trim().replace(/^\//, '');
+  if (clean === 'about' || clean === 'a-propos') return 'about';
+  if (clean === 'services') return 'services';
+  if (clean === 'case-studies' || clean === 'casestudies' || clean === 'realisations') return 'case-studies';
+  if (clean === 'contact') return 'contact';
+  if (clean === 'admin') return 'admin';
+  return 'home';
+};
+
+const getPageFromUrl = () => {
+  if (typeof window === 'undefined') return 'home';
+  const params = new URLSearchParams(window.location.search);
+  const pageParam = params.get('page');
+  if (pageParam) return normalizePage(pageParam);
+  if (params.get('admin') === 'true') return 'admin';
+
+  const hash = (window.location.hash || '').replace(/^#\/?/, '').toLowerCase();
+  if (hash && ['about', 'services', 'case-studies', 'contact', 'admin', 'home'].includes(hash)) {
+    return normalizePage(hash);
+  }
+
+  const rawPath = (window.location.pathname || '').toLowerCase().replace(/\/$/, '') || '/';
+  if (rawPath === '/admin' || rawPath.startsWith('/admin')) return 'admin';
+  if (rawPath === '/about') return 'about';
+  if (rawPath === '/services') return 'services';
+  if (rawPath === '/case-studies') return 'case-studies';
+  if (rawPath === '/contact') return 'contact';
+
+  return 'home';
+};
+
 function AppContent() {
-  const [currentPage, setCurrentPage] = useState('home');
+  const [currentPage, setCurrentPage] = useState(() => getPageFromUrl());
   const [lang, setLang] = useState('fr');
   const { getContent, settings, theme } = useSiteData();
 
-  // Check URL pathname, query parameters or hash on load & popstate
+  // Handle manual browser scroll restoration to prevent jarring jumps on refresh
   useEffect(() => {
-    const checkIsAdmin = () => {
-      const params = new URLSearchParams(window.location.search);
-      const path = (window.location.pathname || '').toLowerCase();
-      if (
-        path === '/admin' || 
-        path.startsWith('/admin') || 
-        params.get('admin') === 'true' || 
-        window.location.hash === '#admin'
-      ) {
-        setCurrentPage('admin');
-      }
-    };
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
 
-    checkIsAdmin();
-    window.addEventListener('popstate', checkIsAdmin);
-    return () => window.removeEventListener('popstate', checkIsAdmin);
+    // Restore scroll position after page refresh (F5) if available
+    const savedScroll = sessionStorage.getItem('hemira_reload_scroll');
+    const savedPage = sessionStorage.getItem('hemira_reload_page');
+    const initialPage = getPageFromUrl();
+
+    if (savedScroll !== null && savedPage === initialPage) {
+      const targetY = parseInt(savedScroll, 10);
+      if (!isNaN(targetY) && targetY > 0) {
+        const timer = setTimeout(() => {
+          window.scrollTo({ top: targetY, behavior: 'instant' });
+        }, 60);
+        return () => clearTimeout(timer);
+      }
+    }
   }, []);
 
-  // Track visitor and revisits on public site visits
+  // Listen to popstate (Back/Forward browser buttons)
+  useEffect(() => {
+    const handlePopState = () => {
+      const page = getPageFromUrl();
+      setCurrentPage(page);
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
+  // Track visitor on public visits
   useEffect(() => {
     if (currentPage !== 'admin') {
       trackVisitor();
@@ -47,13 +102,19 @@ function AppContent() {
     setLang(prev => (prev === 'fr' ? 'en' : 'fr'));
   };
 
+  // Navigate to tab: updates URL & scrolls cleanly to top
   const navigateTo = (page) => {
-    setCurrentPage(page);
+    const normalized = normalizePage(page);
+    setCurrentPage(normalized);
+
+    // Explicit tab change -> reset scroll to top & clear refresh scroll
+    sessionStorage.removeItem('hemira_reload_scroll');
+    sessionStorage.setItem('hemira_reload_page', normalized);
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    if (page === 'admin') {
-      window.history.pushState(null, '', '/admin');
-    } else {
-      window.history.pushState(null, '', '/');
+
+    const path = PAGE_ROUTES[normalized] || '/';
+    if (window.location.pathname !== path) {
+      window.history.pushState({ page: normalized }, '', path);
     }
   };
 
@@ -76,7 +137,16 @@ function AppContent() {
             }
           });
         }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
-        reveals.forEach(el => observer.observe(el));
+
+        reveals.forEach(el => {
+          const rect = el.getBoundingClientRect();
+          // If already in viewport (e.g. after scroll restoration)
+          if (rect.top < window.innerHeight && rect.bottom > 0) {
+            el.classList.add('visible');
+          } else {
+            observer.observe(el);
+          }
+        });
       } else {
         reveals.forEach(el => el.classList.add('visible'));
       }
@@ -113,7 +183,7 @@ function AppContent() {
         }, { threshold: 0.25 });
         counters.forEach(el => counterObserver.observe(el));
       }
-    }, 50);
+    }, 60);
 
     return () => {
       clearTimeout(timer);
@@ -122,26 +192,46 @@ function AppContent() {
     };
   }, [currentPage]);
 
-  // Back to top button & header scroll listener
+  // Back to top button, header scroll listener & scroll position persistence for F5
   useEffect(() => {
     if (currentPage === 'admin') return;
 
-    const handleScroll = () => {
-      const header = document.querySelector('.site-header');
-      if (header) {
-        header.classList.toggle('scrolled', window.scrollY > 20);
-      }
+    let ticking = false;
 
-      const backBtn = document.querySelector('.back-top');
-      if (backBtn) {
-        if (window.scrollY > 500) {
-          backBtn.classList.add('visible');
-        } else {
-          backBtn.classList.remove('visible');
-        }
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const scrollY = window.scrollY;
+
+          // Header shadow on scroll
+          const header = document.querySelector('.site-header');
+          if (header) {
+            header.classList.toggle('scrolled', scrollY > 20);
+          }
+
+          // Back to top visibility
+          const backBtn = document.querySelector('.back-top');
+          if (backBtn) {
+            if (scrollY > 500) {
+              backBtn.classList.add('visible');
+            } else {
+              backBtn.classList.remove('visible');
+            }
+          }
+
+          // Persist scroll position for F5 reload
+          try {
+            sessionStorage.setItem('hemira_reload_scroll', scrollY.toString());
+            sessionStorage.setItem('hemira_reload_page', currentPage);
+          } catch {}
+
+          ticking = false;
+        });
+        ticking = true;
       }
     };
 
+    handleScroll();
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, [currentPage]);
