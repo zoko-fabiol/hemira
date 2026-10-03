@@ -248,18 +248,20 @@ export default function Chatbot({ lang = 'fr', onNavigate, content }) {
   };
 
   return (
-    <div id="chatbot-widget">
-      <button 
-        id="chatbot-toggle" 
-        className={isOpen ? 'open' : ''}
-        onClick={() => setIsOpen(!isOpen)}
-        aria-label="Ouvrir le chat"
-      >
-        <span className="chat-icon" style={{ display: isOpen ? 'none' : 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-        </span>
-        <span className="close-icon" style={{ display: isOpen ? 'inline-flex' : 'none', alignItems: 'center', justifyContent: 'center' }}>✕</span>
-      </button>
+    <>
+      <div id="chatbot-widget">
+        <button 
+          id="chatbot-toggle" 
+          className={isOpen ? 'open' : ''}
+          onClick={() => setIsOpen(!isOpen)}
+          aria-label="Ouvrir le chat"
+        >
+          <span className="chat-icon" style={{ display: isOpen ? 'none' : 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          </span>
+          <span className="close-icon" style={{ display: isOpen ? 'inline-flex' : 'none', alignItems: 'center', justifyContent: 'center' }}>✕</span>
+        </button>
+      </div>
 
       {isOpen && (
         <div id="chatbot-window">
@@ -322,6 +324,6 @@ export default function Chatbot({ lang = 'fr', onNavigate, content }) {
           </form>
         </div>
       )}
-    </div>
+    </>
   );
 }
