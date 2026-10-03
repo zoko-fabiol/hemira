@@ -404,14 +404,21 @@ section { padding: 100px 0; }
   position: relative;
 }
 .about-photo-wrap {
-  position: -webkit-sticky !important;
-  position: sticky !important;
-  top: 110px !important;
   text-align: center;
   perspective: 1000px;
-  z-index: 5;
-  height: fit-content;
-  align-self: start;
+  position: static;
+  width: 100%;
+}
+
+@media (min-width: 1025px) {
+  .about-founders-section .about-photo-wrap {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 110px;
+    align-self: start;
+    height: fit-content;
+    z-index: 5;
+  }
 }
 .about-photo {
   width: 220px; height: 220px;
@@ -1021,8 +1028,16 @@ section { padding: 100px 0; }
   .hero-inner { grid-template-columns: 1fr; text-align: center; }
   .hero p.lead { margin-left: auto; margin-right: auto; }
   .hero-ctas { justify-content: center; }
-  .about-layout { grid-template-columns: 1fr; }
-  .about-photo-wrap { position: static; }
+  .about-layout { 
+    grid-template-columns: 1fr !important; 
+    gap: 36px !important;
+  }
+  .about-photo-wrap { 
+    position: static !important; 
+    top: auto !important;
+    margin: 0 auto 24px auto !important;
+    z-index: 1 !important;
+  }
   .bridge-layout { grid-template-columns: 1fr; }
   .bridge-layout .bridge-image { order: -1; }
   .footer-grid { grid-template-columns: 1fr 1fr; }
@@ -1031,6 +1046,30 @@ section { padding: 100px 0; }
 @media (max-width: 768px) {
   .wrap {
     padding: 0 20px;
+  }
+  .about-layout { 
+    grid-template-columns: 1fr !important; 
+    gap: 28px !important;
+  }
+  .about-photo-wrap { 
+    position: static !important; 
+    top: auto !important;
+    margin: 0 auto 20px auto !important;
+    z-index: 1 !important;
+  }
+  .about-photo {
+    width: min(200px, 55vw) !important;
+    height: min(200px, 55vw) !important;
+    margin: 0 auto 16px !important;
+  }
+  .about-photo-name {
+    font-size: 19px !important;
+    line-height: 1.3 !important;
+    padding: 0 10px !important;
+  }
+  .about-photo-title {
+    font-size: 14px !important;
+    margin-bottom: 12px !important;
   }
   .main-nav {
     position: fixed; top: 80px; left: 0; right: 0;

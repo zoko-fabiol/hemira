@@ -60,7 +60,7 @@ export default function AboutPage({ onNavigate, lang = 'fr', content }) {
             </div>
           </div>
           <div>
-            <div className="bullet-list reveal-stagger">
+            <div className="bullet-list">
               {a.bullets.map((item, i) => (
                 <div key={i} className="bullet-item">
                   <span className={`bullet-marker sq ${item.color}`}></span>
