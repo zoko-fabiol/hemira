@@ -88,29 +88,35 @@ const chatbotHtml = `
     <span class="chat-icon">💬</span>
     <span class="close-icon" style="display:none;">✕</span>
   </button>
-  <div id="chatbot-window" style="display:none;">
-    <div id="chatbot-header">
-      <span id="chatbot-title">🧭 Assistant HEMIRA</span>
-      <button id="chatbot-minimize" onclick="toggleChat()">✕</button>
-    </div>
-    <div id="chatbot-messages">
-      <div class="bot-message">
-        Bonjour et bienvenue chez <strong>HEMIRA Travel & Services</strong> ! Je suis votre assistant virtuel.<br><br>Que puis-je faire pour votre voyage aujourd'hui ?
-      </div>
-      <div class="bot-options" id="chat-quick-options">
-        <button class="bot-option-btn" onclick="sendBotQuery('billetterie')">✈️ Billets d'avion</button>
-        <button class="bot-option-btn" onclick="sendBotQuery('visa')">🛂 Assistance visa</button>
-        <button class="bot-option-btn" onclick="sendBotQuery('hotels')">🏨 Hôtels & Séjours</button>
-        <button class="bot-option-btn" onclick="sendBotQuery('contact')">📞 Joindre Jeanne / Miriam</button>
-        <button class="bot-option-btn" onclick="sendBotQuery('adresse')">📍 Adresse à Douala</button>
-      </div>
-    </div>
-    <form id="chatbot-input-area" onsubmit="handleChatSubmit(event)">
-      <input type="text" id="chatbot-input" placeholder="Écrivez votre message..." autocomplete="off">
-      <button type="submit" id="chatbot-send">➤</button>
-    </form>
-  </div>
 </div>
+
+<div id="chatbot-window" style="display:none;">
+  <div id="chatbot-header">
+    <span id="chatbot-title">🧭 Assistant HEMIRA</span>
+    <button id="chatbot-minimize" onclick="toggleChat()">✕</button>
+  </div>
+  <div id="chatbot-messages">
+    <div class="bot-message">
+      Bonjour et bienvenue chez <strong>HEMIRA Travel & Services</strong> ! Je suis votre assistant virtuel.<br><br>Que puis-je faire pour votre voyage aujourd'hui ?
+    </div>
+    <div class="bot-options" id="chat-quick-options">
+      <button class="bot-option-btn" onclick="sendBotQuery('billetterie')">✈️ Billets d'avion</button>
+      <button class="bot-option-btn" onclick="sendBotQuery('visa')">🛂 Assistance visa</button>
+      <button class="bot-option-btn" onclick="sendBotQuery('hotels')">🏨 Hôtels & Séjours</button>
+      <button class="bot-option-btn" onclick="sendBotQuery('contact')">📞 Joindre Jeanne / Miriam</button>
+      <button class="bot-option-btn" onclick="sendBotQuery('adresse')">📍 Adresse à Douala</button>
+    </div>
+  </div>
+  <form id="chatbot-input-area" onsubmit="handleChatSubmit(event)">
+    <input type="text" id="chatbot-input" placeholder="Écrivez votre message..." autocomplete="off">
+    <button type="submit" id="chatbot-send">➤</button>
+  </form>
+</div>
+
+<!-- Bouton retour en haut -->
+<button class="back-top" aria-label="Retour en haut" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })">
+  ↑
+</button>
 `;
 
 const scriptHtml = `
@@ -143,6 +149,7 @@ const scriptHtml = `
     w.style.display = isOpen ? 'none' : 'flex';
     chatIcon.style.display = isOpen ? 'inline' : 'none';
     closeIcon.style.display = isOpen ? 'none' : 'inline';
+    document.body.classList.toggle('chatbot-open', !isOpen);
   }
 
   const responses = {
@@ -190,6 +197,11 @@ const scriptHtml = `
     if (header) {
       if (window.scrollY > 20) header.classList.add('scrolled');
       else header.classList.remove('scrolled');
+    }
+    const backBtn = document.querySelector('.back-top');
+    if (backBtn) {
+      if (window.scrollY > 500) backBtn.classList.add('visible');
+      else backBtn.classList.remove('visible');
     }
   });
 

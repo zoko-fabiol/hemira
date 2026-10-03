@@ -147,6 +147,17 @@ export default function Chatbot({ lang = 'fr', onNavigate, content }) {
   };
 
   useEffect(() => {
+    if (isOpen) {
+      document.body.classList.add('chatbot-open');
+    } else {
+      document.body.classList.remove('chatbot-open');
+    }
+    return () => {
+      document.body.classList.remove('chatbot-open');
+    };
+  }, [isOpen]);
+
+  useEffect(() => {
     if (isOpen && messages.length === 0) {
       const l = lang === 'en' ? 'en' : 'fr';
       const welcome = knowledgeBase[l].accueil;
