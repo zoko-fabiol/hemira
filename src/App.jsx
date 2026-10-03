@@ -8,8 +8,9 @@ import CaseStudiesPage from './pages/CaseStudiesPage';
 import ContactPage from './pages/ContactPage';
 import Footer from './components/Footer';
 import Chatbot from './components/Chatbot';
-import AdminView from './admin/AdminView';
 import { trackVisitor } from './services/analyticsService';
+
+const AdminView = React.lazy(() => import('./admin/AdminView'));
 
 const PAGE_ROUTES = {
   home: '/',
@@ -319,7 +320,9 @@ function AppContent() {
             ← Retour au site public
           </button>
         </div>
-        <AdminView onBackToSite={() => navigateTo('home')} />
+        <React.Suspense fallback={<div style={{ padding: '80px 20px', textAlign: 'center', color: '#fff', fontFamily: 'sans-serif' }}>Chargement de l'administration...</div>}>
+          <AdminView onBackToSite={() => navigateTo('home')} />
+        </React.Suspense>
       </div>
     );
   }

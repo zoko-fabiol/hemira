@@ -583,25 +583,25 @@
 }
 
 /* Form controls */
-.form-grid {
+.admin-layout .form-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 22px;
 }
 
-.form-grid-1 {
+.admin-layout .form-grid-1 {
   display: grid;
   grid-template-columns: 1fr;
   gap: 20px;
 }
 
-.form-grid-3 {
+.admin-layout .form-grid-3 {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 22px;
 }
 
-.form-grid-4 {
+.admin-layout .form-grid-4 {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 20px;
@@ -883,14 +883,16 @@
     padding: 24px 18px;
   }
 
-  .form-grid, .form-grid-3, .form-grid-4 {
+  .admin-layout .form-grid, 
+  .admin-layout .form-grid-3, 
+  .admin-layout .form-grid-4 {
     grid-template-columns: 1fr;
     gap: 16px;
   }
 }
 
 @media (max-width: 1200px) and (min-width: 993px) {
-  .form-grid-4 {
+  .admin-layout .form-grid-4 {
     grid-template-columns: repeat(2, 1fr);
   }
 }

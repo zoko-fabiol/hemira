@@ -41,7 +41,7 @@ export default function ContactPage({ lang = 'fr', content, settings }) {
         </div>
       </section>
 
-      <section className="bg-light reveal" style={{ padding: '80px 0' }}>
+      <section className="bg-light" style={{ padding: '80px 0' }}>
         <div className="wrap contact-layout">
           {/* Colonne gauche : coordonnées */}
           <div className="contact-info-card">

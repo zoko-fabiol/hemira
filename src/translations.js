@@ -254,7 +254,7 @@ export const t = {
       addressVal: "Akwa — 101 Rue du Bruix, Douala, Cameroun",
       nameLabel: "Votre nom",
       namePlaceholder: "Votre nom complet",
-      emailInputLabel: "Votre email",
+      emailInputLabel: "Votre e-mail",
       emailPlaceholder: "exemple@domaine.com",
       companyLabel: "Votre entreprise (optionnel)",
       companyPlaceholder: "Nom de votre entreprise",
