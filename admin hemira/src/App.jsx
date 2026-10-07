@@ -11,6 +11,7 @@ import AboutTab from './components/AboutTab';
 import GeneralTextsTab from './components/GeneralTextsTab';
 import ContactTab from './components/ContactTab';
 import AnalyticsTab from './components/AnalyticsTab';
+import ThemeModal from './components/ThemeModal';
 
 import { 
   DEFAULT_THEME, 
@@ -37,6 +38,7 @@ import './index.css';
 export default function App() {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [showThemeModal, setShowThemeModal] = useState(false);
   const [lang, setLang] = useState('fr');
   const [theme, setTheme] = useState(DEFAULT_THEME);
   const [settings, setSettings] = useState(DEFAULT_SETTINGS);
@@ -123,6 +125,7 @@ export default function App() {
           onOpenMobileMenu={() => setMobileMenuOpen(true)}
           themeMode={themeMode}
           onToggleTheme={toggleThemeMode}
+          onOpenThemeModal={() => setShowThemeModal(true)}
         />
 
         {/* Swipeable Tabs Strip on Mobile */}
@@ -165,6 +168,7 @@ export default function App() {
             <ThemeTab 
               theme={theme} 
               showToast={showToast} 
+              onOpenThemeModal={() => setShowThemeModal(true)}
             />
           )}
 
@@ -180,6 +184,7 @@ export default function App() {
               contentFr={contentFr}
               contentEn={contentEn}
               showToast={showToast}
+              onOpenThemeModal={() => setShowThemeModal(true)}
             />
           )}
 
@@ -188,6 +193,7 @@ export default function App() {
               contentFr={contentFr}
               contentEn={contentEn}
               showToast={showToast}
+              onOpenThemeModal={() => setShowThemeModal(true)}
             />
           )}
 
@@ -196,6 +202,7 @@ export default function App() {
               contentFr={contentFr}
               contentEn={contentEn}
               showToast={showToast}
+              onOpenThemeModal={() => setShowThemeModal(true)}
             />
           )}
 
@@ -225,6 +232,14 @@ export default function App() {
           )}
         </main>
       </div>
+
+      {/* Global Color Theme Preset Modal */}
+      <ThemeModal
+        isOpen={showThemeModal}
+        onClose={() => setShowThemeModal(false)}
+        currentTheme={theme}
+        showToast={showToast}
+      />
 
       {toast && (
         <div className="toast-success">

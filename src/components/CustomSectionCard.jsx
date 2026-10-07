@@ -1,5 +1,14 @@
 import React from 'react';
 
+const DEFAULT_CASE_IMAGES = [
+  'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80',
+  'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=1200&q=80',
+  'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=1200&q=80',
+  'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=1200&q=80',
+  'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80',
+  'https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=1200&q=80'
+];
+
 /**
  * Universal Card component:
  * - PAR DÉFAUT : Restitue fidèlement le design et l'animation originale du site HEMIRA
@@ -155,7 +164,304 @@ export default function CustomSectionCard({
   }
 
   // =========================================================================
-  // 2. RENDU PERSONNALISÉ (QUAND UN DES 6 DESIGNS EST CHOISI DANS L'ADMIN)
+  // 2. RENDU DÉDIÉ POUR "NOS RÉALISATIONS" (GROS BLOCS AVEC IMAGES OBLIGATOIRES)
+  // =========================================================================
+  if (type === 'case') {
+    const c = item;
+    const design = c.design || 'case-editorial';
+    const caseImg = c.media || DEFAULT_CASE_IMAGES[index % DEFAULT_CASE_IMAGES.length];
+    const needText = c.besoin || c.need || '';
+    const respText = c.intervention || c.response || '';
+    const resultText = c.resultat || c.result || '';
+    const contextText = c.contexte || c.context || '';
+    const caseTitle = c.title || '';
+    const caseTag = c.tag || extraBadge || "Mission HEMIRA";
+
+    // Design 01 : Split Éditorial Magazine
+    if (design === 'case-editorial' || design === 'with-img-split') {
+      return (
+        <div key={c.id || index} className={`case-design--case-editorial ${animClass} ${className}`} id={c.id || `case-${index}`} onClick={onClick}>
+          <div className="case-editorial-media">
+            <img src={caseImg} alt={caseTitle} />
+            {caseTag && <div className="case-editorial-tag">{caseTag}</div>}
+          </div>
+          <div className="case-editorial-body">
+            <h3 className="case-editorial-title">{caseTitle}</h3>
+
+            {contextText && (
+              <div className="case-editorial-step">
+                <div className="case-editorial-step-badge">
+                  <span style={{ color: 'var(--navy)' }}>●</span> {extraLabels?.contextLabel || "Contexte :"}
+                </div>
+                <p>{contextText}</p>
+              </div>
+            )}
+
+            {needText && (
+              <div className="case-editorial-step">
+                <div className="case-editorial-step-badge">
+                  <span style={{ color: 'var(--coral)' }}>●</span> {extraLabels?.needLabel || "Besoin client :"}
+                </div>
+                <p>{needText}</p>
+              </div>
+            )}
+
+            {respText && (
+              <div className="case-editorial-step">
+                <div className="case-editorial-step-badge">
+                  <span style={{ color: 'var(--teal)' }}>●</span> {extraLabels?.interventionLabel || "Intervention HEMIRA :"}
+                </div>
+                <p>{respText}</p>
+              </div>
+            )}
+
+            {resultText && (
+              <div className="case-editorial-result">
+                <strong>{extraLabels?.resultLabel || "Résultat obtenu :"}</strong> <span>{resultText}</span>
+              </div>
+            )}
+          </div>
+        </div>
+      );
+    }
+
+    // Design 02 : Panoramique Cinéma & Timeline
+    if (design === 'case-cinema' || design === 'with-img-banner') {
+      return (
+        <div key={c.id || index} className={`case-design--case-cinema ${animClass} ${className}`} id={c.id || `case-${index}`} onClick={onClick}>
+          <div className="case-cinema-banner">
+            <img src={caseImg} alt={caseTitle} />
+            <div className="case-cinema-banner-overlay">
+              {caseTag && <span className="case-cinema-tag">{caseTag}</span>}
+              <h3 className="case-cinema-title">{caseTitle}</h3>
+            </div>
+          </div>
+          <div className="case-cinema-timeline">
+            {needText && (
+              <div className="case-cinema-card">
+                <strong>{extraLabels?.needLabel || "1. Défi & Besoin"}</strong>
+                <p>{needText}</p>
+              </div>
+            )}
+            {respText && (
+              <div className="case-cinema-card">
+                <strong>{extraLabels?.interventionLabel || "2. Solution HEMIRA"}</strong>
+                <p>{respText}</p>
+              </div>
+            )}
+            {resultText && (
+              <div className="case-cinema-card highlight">
+                <strong>{extraLabels?.resultLabel || "3. Résultat Obtenu"}</strong>
+                <p>{resultText}</p>
+              </div>
+            )}
+          </div>
+        </div>
+      );
+    }
+
+    // Design 03 : Studio Luxe & Photo Décalée en Relief
+    if (design === 'case-floating' || design === 'with-img-hero') {
+      return (
+        <div key={c.id || index} className={`case-design--case-floating ${animClass} ${className}`} id={c.id || `case-${index}`} onClick={onClick}>
+          <div className="case-floating-media">
+            <img src={caseImg} alt={caseTitle} />
+            <span className="case-floating-seal">HEMIRA VIP CASE</span>
+          </div>
+          <div className="case-floating-body">
+            {caseTag && <span className="case-floating-tag">{caseTag}</span>}
+            <h3 className="case-floating-title">{caseTitle}</h3>
+            <div className="case-floating-box">
+              {needText && (
+                <div>
+                  <strong style={{ display: 'block', fontSize: '11.5px', textTransform: 'uppercase', color: 'var(--navy)', letterSpacing: '0.05em' }}>
+                    {extraLabels?.needLabel || "Besoin client :"}
+                  </strong>
+                  <p style={{ margin: '4px 0 0 0', fontSize: '13.5px', color: 'var(--slate)', lineHeight: 1.55 }}>{needText}</p>
+                </div>
+              )}
+              {respText && (
+                <div>
+                  <strong style={{ display: 'block', fontSize: '11.5px', textTransform: 'uppercase', color: 'var(--navy)', letterSpacing: '0.05em' }}>
+                    {extraLabels?.interventionLabel || "Intervention HEMIRA :"}
+                  </strong>
+                  <p style={{ margin: '4px 0 0 0', fontSize: '13.5px', color: 'var(--slate)', lineHeight: 1.55 }}>{respText}</p>
+                </div>
+              )}
+            </div>
+            {resultText && (
+              <div className="case-floating-result">
+                <strong>{extraLabels?.resultLabel || "Résultat obtenu :"}</strong> <span>{resultText}</span>
+              </div>
+            )}
+          </div>
+        </div>
+      );
+    }
+
+    // Design 04 : Bento Case Study Moderne
+    if (design === 'case-bento') {
+      return (
+        <div key={c.id || index} className={`case-design--case-bento ${animClass} ${className}`} id={c.id || `case-${index}`} onClick={onClick}>
+          <div className="case-bento-hero">
+            <img src={caseImg} alt={caseTitle} />
+            <div className="case-bento-hero-top">
+              {caseTag && <span className="case-editorial-tag" style={{ position: 'static' }}>{caseTag}</span>}
+            </div>
+            <div className="case-bento-hero-bottom">
+              <h3 style={{ fontFamily: "'Sora', sans-serif", fontSize: '19px', fontWeight: 800, color: 'var(--ink)', margin: 0 }}>
+                {caseTitle}
+              </h3>
+            </div>
+          </div>
+          <div className="case-bento-stack">
+            {needText && (
+              <div className="case-bento-card">
+                <strong style={{ fontSize: '11.5px', textTransform: 'uppercase', color: 'var(--coral)', letterSpacing: '0.06em', marginBottom: '4px' }}>
+                  {extraLabels?.needLabel || "Le Défi"}
+                </strong>
+                <p style={{ margin: 0, fontSize: '13.5px', color: 'var(--slate)', lineHeight: 1.5 }}>{needText}</p>
+              </div>
+            )}
+            {respText && (
+              <div className="case-bento-card">
+                <strong style={{ fontSize: '11.5px', textTransform: 'uppercase', color: 'var(--teal)', letterSpacing: '0.06em', marginBottom: '4px' }}>
+                  {extraLabels?.interventionLabel || "L'Approche HEMIRA"}
+                </strong>
+                <p style={{ margin: 0, fontSize: '13.5px', color: 'var(--slate)', lineHeight: 1.5 }}>{respText}</p>
+              </div>
+            )}
+            {resultText && (
+              <div className="case-bento-card result">
+                <strong style={{ fontSize: '11.5px', textTransform: 'uppercase', color: 'var(--gold)', letterSpacing: '0.06em', marginBottom: '4px' }}>
+                  {extraLabels?.resultLabel || "Le Succès Obtenu"}
+                </strong>
+                <p style={{ margin: 0, fontSize: '13.5px', color: 'var(--ink)', fontWeight: 600, lineHeight: 1.5 }}>{resultText}</p>
+              </div>
+            )}
+          </div>
+        </div>
+      );
+    }
+
+    // Design 05 : Alternance Showcase Gauche/Droite
+    if (design === 'case-showcase') {
+      return (
+        <div key={c.id || index} className={`case-design--case-showcase ${index % 2 !== 0 ? 'reverse' : ''} ${animClass} ${className}`} id={c.id || `case-${index}`} onClick={onClick}>
+          <div className="case-showcase-media">
+            <img src={caseImg} alt={caseTitle} />
+            {caseTag && <div className="case-editorial-tag">{caseTag}</div>}
+          </div>
+          <div className="case-showcase-body">
+            <h3 className="case-editorial-title">{caseTitle}</h3>
+            {needText && (
+              <div className="case-editorial-step">
+                <span className="case-editorial-step-badge">▸ {extraLabels?.needLabel || "Besoin client"}</span>
+                <p>{needText}</p>
+              </div>
+            )}
+            {respText && (
+              <div className="case-editorial-step">
+                <span className="case-editorial-step-badge">▸ {extraLabels?.interventionLabel || "Intervention HEMIRA"}</span>
+                <p>{respText}</p>
+              </div>
+            )}
+            {resultText && (
+              <div className="case-editorial-result">
+                <strong>{extraLabels?.resultLabel || "Résultat obtenu :"}</strong> <span>{resultText}</span>
+              </div>
+            )}
+          </div>
+        </div>
+      );
+    }
+
+    // Design 06 : Fiche Carnet d'Expédition VIP
+    if (design === 'case-carnet') {
+      return (
+        <div key={c.id || index} className={`case-design--case-carnet ${animClass} ${className}`} id={c.id || `case-${index}`} onClick={onClick}>
+          <div className="case-carnet-header">
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span style={{ fontFamily: "'Sora', sans-serif", fontWeight: 800, fontSize: '11.5px', color: 'var(--gold)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+                DOSSIER VOYAGE #{String(index + 1).padStart(2, '0')}
+              </span>
+              <span style={{ fontSize: '13px', fontWeight: 700, color: 'var(--ink)' }}>— {caseTitle}</span>
+            </div>
+            {caseTag && (
+              <span style={{ fontSize: '11px', fontWeight: 700, background: 'rgba(240, 98, 77, 0.1)', color: 'var(--coral)', padding: '3px 10px', borderRadius: '12px' }}>
+                {caseTag}
+              </span>
+            )}
+          </div>
+          <div className="case-carnet-body-grid">
+            <div className="case-carnet-photo">
+              <img src={caseImg} alt={caseTitle} />
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              {needText && (
+                <div>
+                  <div style={{ fontSize: '11px', fontWeight: 800, textTransform: 'uppercase', color: 'var(--navy)', letterSpacing: '0.05em', marginBottom: '2px' }}>
+                    ✦ {extraLabels?.needLabel || "Demande Client"}
+                  </div>
+                  <p style={{ margin: 0, fontSize: '13.5px', color: 'var(--slate)', lineHeight: 1.55 }}>{needText}</p>
+                </div>
+              )}
+              {respText && (
+                <div>
+                  <div style={{ fontSize: '11px', fontWeight: 800, textTransform: 'uppercase', color: 'var(--navy)', letterSpacing: '0.05em', marginBottom: '2px' }}>
+                    ✦ {extraLabels?.interventionLabel || "Réponse Opérationnelle"}
+                  </div>
+                  <p style={{ margin: 0, fontSize: '13.5px', color: 'var(--slate)', lineHeight: 1.55 }}>{respText}</p>
+                </div>
+              )}
+              {resultText && (
+                <div style={{ padding: '12px 16px', borderRadius: '10px', background: 'rgba(111, 160, 208, 0.12)', borderLeft: '3px solid var(--teal)', fontSize: '13.5px', color: 'var(--ink)' }}>
+                  <strong>{extraLabels?.resultLabel || "Bilan :"}</strong> {resultText}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // Fallback gracieux si design non reconnu : Rendu Éditorial avec photo
+    return (
+      <div key={c.id || index} className={`case-design--case-editorial ${animClass} ${className}`} id={c.id || `case-${index}`} onClick={onClick}>
+        <div className="case-editorial-media">
+          <img src={caseImg} alt={caseTitle} />
+          {caseTag && <div className="case-editorial-tag">{caseTag}</div>}
+        </div>
+        <div className="case-editorial-body">
+          <h3 className="case-editorial-title">{caseTitle}</h3>
+          {needText && (
+            <div className="case-editorial-step">
+              <div className="case-editorial-step-badge">
+                <span style={{ color: 'var(--coral)' }}>●</span> {extraLabels?.needLabel || "Besoin client :"}
+              </div>
+              <p>{needText}</p>
+            </div>
+          )}
+          {respText && (
+            <div className="case-editorial-step">
+              <div className="case-editorial-step-badge">
+                <span style={{ color: 'var(--teal)' }}>●</span> {extraLabels?.interventionLabel || "Intervention HEMIRA :"}
+              </div>
+              <p>{respText}</p>
+            </div>
+          )}
+          {resultText && (
+            <div className="case-editorial-result">
+              <strong>{extraLabels?.resultLabel || "Résultat obtenu :"}</strong> <span>{resultText}</span>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  // =========================================================================
+  // 3. RENDU PERSONNALISÉ POUR SERVICES & ENGAGEMENTS
   // =========================================================================
   const design = item.design;
   const accent = item.accentColor || (item.highlight ? 'gold' : 'coral');

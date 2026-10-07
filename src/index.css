@@ -1944,3 +1944,472 @@ body.chatbot-open .back-top {
   transform: translateY(0) !important;
 }
 
+/* ==========================================================================
+   DESIGNS DÉDIÉS AUX RÉALISATIONS (GROS BLOCS AVEC PHOTOS)
+   ========================================================================== */
+
+/* --- DESIGN 01 : SPLIT ÉDITORIAL MAGAZINE --- */
+.case-design--case-editorial {
+  display: grid;
+  grid-template-columns: 1fr 1.35fr;
+  background: #ffffff;
+  border: 1px solid var(--border, #E7E5DE);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 32px -8px rgba(14, 31, 61, 0.08);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  margin-bottom: 36px;
+}
+@media (max-width: 900px) {
+  .case-design--case-editorial { grid-template-columns: 1fr; }
+}
+.case-design--case-editorial:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 48px -10px rgba(14, 31, 61, 0.14);
+}
+.case-editorial-media {
+  position: relative;
+  min-height: 340px;
+  background: var(--bg-light, #F7F6F2);
+  overflow: hidden;
+}
+.case-editorial-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.case-design--case-editorial:hover .case-editorial-media img {
+  transform: scale(1.05);
+}
+.case-editorial-tag {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  z-index: 2;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--coral, #F0624D);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 4px 12px rgba(14, 31, 61, 0.08);
+}
+.case-editorial-body {
+  padding: 38px 42px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.case-editorial-title {
+  font-family: 'Sora', sans-serif;
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--ink, #16213A);
+  margin-bottom: 18px;
+  line-height: 1.3;
+}
+.case-editorial-step {
+  margin-bottom: 14px;
+}
+.case-editorial-step-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Sora', sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--navy, #0E1F3D);
+  margin-bottom: 4px;
+}
+.case-editorial-step p {
+  margin: 0;
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--slate, #5B6B7C);
+}
+.case-editorial-result {
+  margin-top: 18px;
+  padding: 16px 20px;
+  border-radius: 12px;
+  background: rgba(201, 169, 104, 0.12);
+  border-left: 4px solid var(--gold, #C9A968);
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--ink, #16213A);
+}
+
+/* --- DESIGN 02 : PANORAMIQUE CINÉMA & TIMELINE --- */
+.case-design--case-cinema {
+  background: #ffffff;
+  border: 1px solid var(--border, #E7E5DE);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 32px -8px rgba(14, 31, 61, 0.08);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  margin-bottom: 36px;
+}
+.case-design--case-cinema:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 48px -10px rgba(14, 31, 61, 0.14);
+}
+.case-cinema-banner {
+  position: relative;
+  height: 270px;
+  width: 100%;
+  overflow: hidden;
+  background: var(--bg-light, #F7F6F2);
+}
+.case-cinema-banner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.case-design--case-cinema:hover .case-cinema-banner img {
+  transform: scale(1.04);
+}
+.case-cinema-banner-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(14, 31, 61, 0.15) 0%, rgba(14, 31, 61, 0.72) 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 24px 32px;
+}
+.case-cinema-tag {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 8px;
+  width: fit-content;
+}
+.case-cinema-title {
+  color: #ffffff;
+  font-family: 'Sora', sans-serif;
+  font-size: 23px;
+  font-weight: 800;
+  margin: 0;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+}
+.case-cinema-timeline {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+  padding: 30px 32px;
+  background: #ffffff;
+}
+.case-cinema-card {
+  padding: 20px;
+  background: var(--bg-light, #F7F6F2);
+  border: 1px solid var(--border, #E7E5DE);
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+}
+.case-cinema-card.highlight {
+  background: rgba(111, 160, 208, 0.12);
+  border-color: rgba(111, 160, 208, 0.35);
+  border-top: 3px solid var(--teal, #6FA0D0);
+}
+.case-cinema-card strong {
+  font-family: 'Sora', sans-serif;
+  font-size: 11.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--navy, #0E1F3D);
+  margin-bottom: 6px;
+}
+.case-cinema-card p {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--slate, #5B6B7C);
+}
+
+/* --- DESIGN 03 : STUDIO LUXE & PHOTO DÉCALÉE EN RELIEF --- */
+.case-design--case-floating {
+  display: grid;
+  grid-template-columns: 1.05fr 1.35fr;
+  background: #ffffff;
+  border: 1px solid var(--border, #E7E5DE);
+  border-radius: 22px;
+  padding: 28px;
+  gap: 32px;
+  align-items: center;
+  box-shadow: 0 10px 36px -10px rgba(14, 31, 61, 0.09);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  margin-bottom: 36px;
+}
+@media (max-width: 900px) {
+  .case-design--case-floating {
+    grid-template-columns: 1fr;
+    padding: 20px;
+    gap: 20px;
+  }
+}
+.case-design--case-floating:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 22px 50px -12px rgba(14, 31, 61, 0.15);
+}
+.case-floating-media {
+  position: relative;
+  min-height: 320px;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 16px 36px -8px rgba(14, 31, 61, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+}
+.case-floating-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.case-design--case-floating:hover .case-floating-media img {
+  transform: scale(1.05);
+}
+.case-floating-seal {
+  position: absolute;
+  bottom: 14px;
+  right: 14px;
+  background: rgba(14, 31, 61, 0.88);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: #ffffff;
+  padding: 4px 10px;
+  border-radius: 10px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+.case-floating-body {
+  display: flex;
+  flex-direction: column;
+}
+.case-floating-tag {
+  color: var(--coral, #F0624D);
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.case-floating-title {
+  font-family: 'Sora', sans-serif;
+  font-size: 23px;
+  font-weight: 800;
+  color: var(--ink, #16213A);
+  margin-bottom: 16px;
+  line-height: 1.35;
+}
+.case-floating-box {
+  background: var(--bg-light, #F7F6F2);
+  border: 1px solid var(--border, #E7E5DE);
+  border-radius: 14px;
+  padding: 18px 20px;
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.case-floating-result {
+  padding: 14px 18px;
+  border-radius: 12px;
+  background: rgba(201, 169, 104, 0.15);
+  border: 1px solid rgba(201, 169, 104, 0.35);
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--ink, #16213A);
+}
+
+/* --- DESIGN 04 : BENTO CASE STUDY MODERNE --- */
+.case-design--case-bento {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  background: var(--bg-light, #F7F6F2);
+  padding: 16px;
+  border-radius: 22px;
+  border: 1px solid var(--border, #E7E5DE);
+  box-shadow: 0 10px 30px -8px rgba(14, 31, 61, 0.06);
+  margin-bottom: 36px;
+  transition: all 0.35s ease;
+}
+@media (max-width: 900px) {
+  .case-design--case-bento { grid-template-columns: 1fr; }
+}
+.case-design--case-bento:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 44px -10px rgba(14, 31, 61, 0.12);
+}
+.case-bento-hero {
+  position: relative;
+  min-height: 380px;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #000;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px;
+}
+.case-bento-hero img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.9;
+  transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.case-design--case-bento:hover .case-bento-hero img {
+  transform: scale(1.05);
+}
+.case-bento-hero-top {
+  position: relative;
+  z-index: 2;
+}
+.case-bento-hero-bottom {
+  position: relative;
+  z-index: 2;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 16px 18px;
+  border-radius: 14px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+.case-bento-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  justify-content: center;
+}
+.case-bento-card {
+  background: #ffffff;
+  border: 1px solid var(--border, #E7E5DE);
+  border-radius: 14px;
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+}
+.case-bento-card.result {
+  background: linear-gradient(135deg, rgba(201, 169, 104, 0.15) 0%, rgba(240, 98, 77, 0.08) 100%);
+  border-color: rgba(201, 169, 104, 0.35);
+}
+
+/* --- DESIGN 05 : ALTERNANCE SHOWCASE GAUCHE/DROITE --- */
+.case-design--case-showcase {
+  display: grid;
+  grid-template-columns: 1fr 1.35fr;
+  background: #ffffff;
+  border: 1px solid var(--border, #E7E5DE);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 32px -8px rgba(14, 31, 61, 0.08);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  margin-bottom: 36px;
+}
+.case-design--case-showcase.reverse {
+  grid-template-columns: 1.35fr 1fr;
+}
+@media (max-width: 900px) {
+  .case-design--case-showcase,
+  .case-design--case-showcase.reverse {
+    grid-template-columns: 1fr;
+  }
+}
+.case-design--case-showcase:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 48px -10px rgba(14, 31, 61, 0.14);
+}
+.case-showcase-media {
+  min-height: 340px;
+  position: relative;
+  overflow: hidden;
+  background: var(--bg-light, #F7F6F2);
+}
+.case-showcase-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.case-design--case-showcase:hover .case-showcase-media img {
+  transform: scale(1.05);
+}
+.case-showcase-body {
+  padding: 38px 42px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* --- DESIGN 06 : FICHE CARNET D'EXPÉDITION VIP --- */
+.case-design--case-carnet {
+  background: #ffffff;
+  border: 1.5px solid var(--border, #E7E5DE);
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 8px 28px -6px rgba(14, 31, 61, 0.08);
+  margin-bottom: 36px;
+  transition: all 0.35s ease;
+}
+.case-design--case-carnet:hover {
+  transform: translateY(-5px);
+  border-color: var(--gold, #C9A968);
+  box-shadow: 0 18px 44px -10px rgba(201, 169, 104, 0.22);
+}
+.case-carnet-header {
+  padding: 12px 24px;
+  background: var(--bg-light, #F7F6F2);
+  border-bottom: 1px solid var(--border, #E7E5DE);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.case-carnet-body-grid {
+  display: grid;
+  grid-template-columns: 0.9fr 1.35fr;
+  padding: 24px 28px;
+  gap: 28px;
+  align-items: center;
+}
+@media (max-width: 850px) {
+  .case-carnet-body-grid { grid-template-columns: 1fr; }
+}
+.case-carnet-photo {
+  position: relative;
+  min-height: 270px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 4px solid #ffffff;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+.case-carnet-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+

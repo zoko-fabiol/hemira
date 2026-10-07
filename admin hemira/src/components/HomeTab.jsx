@@ -3,7 +3,7 @@ import { Home, Save, Plus, Trash2, Image as ImageIcon, Upload } from 'lucide-rea
 import { saveContent, uploadImageFile } from '../services/cmsService';
 import CardAppearancePicker from './CardAppearancePicker';
 
-export default function HomeTab({ contentFr, contentEn, showToast }) {
+export default function HomeTab({ contentFr, contentEn, showToast, onOpenThemeModal }) {
   const [activeLang, setActiveLang] = useState('fr');
   const [homeFr, setHomeFr] = useState({});
   const [homeEn, setHomeEn] = useState({});
@@ -291,13 +291,12 @@ export default function HomeTab({ contentFr, contentEn, showToast }) {
             <CardAppearancePicker
               design={current.commitmentsDesign || 'default'}
               animation={current.commitmentsAnimation || 'default'}
-              accentColor={current.commitmentsAccent || 'coral'}
               showMediaUploader={false}
+              onOpenThemeModal={onOpenThemeModal}
               onUpdate={(field, val) => {
                 const map = {
                   design: 'commitmentsDesign',
-                  animation: 'commitmentsAnimation',
-                  accentColor: 'commitmentsAccent'
+                  animation: 'commitmentsAnimation'
                 };
                 const key = map[field] || field;
                 handleChange(key, val);

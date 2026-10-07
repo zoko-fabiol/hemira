@@ -97,6 +97,7 @@ export default function CardAppearancePicker({
   accentColor = 'coral',
   showMediaUploader = true,
   onUpdate,
+  onOpenThemeModal,
   label = "Personnalisation du Design & de l'Animation"
 }) {
   const [uploading, setUploading] = useState(false);
@@ -493,47 +494,34 @@ export default function CardAppearancePicker({
         </div>
       </div>
 
-      {/* 4. TEINTE D'ACCENT COULEUR */}
-      <div>
-        <div style={{
-          fontSize: '12px',
-          fontWeight: 700,
-          textTransform: 'uppercase',
-          letterSpacing: '0.06em',
-          color: 'var(--admin-text-muted, #64748B)',
-          marginBottom: '8px'
-        }}>
-          Teinte d'Accentuation :
+      {/* 4. HARMONIE DU THÈME COULEUR DU SITE (UNIQUE) */}
+      <div style={{
+        marginTop: '16px',
+        paddingTop: '14px',
+        borderTop: '1px solid var(--admin-border, #E2E8F0)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        flexWrap: 'wrap',
+        gap: '10px'
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <Palette size={16} color="var(--admin-gold, #C9A968)" />
+          <span style={{ fontSize: '12.5px', color: 'var(--admin-text-muted, #64748B)' }}>
+            Le thème couleur de ces cartes s'adapte automatiquement à la <strong>palette unique globale</strong> du site.
+          </span>
         </div>
-        <div style={{ display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap' }}>
-          {ACCENT_COLORS.map(c => {
-            const isSelected = accentColor === c.id;
-            return (
-              <button
-                key={c.id}
-                type="button"
-                onClick={() => onUpdate('accentColor', c.id)}
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '6px',
-                  padding: '5px 12px',
-                  borderRadius: '20px',
-                  border: isSelected ? `2px solid ${c.color}` : '1px solid var(--admin-border, #E2E8F0)',
-                  background: isSelected ? `${c.color}18` : '#FFFFFF',
-                  cursor: 'pointer',
-                  fontSize: '12px',
-                  fontWeight: 600,
-                  color: 'var(--admin-text-main, #0F172A)'
-                }}
-              >
-                <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: c.color }} />
-                <span>{c.name}</span>
-                {isSelected && <Check size={12} color={c.color} />}
-              </button>
-            );
-          })}
-        </div>
+        {onOpenThemeModal && (
+          <button
+            type="button"
+            className="admin-btn admin-btn-outline"
+            style={{ fontSize: '11.5px', padding: '4px 10px', gap: '5px' }}
+            onClick={onOpenThemeModal}
+          >
+            <Palette size={13} />
+            <span>Changer le thème couleur du site</span>
+          </button>
+        )}
       </div>
     </div>
   );

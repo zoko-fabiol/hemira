@@ -1257,3 +1257,363 @@
   flex-direction: column;
   flex: 1;
 }
+
+/* ==========================================================================
+   DESIGNS DÉDIÉS AUX RÉALISATIONS (GROS BLOCS AVEC PHOTOS)
+   ========================================================================== */
+
+/* --- DESIGN 01 : SPLIT ÉDITORIAL MAGAZINE --- */
+.case-design--case-editorial {
+  display: grid;
+  grid-template-columns: 1fr 1.35fr;
+  background: #ffffff;
+  border: 1px solid var(--admin-border, #E2E8F0);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 32px -8px rgba(14, 31, 61, 0.08);
+  margin-bottom: 36px;
+}
+@media (max-width: 900px) {
+  .case-design--case-editorial { grid-template-columns: 1fr; }
+}
+.case-editorial-media {
+  position: relative;
+  min-height: 320px;
+  background: #F1F5F9;
+  overflow: hidden;
+}
+.case-editorial-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.case-editorial-tag {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  z-index: 2;
+  background: rgba(255, 255, 255, 0.94);
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--admin-coral, #F0624D);
+}
+.case-editorial-body {
+  padding: 32px 36px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.case-editorial-title {
+  font-family: 'Sora', sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+  color: #0F172A;
+  margin-bottom: 16px;
+  line-height: 1.3;
+}
+.case-editorial-step {
+  margin-bottom: 12px;
+}
+.case-editorial-step-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Sora', sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: #0F172A;
+  margin-bottom: 4px;
+}
+.case-editorial-step p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.55;
+  color: #64748B;
+}
+.case-editorial-result {
+  margin-top: 16px;
+  padding: 14px 18px;
+  border-radius: 12px;
+  background: rgba(201, 169, 104, 0.12);
+  border-left: 4px solid var(--admin-gold, #C9A968);
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: #0F172A;
+}
+
+/* --- DESIGN 02 : PANORAMIQUE CINÉMA & TIMELINE --- */
+.case-design--case-cinema {
+  background: #ffffff;
+  border: 1px solid var(--admin-border, #E2E8F0);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 32px -8px rgba(14, 31, 61, 0.08);
+  margin-bottom: 36px;
+}
+.case-cinema-banner {
+  position: relative;
+  height: 250px;
+  width: 100%;
+  overflow: hidden;
+  background: #F1F5F9;
+}
+.case-cinema-banner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.case-cinema-banner-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(14, 31, 61, 0.15) 0%, rgba(14, 31, 61, 0.72) 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 24px 32px;
+}
+.case-cinema-tag {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  width: fit-content;
+}
+.case-cinema-title {
+  color: #ffffff;
+  font-family: 'Sora', sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+  margin: 0;
+}
+.case-cinema-timeline {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+  padding: 24px 28px;
+  background: #ffffff;
+}
+.case-cinema-card {
+  padding: 18px;
+  background: #F8FAFC;
+  border: 1px solid var(--admin-border, #E2E8F0);
+  border-radius: 14px;
+}
+.case-cinema-card.highlight {
+  background: rgba(111, 160, 208, 0.12);
+  border-color: rgba(111, 160, 208, 0.35);
+  border-top: 3px solid var(--admin-teal, #6FA0D0);
+}
+
+/* --- DESIGN 03 : STUDIO LUXE & PHOTO DÉCALÉE --- */
+.case-design--case-floating {
+  display: grid;
+  grid-template-columns: 1.05fr 1.35fr;
+  background: #ffffff;
+  border: 1px solid var(--admin-border, #E2E8F0);
+  border-radius: 22px;
+  padding: 24px;
+  gap: 28px;
+  align-items: center;
+  margin-bottom: 36px;
+}
+@media (max-width: 900px) {
+  .case-design--case-floating {
+    grid-template-columns: 1fr;
+    padding: 16px;
+  }
+}
+.case-floating-media {
+  position: relative;
+  min-height: 300px;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 16px 36px -8px rgba(14, 31, 61, 0.18);
+}
+.case-floating-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.case-floating-seal {
+  position: absolute;
+  bottom: 14px;
+  right: 14px;
+  background: rgba(14, 31, 61, 0.88);
+  color: #ffffff;
+  padding: 4px 10px;
+  border-radius: 10px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.case-floating-title {
+  font-family: 'Sora', sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+  color: #0F172A;
+  margin-bottom: 14px;
+}
+.case-floating-box {
+  background: #F8FAFC;
+  border: 1px solid var(--admin-border, #E2E8F0);
+  border-radius: 14px;
+  padding: 16px 18px;
+  margin-bottom: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.case-floating-result {
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: rgba(201, 169, 104, 0.15);
+  border: 1px solid rgba(201, 169, 104, 0.35);
+  font-size: 13.5px;
+  color: #0F172A;
+}
+
+/* --- DESIGN 04 : BENTO CASE STUDY --- */
+.case-design--case-bento {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  background: #F8FAFC;
+  padding: 16px;
+  border-radius: 22px;
+  border: 1px solid var(--admin-border, #E2E8F0);
+  margin-bottom: 36px;
+}
+@media (max-width: 900px) {
+  .case-design--case-bento { grid-template-columns: 1fr; }
+}
+.case-bento-hero {
+  position: relative;
+  min-height: 360px;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #000;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px;
+}
+.case-bento-hero img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.9;
+}
+.case-bento-hero-top { position: relative; z-index: 2; }
+.case-bento-hero-bottom {
+  position: relative;
+  z-index: 2;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 16px 18px;
+  border-radius: 14px;
+}
+.case-bento-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  justify-content: center;
+}
+.case-bento-card {
+  background: #ffffff;
+  border: 1px solid var(--admin-border, #E2E8F0);
+  border-radius: 14px;
+  padding: 16px 20px;
+}
+.case-bento-card.result {
+  background: linear-gradient(135deg, rgba(201, 169, 104, 0.15) 0%, rgba(240, 98, 77, 0.08) 100%);
+  border-color: rgba(201, 169, 104, 0.35);
+}
+
+/* --- DESIGN 05 : ALTERNANCE SHOWCASE --- */
+.case-design--case-showcase {
+  display: grid;
+  grid-template-columns: 1fr 1.35fr;
+  background: #ffffff;
+  border: 1px solid var(--admin-border, #E2E8F0);
+  border-radius: 20px;
+  overflow: hidden;
+  margin-bottom: 36px;
+}
+.case-design--case-showcase.reverse {
+  grid-template-columns: 1.35fr 1fr;
+}
+@media (max-width: 900px) {
+  .case-design--case-showcase,
+  .case-design--case-showcase.reverse {
+    grid-template-columns: 1fr;
+  }
+}
+.case-showcase-media {
+  min-height: 320px;
+  position: relative;
+  overflow: hidden;
+  background: #F1F5F9;
+}
+.case-showcase-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.case-showcase-body {
+  padding: 32px 36px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* --- DESIGN 06 : CARNET VIP --- */
+.case-design--case-carnet {
+  background: #ffffff;
+  border: 1.5px solid var(--admin-border, #E2E8F0);
+  border-radius: 18px;
+  overflow: hidden;
+  margin-bottom: 36px;
+}
+.case-carnet-header {
+  padding: 12px 24px;
+  background: #F8FAFC;
+  border-bottom: 1px solid var(--admin-border, #E2E8F0);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.case-carnet-body-grid {
+  display: grid;
+  grid-template-columns: 0.9fr 1.35fr;
+  padding: 24px 28px;
+  gap: 28px;
+  align-items: center;
+}
+@media (max-width: 850px) {
+  .case-carnet-body-grid { grid-template-columns: 1fr; }
+}
+.case-carnet-photo {
+  position: relative;
+  min-height: 260px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 4px solid #ffffff;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+.case-carnet-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}

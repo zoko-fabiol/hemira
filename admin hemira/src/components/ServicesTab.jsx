@@ -17,12 +17,11 @@ import {
 import { saveContent, uploadImageFile } from '../services/cmsService';
 import CardAppearancePicker from './CardAppearancePicker';
 
-export default function ServicesTab({ contentFr, contentEn, showToast }) {
+export default function ServicesTab({ contentFr, contentEn, showToast, onOpenThemeModal }) {
   const [servicesFr, setServicesFr] = useState([]);
   const [servicesEn, setServicesEn] = useState([]);
   const [servicesDesign, setServicesDesign] = useState('default');
   const [servicesAnimation, setServicesAnimation] = useState('default');
-  const [servicesAccent, setServicesAccent] = useState('coral');
   const [activeLang, setActiveLang] = useState('fr');
   const [expandedIndex, setExpandedIndex] = useState(null);
   const [saving, setSaving] = useState(false);
@@ -218,12 +217,11 @@ export default function ServicesTab({ contentFr, contentEn, showToast }) {
         <CardAppearancePicker
           design={servicesDesign}
           animation={servicesAnimation}
-          accentColor={servicesAccent}
           showMediaUploader={false}
+          onOpenThemeModal={onOpenThemeModal}
           onUpdate={(field, val) => {
             if (field === 'design') setServicesDesign(val);
             if (field === 'animation') setServicesAnimation(val);
-            if (field === 'accentColor') setServicesAccent(val);
           }}
           label="Apparence & Animation de la section 'Services' (appliqué à tous les blocs)"
         />

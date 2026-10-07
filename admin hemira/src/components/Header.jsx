@@ -1,7 +1,15 @@
 import React from 'react';
-import { ExternalLink, Menu, Sun, Moon } from 'lucide-react';
+import { ExternalLink, Menu, Sun, Moon, Palette } from 'lucide-react';
 
-export default function Header({ activeTabName, lang, setLang, onOpenMobileMenu, themeMode = 'light', onToggleTheme }) {
+export default function Header({ 
+  activeTabName, 
+  lang, 
+  setLang, 
+  onOpenMobileMenu, 
+  themeMode = 'light', 
+  onToggleTheme,
+  onOpenThemeModal 
+}) {
   return (
     <header className="admin-header">
       <div className="admin-header-left">
@@ -20,6 +28,18 @@ export default function Header({ activeTabName, lang, setLang, onOpenMobileMenu,
       </div>
 
       <div className="admin-header-actions">
+        {/* Global Color Theme Preset Modal */}
+        <button
+          type="button"
+          className="admin-btn admin-btn-outline"
+          onClick={onOpenThemeModal}
+          title="Choisir le thème couleur unique pour tout le site"
+          style={{ gap: '6px' }}
+        >
+          <Palette size={15} color="var(--admin-coral, #F0624D)" />
+          <span className="theme-toggle-text">Thème Couleur</span>
+        </button>
+
         {/* Theme mode toggle (Light / Dark) */}
         <button
           type="button"

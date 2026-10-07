@@ -12,14 +12,13 @@ import {
   Image as ImageIcon
 } from 'lucide-react';
 import { saveContent, uploadImageFile } from '../services/cmsService';
-import CardAppearancePicker from './CardAppearancePicker';
+import CaseAppearancePicker from './CaseAppearancePicker';
 
-export default function CaseStudiesTab({ contentFr, contentEn, showToast }) {
+export default function CaseStudiesTab({ contentFr, contentEn, showToast, onOpenThemeModal }) {
   const [casesFr, setCasesFr] = useState([]);
   const [casesEn, setCasesEn] = useState([]);
   const [casesDesign, setCasesDesign] = useState('default');
   const [casesAnimation, setCasesAnimation] = useState('default');
-  const [casesAccent, setCasesAccent] = useState('teal');
   const [activeLang, setActiveLang] = useState('fr');
   const [expandedIndex, setExpandedIndex] = useState(null);
   const [saving, setSaving] = useState(false);
@@ -164,7 +163,7 @@ export default function CaseStudiesTab({ contentFr, contentEn, showToast }) {
   };
 
   const currentList = activeLang === 'fr' ? casesFr : casesEn;
-  const isWithImg = casesDesign && casesDesign.startsWith('with-img-');
+  const isWithImg = true; // Toutes les réalisations intègrent obligatoirement des images de prestige
 
   return (
     <div>
@@ -200,18 +199,16 @@ export default function CaseStudiesTab({ contentFr, contentEn, showToast }) {
           </div>
         </div>
 
-        {/* Sélecteur de Design (6 options) et Animation (6 options) pour TOUTE la section Réalisations */}
-        <CardAppearancePicker
+        {/* Sélecteur de Design (6 options Gros Blocs avec Photos) et Animation pour TOUTE la section Réalisations */}
+        <CaseAppearancePicker
           design={casesDesign}
           animation={casesAnimation}
-          accentColor={casesAccent}
-          showMediaUploader={false}
+          onOpenThemeModal={onOpenThemeModal}
           onUpdate={(field, val) => {
             if (field === 'design') setCasesDesign(val);
             if (field === 'animation') setCasesAnimation(val);
-            if (field === 'accentColor') setCasesAccent(val);
           }}
-          label="Apparence & Animation de la section 'Nos Réalisations' (appliqué à tous les blocs)"
+          label="Apparence & Animation de 'Nos Réalisations' (Gros Blocs avec Images)"
         />
 
         {/* Language Tabs */}
@@ -395,11 +392,9 @@ export default function CaseStudiesTab({ contentFr, contentEn, showToast }) {
                         <label style={{ fontSize: '12px', fontWeight: 700, color: 'var(--admin-text-main, #0F172A)', margin: 0 }}>
                           Image de la réalisation #{index + 1}
                         </label>
-                        {isWithImg && (
-                          <span style={{ fontSize: '11px', fontWeight: 700, color: '#6FA0D0', background: 'rgba(111,160,208,0.15)', padding: '2px 8px', borderRadius: '10px' }}>
-                            ★ Active dans le design avec image sélectionné
-                          </span>
-                        )}
+                        <span style={{ fontSize: '11px', fontWeight: 700, color: 'var(--admin-teal, #6FA0D0)', background: 'rgba(111,160,208,0.15)', padding: '2px 8px', borderRadius: '10px' }}>
+                          ★ Obligatoire & mise en valeur dans tous les designs de réalisations
+                        </span>
                       </div>
                       <div style={{ display: 'flex', gap: '12px', alignItems: 'center', flexWrap: 'wrap' }}>
                         <div style={{
