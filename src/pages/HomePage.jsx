@@ -1,5 +1,6 @@
 import React from 'react';
 import { t } from '../translations';
+import CustomSectionCard from '../components/CustomSectionCard';
 
 export default function HomePage({ onNavigate, lang = 'fr', content }) {
   const h = content?.home || t[lang].home;
@@ -92,14 +93,25 @@ export default function HomePage({ onNavigate, lang = 'fr', content }) {
                   <path d="M11 20c0-3 2.2-5.5 5-5.5s5 2.5 5 5.5"/>
                 </svg>
               ];
+
+              // Design et animation identiques pour TOUS les blocs de Nos engagements
+              const sectionDesign = h.commitmentsDesign || 'default';
+              const sectionAnimation = h.commitmentsAnimation || 'default';
+              const sectionAccent = h.commitmentsAccent || 'coral';
+
               return (
-                <div key={idx} className="card">
-                  <div className="card-icon">
-                    {icons[idx % icons.length]}
-                  </div>
-                  <h3>{com.title}</h3>
-                  <p>{com.desc}</p>
-                </div>
+                <CustomSectionCard
+                  key={idx}
+                  type="commitment"
+                  item={{
+                    ...com,
+                    design: sectionDesign,
+                    animation: sectionAnimation,
+                    accentColor: sectionAccent
+                  }}
+                  index={idx}
+                  icon={icons[idx % icons.length]}
+                />
               );
             })}
           </div>
@@ -146,13 +158,26 @@ export default function HomePage({ onNavigate, lang = 'fr', content }) {
             <h2>{h.servicesTitle}</h2>
           </div>
           <div className="grid-6 reveal-stagger">
-            {h.services.map((item, idx) => (
-              <div key={idx} className={`mini-card ${item.highlight ? 'highlight' : ''}`}>
-                <span className="step-num">{item.num}</span>
-                <h4>{item.title}</h4>
-                <p>{item.desc}</p>
-              </div>
-            ))}
+            {h.services.map((item, idx) => {
+              // Design et animation identiques pour TOUS les blocs des services
+              const sectionDesign = h.servicesDesign || 'default';
+              const sectionAnimation = h.servicesAnimation || 'default';
+              const sectionAccent = h.servicesAccent || 'coral';
+
+              return (
+                <CustomSectionCard
+                  key={idx}
+                  type="service-home"
+                  item={{
+                    ...item,
+                    design: sectionDesign,
+                    animation: sectionAnimation,
+                    accentColor: sectionAccent
+                  }}
+                  index={idx}
+                />
+              );
+            })}
           </div>
         </div>
       </section>

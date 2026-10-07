@@ -1,5 +1,6 @@
 import React from 'react';
 import { t } from '../translations';
+import CustomSectionCard from '../components/CustomSectionCard';
 
 export default function CaseStudiesPage({ onNavigate, lang = 'fr', content }) {
   const cs = content?.caseStudies || t[lang].caseStudies;
@@ -17,44 +18,26 @@ export default function CaseStudiesPage({ onNavigate, lang = 'fr', content }) {
 
       <section className="reveal">
         <div className="wrap reveal-stagger">
-          {(cs.cases || []).map((c, idx) => (
-            <div key={c.id || idx} className="case-card" id={c.id || `case-${idx}`}>
-              <div className={`case-media ${c.media ? '' : 'logo-only'}`}>
-                {c.media ? (
-                  <img src={c.media} alt={c.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                ) : (
-                  <div className="mosaic-mini" aria-hidden="true">
-                    <span className="sq coral"></span>
-                    <span className="sq gold"></span>
-                    <span className="sq teal"></span>
-                  </div>
-                )}
-              </div>
-              <div className="case-body">
-                <div className="case-tag">{c.tag}</div>
-                <h3>{c.title}</h3>
+          {(cs.cases || []).map((c, idx) => {
+            const sectionDesign = cs.casesDesign || 'default';
+            const sectionAnimation = cs.casesAnimation || 'default';
+            const sectionAccent = cs.casesAccent || 'teal';
 
-                {(c.contexte || c.context) && (
-                  <div className="case-row">
-                    <strong>{cs.contextLabel || "Contexte :"}</strong>
-                    <span>{c.contexte || c.context}</span>
-                  </div>
-                )}
-                <div className="case-row">
-                  <strong>{cs.needLabel || "Besoin client :"}</strong>
-                  <span>{c.besoin || c.need}</span>
-                </div>
-                <div className="case-row">
-                  <strong>{cs.interventionLabel || "Intervention HEMIRA :"}</strong>
-                  <span>{c.intervention || c.response}</span>
-                </div>
-
-                <div className="case-result">
-                  <strong>{cs.resultLabel || "Résultat obtenu :"}</strong> <span>{c.resultat || c.result}</span>
-                </div>
-              </div>
-            </div>
-          ))}
+            return (
+              <CustomSectionCard
+                key={c.id || idx}
+                type="case"
+                item={{
+                  ...c,
+                  design: sectionDesign,
+                  animation: sectionAnimation,
+                  accentColor: sectionAccent
+                }}
+                index={idx}
+                extraLabels={cs}
+              />
+            );
+          })}
         </div>
       </section>
 

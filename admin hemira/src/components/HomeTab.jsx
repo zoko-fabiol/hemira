@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Home, Save, Plus, Trash2 } from 'lucide-react';
-import { saveContent } from '../services/cmsService';
+import { Home, Save, Plus, Trash2, Image as ImageIcon, Upload } from 'lucide-react';
+import { saveContent, uploadImageFile } from '../services/cmsService';
+import CardAppearancePicker from './CardAppearancePicker';
 
 export default function HomeTab({ contentFr, contentEn, showToast }) {
   const [activeLang, setActiveLang] = useState('fr');
   const [homeFr, setHomeFr] = useState({});
   const [homeEn, setHomeEn] = useState({});
   const [saving, setSaving] = useState(false);
+  const [uploadingCommitmentIndex, setUploadingCommitmentIndex] = useState(null);
 
   useEffect(() => {
     setHomeFr(contentFr?.home || {});
@@ -45,6 +47,34 @@ export default function HomeTab({ contentFr, contentEn, showToast }) {
     handleChange('commitments', list);
   };
 
+  const handleCommitmentMediaChange = (index, mediaUrl) => {
+    setHomeFr(prev => {
+      const list = [...(prev.commitments || [])];
+      if (list[index]) list[index] = { ...list[index], media: mediaUrl };
+      return { ...prev, commitments: list };
+    });
+    setHomeEn(prev => {
+      const list = [...(prev.commitments || [])];
+      if (list[index]) list[index] = { ...list[index], media: mediaUrl };
+      return { ...prev, commitments: list };
+    });
+  };
+
+  const handleCommitmentImageUpload = async (e, index) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploadingCommitmentIndex(index);
+    try {
+      const url = await uploadImageFile(file, 'commitments');
+      handleCommitmentMediaChange(index, url);
+      showToast("Image de l'engagement téléversée avec succès !");
+    } catch (err) {
+      alert("Erreur upload image : " + err.message);
+    } finally {
+      setUploadingCommitmentIndex(null);
+    }
+  };
+
   const handleAddCommitment = () => {
     const list = [...(current.commitments || [])];
     list.push({ title: "Nouvel engagement", desc: "Description du nouvel engagement pour vos voyages." });
@@ -57,11 +87,36 @@ export default function HomeTab({ contentFr, contentEn, showToast }) {
   };
 
   const handleSave = async (e) => {
-    e.preventDefault();
+    if (e && e.preventDefault) e.preventDefault();
     setSaving(true);
     try {
-      const updatedFr = { ...contentFr, home: homeFr };
-      const updatedEn = { ...contentEn, home: homeEn };
+      // Garantir l'uniformité stricte de la section Nos engagements
+      const cleanCommitments = (arr) => (arr || []).map(com => {
+        const copy = { ...com };
+        delete copy.design;
+        delete copy.animation;
+        delete copy.accentColor;
+        return copy;
+      });
+
+      const updatedHomeFr = {
+        ...homeFr,
+        commitments: cleanCommitments(homeFr.commitments),
+        commitmentsDesign: homeFr.commitmentsDesign || 'default',
+        commitmentsAnimation: homeFr.commitmentsAnimation || 'default',
+        commitmentsAccent: homeFr.commitmentsAccent || 'coral'
+      };
+
+      const updatedHomeEn = {
+        ...homeEn,
+        commitments: cleanCommitments(homeEn.commitments),
+        commitmentsDesign: homeEn.commitmentsDesign || 'default',
+        commitmentsAnimation: homeEn.commitmentsAnimation || 'default',
+        commitmentsAccent: homeEn.commitmentsAccent || 'coral'
+      };
+
+      const updatedFr = { ...contentFr, home: updatedHomeFr };
+      const updatedEn = { ...contentEn, home: updatedHomeEn };
       await saveContent('fr', updatedFr);
       await saveContent('en', updatedEn);
       showToast("Page d'accueil et engagements enregistrés dans Firebase !");
@@ -232,35 +287,125 @@ export default function HomeTab({ contentFr, contentEn, showToast }) {
               </button>
             </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              {(current.commitments || []).map((com, i) => (
-                <div key={i} style={{ border: '1px solid var(--admin-border)', borderRadius: '12px', padding: '16px', background: 'var(--admin-card-inner)' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
-                    <strong style={{ fontSize: '14px', color: 'var(--admin-text-main)' }}>Engagement #{i + 1}</strong>
-                    <button type="button" className="admin-btn admin-btn-danger" style={{ padding: '2px 6px' }} onClick={() => handleDeleteCommitment(i)}>
-                      <Trash2 size={12} />
-                    </button>
+            {/* Sélecteur de Design (6 options) et Animation (6 options) pour TOUS les blocs de la section */}
+            <CardAppearancePicker
+              design={current.commitmentsDesign || 'default'}
+              animation={current.commitmentsAnimation || 'default'}
+              accentColor={current.commitmentsAccent || 'coral'}
+              showMediaUploader={false}
+              onUpdate={(field, val) => {
+                const map = {
+                  design: 'commitmentsDesign',
+                  animation: 'commitmentsAnimation',
+                  accentColor: 'commitmentsAccent'
+                };
+                const key = map[field] || field;
+                handleChange(key, val);
+                setHomeFr(prev => ({ ...prev, [key]: val }));
+                setHomeEn(prev => ({ ...prev, [key]: val }));
+              }}
+              label="Apparence & Animation de la section 'Nos Engagements' (appliqué à tous les blocs)"
+            />
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', marginTop: '16px' }}>
+              {(current.commitments || []).map((com, i) => {
+                const isWithImg = current.commitmentsDesign && current.commitmentsDesign.startsWith('with-img-');
+                return (
+                  <div key={i} style={{ border: '1px solid var(--admin-border)', borderRadius: '12px', padding: '16px', background: 'var(--admin-card-inner)' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+                      <strong style={{ fontSize: '14px', color: 'var(--admin-text-main)' }}>Engagement #{i + 1}</strong>
+                      <button type="button" className="admin-btn admin-btn-danger" style={{ padding: '2px 6px' }} onClick={() => handleDeleteCommitment(i)}>
+                        <Trash2 size={12} />
+                      </button>
+                    </div>
+                    <div className="form-field" style={{ marginBottom: '8px' }}>
+                      <label style={{ fontSize: '12px' }}>Titre de l'engagement</label>
+                      <input 
+                        type="text" 
+                        className="form-input" 
+                        value={com.title || ''} 
+                        onChange={(e) => handleCommitmentChange(i, 'title', e.target.value)} 
+                      />
+                    </div>
+                    <div className="form-field" style={{ marginBottom: '12px' }}>
+                      <label style={{ fontSize: '12px' }}>Description</label>
+                      <textarea 
+                        className="form-textarea" 
+                        value={com.desc || ''} 
+                        onChange={(e) => handleCommitmentChange(i, 'desc', e.target.value)}
+                        rows={2}
+                      />
+                    </div>
+
+                    {/* Image pour cet engagement */}
+                    <div style={{
+                      padding: '12px 14px',
+                      background: '#FFFFFF',
+                      border: '1px solid var(--admin-border, #E2E8F0)',
+                      borderRadius: '10px'
+                    }}>
+                      <label style={{ fontSize: '12px', fontWeight: 700, color: 'var(--admin-text-main, #0F172A)', display: 'block', marginBottom: '8px' }}>
+                        Image de cet engagement {isWithImg ? '(★ Requis/Actif pour le design avec image sélectionné)' : '(Optionnelle)'}
+                      </label>
+                      <div style={{ display: 'flex', gap: '12px', alignItems: 'center', flexWrap: 'wrap' }}>
+                        <div style={{
+                          width: '64px',
+                          height: '50px',
+                          borderRadius: '6px',
+                          background: '#F1F5F9',
+                          border: '1px solid #CBD5E1',
+                          overflow: 'hidden',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          flexShrink: 0
+                        }}>
+                          {com.media ? (
+                            <img src={com.media} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                          ) : (
+                            <ImageIcon size={20} color="#94A3B8" />
+                          )}
+                        </div>
+                        <div style={{ flex: 1, minWidth: '180px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                          <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                            <label 
+                              className="admin-btn admin-btn-outline" 
+                              style={{ cursor: 'pointer', fontSize: '12px', padding: '5px 10px' }}
+                            >
+                              <Upload size={13} />
+                              <span>{uploadingCommitmentIndex === i ? 'Téléversement...' : 'Importer une image'}</span>
+                              <input
+                                type="file"
+                                accept="image/*"
+                                style={{ display: 'none' }}
+                                onChange={(e) => handleCommitmentImageUpload(e, i)}
+                              />
+                            </label>
+                            {com.media && (
+                              <button
+                                type="button"
+                                className="admin-btn admin-btn-danger"
+                                style={{ fontSize: '12px', padding: '5px 8px' }}
+                                onClick={() => handleCommitmentMediaChange(i, '')}
+                              >
+                                <Trash2 size={13} /> Retirer
+                              </button>
+                            )}
+                          </div>
+                          <input
+                            type="text"
+                            placeholder="Ou collez l'URL d'une image..."
+                            className="form-input"
+                            style={{ fontSize: '12px', padding: '4px 8px' }}
+                            value={com.media || ''}
+                            onChange={(e) => handleCommitmentMediaChange(i, e.target.value)}
+                          />
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <div className="form-field" style={{ marginBottom: '8px' }}>
-                    <label style={{ fontSize: '12px' }}>Titre de l'engagement</label>
-                    <input 
-                      type="text" 
-                      className="form-input" 
-                      value={com.title || ''} 
-                      onChange={(e) => handleCommitmentChange(i, 'title', e.target.value)} 
-                    />
-                  </div>
-                  <div className="form-field">
-                    <label style={{ fontSize: '12px' }}>Description</label>
-                    <textarea 
-                      className="form-textarea" 
-                      value={com.desc || ''} 
-                      onChange={(e) => handleCommitmentChange(i, 'desc', e.target.value)}
-                      rows={2}
-                    />
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </form>

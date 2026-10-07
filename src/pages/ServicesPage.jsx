@@ -1,5 +1,6 @@
 import React from 'react';
 import { t } from '../translations';
+import CustomSectionCard from '../components/CustomSectionCard';
 
 export default function ServicesPage({ onNavigate, lang = 'fr', content }) {
   const s = content?.services || t[lang].services;
@@ -60,17 +61,25 @@ export default function ServicesPage({ onNavigate, lang = 'fr', content }) {
                   <path d="M11 20c0-3 2.2-5.5 5-5.5s5 2.5 5 5.5"/>
                 </svg>
               ];
+
+              const comDesign = h.commitmentsDesign || s.commitmentsDesign || 'default';
+              const comAnim = h.commitmentsAnimation || s.commitmentsAnimation || 'default';
+              const comAccent = h.commitmentsAccent || s.commitmentsAccent || 'coral';
+
               return (
-                <div key={idx} className="card service-card" style={{ position: 'relative', paddingTop: '50px' }}>
-                  <span style={{ position: 'absolute', top: '20px', right: '24px', fontFamily: "'Sora',sans-serif", fontWeight: 900, fontSize: '48px', color: 'var(--border)', opacity: 0.6, lineHeight: 1 }}>
-                    {String(idx + 1).padStart(2, '0')}
-                  </span>
-                  <div className="card-icon">
-                    {icons[idx % icons.length]}
-                  </div>
-                  <h3>{com.title}</h3>
-                  <p>{com.desc}</p>
-                </div>
+                <CustomSectionCard
+                  key={idx}
+                  type="commitment"
+                  item={{
+                    ...com,
+                    design: comDesign,
+                    animation: comAnim,
+                    accentColor: comAccent
+                  }}
+                  index={idx}
+                  icon={icons[idx % icons.length]}
+                  showBigNumber={true}
+                />
               );
             })}
           </div>
@@ -89,45 +98,27 @@ export default function ServicesPage({ onNavigate, lang = 'fr', content }) {
           </div>
 
           <div className="reveal-stagger" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '24px' }}>
-            {(s.servicesList || s.services || []).map((item, idx) => (
-              <div 
-                key={idx} 
-                className={`mini-card ${item.highlight ? 'highlight' : ''}`}
-                style={{ position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', paddingTop: '28px' }}
-              >
-                <span style={{ 
-                  fontFamily: "'Sora',sans-serif", 
-                  fontWeight: 900, 
-                  fontSize: '28px', 
-                  color: item.highlight ? 'var(--gold)' : 'var(--coral)', 
-                  opacity: 0.7, 
-                  lineHeight: 1, 
-                  marginBottom: '6px' 
-                }}>
-                  {item.num}
-                </span>
-                <span style={{ color: 'var(--coral)', marginBottom: '8px' }}>
-                  {serviceIcons[idx]}
-                </span>
-                <h4 style={{ fontSize: '17px', marginBottom: '6px' }}>{item.title}</h4>
-                <p style={{ fontSize: '14px', color: 'var(--slate)', margin: 0 }}>{item.desc}</p>
-                {item.highlight && (
-                  <span style={{ 
-                    marginTop: '10px', 
-                    fontSize: '11px', 
-                    fontWeight: 700, 
-                    textTransform: 'uppercase', 
-                    letterSpacing: '0.08em', 
-                    color: 'var(--gold)', 
-                    background: 'rgba(245,197,24,0.15)', 
-                    padding: '4px 12px', 
-                    borderRadius: '20px' 
-                  }}>
-                    {s.flagshipBadge}
-                  </span>
-                )}
-              </div>
-            ))}
+            {(s.servicesList || s.services || []).map((item, idx) => {
+              const servicesDesign = s.servicesDesign || h.servicesDesign || 'default';
+              const servicesAnim = s.servicesAnimation || h.servicesAnimation || 'default';
+              const servicesAccent = s.servicesAccent || h.servicesAccent || 'coral';
+
+              return (
+                <CustomSectionCard
+                  key={idx}
+                  type="service"
+                  item={{
+                    ...item,
+                    design: servicesDesign,
+                    animation: servicesAnim,
+                    accentColor: servicesAccent
+                  }}
+                  index={idx}
+                  icon={serviceIcons[idx % serviceIcons.length]}
+                  extraBadge={s.flagshipBadge}
+                />
+              );
+            })}
           </div>
         </div>
       </section>

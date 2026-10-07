@@ -12,10 +12,14 @@ import {
   Image as ImageIcon
 } from 'lucide-react';
 import { saveContent, uploadImageFile } from '../services/cmsService';
+import CardAppearancePicker from './CardAppearancePicker';
 
 export default function CaseStudiesTab({ contentFr, contentEn, showToast }) {
   const [casesFr, setCasesFr] = useState([]);
   const [casesEn, setCasesEn] = useState([]);
+  const [casesDesign, setCasesDesign] = useState('default');
+  const [casesAnimation, setCasesAnimation] = useState('default');
+  const [casesAccent, setCasesAccent] = useState('teal');
   const [activeLang, setActiveLang] = useState('fr');
   const [expandedIndex, setExpandedIndex] = useState(null);
   const [saving, setSaving] = useState(false);
@@ -26,6 +30,13 @@ export default function CaseStudiesTab({ contentFr, contentEn, showToast }) {
     const listEn = contentEn?.caseStudies?.cases || [];
     setCasesFr(listFr);
     setCasesEn(listEn);
+
+    const des = contentFr?.caseStudies?.casesDesign || 'default';
+    const anim = contentFr?.caseStudies?.casesAnimation || 'default';
+    const acc = contentFr?.caseStudies?.casesAccent || 'teal';
+    setCasesDesign(des);
+    setCasesAnimation(anim);
+    setCasesAccent(acc);
   }, [contentFr, contentEn]);
 
   const handleAddCase = () => {
@@ -73,7 +84,7 @@ export default function CaseStudiesTab({ contentFr, contentEn, showToast }) {
       const url = await uploadImageFile(file, 'cases');
       handleUpdate(index, 'media', url, 'fr');
       handleUpdate(index, 'media', url, 'en');
-      showToast("Image téléversée avec succès ! N'oubliez pas d'enregistrer.");
+      showToast("Image téléversée avec succès !");
     } catch (err) {
       console.error("Upload error:", err);
       alert("Erreur lors de l'envoi de l'image : " + err.message);
@@ -110,11 +121,23 @@ export default function CaseStudiesTab({ contentFr, contentEn, showToast }) {
   const handleSaveAll = async () => {
     setSaving(true);
     try {
+      // Nettoyer les propriétés individuelles pour garantir l'uniformité du design et de l'animation
+      const cleanCases = (list) => (list || []).map(c => {
+        const copy = { ...c };
+        delete copy.design;
+        delete copy.animation;
+        delete copy.accentColor;
+        return copy;
+      });
+
       const updatedFr = {
         ...contentFr,
         caseStudies: {
           ...contentFr?.caseStudies,
-          cases: casesFr
+          cases: cleanCases(casesFr),
+          casesDesign,
+          casesAnimation,
+          casesAccent
         }
       };
 
@@ -122,7 +145,10 @@ export default function CaseStudiesTab({ contentFr, contentEn, showToast }) {
         ...contentEn,
         caseStudies: {
           ...contentEn?.caseStudies,
-          cases: casesEn
+          cases: cleanCases(casesEn),
+          casesDesign,
+          casesAnimation,
+          casesAccent
         }
       };
 
@@ -138,6 +164,7 @@ export default function CaseStudiesTab({ contentFr, contentEn, showToast }) {
   };
 
   const currentList = activeLang === 'fr' ? casesFr : casesEn;
+  const isWithImg = casesDesign && casesDesign.startsWith('with-img-');
 
   return (
     <div>
@@ -149,7 +176,7 @@ export default function CaseStudiesTab({ contentFr, contentEn, showToast }) {
               Gestion de "Nos Réalisations" ({currentList.length})
             </h3>
             <p className="admin-card-desc">
-              Modifiez chaque mission, défi, solution et résultat concret, et ajoutez de nouvelles réalisations.
+              Personnalisez l'apparence uniforme, l'animation et les images des études de cas de voyages.
             </p>
           </div>
           <div style={{ display: 'flex', gap: '10px' }}>
@@ -173,8 +200,22 @@ export default function CaseStudiesTab({ contentFr, contentEn, showToast }) {
           </div>
         </div>
 
+        {/* Sélecteur de Design (6 options) et Animation (6 options) pour TOUTE la section Réalisations */}
+        <CardAppearancePicker
+          design={casesDesign}
+          animation={casesAnimation}
+          accentColor={casesAccent}
+          showMediaUploader={false}
+          onUpdate={(field, val) => {
+            if (field === 'design') setCasesDesign(val);
+            if (field === 'animation') setCasesAnimation(val);
+            if (field === 'accentColor') setCasesAccent(val);
+          }}
+          label="Apparence & Animation de la section 'Nos Réalisations' (appliqué à tous les blocs)"
+        />
+
         {/* Language Tabs */}
-        <div className="lang-tabs">
+        <div className="lang-tabs" style={{ marginTop: '20px' }}>
           <button 
             type="button"
             className={`lang-tab-btn ${activeLang === 'fr' ? 'active' : ''}`}
@@ -191,8 +232,8 @@ export default function CaseStudiesTab({ contentFr, contentEn, showToast }) {
           </button>
         </div>
 
-        {/* Case Studies List */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+        {/* Cases List */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
           {currentList.map((cs, index) => {
             const isExpanded = expandedIndex === index;
             return (
@@ -201,7 +242,7 @@ export default function CaseStudiesTab({ contentFr, contentEn, showToast }) {
                 style={{ 
                   border: isExpanded ? '1px solid var(--admin-accent)' : '1px solid var(--admin-border)',
                   borderRadius: '14px',
-                  background: isExpanded ? 'var(--admin-card-bg)' : 'var(--admin-card-inner)',
+                  background: isExpanded ? 'var(--admin-card-inner)' : 'var(--admin-card-bg)',
                   overflow: 'hidden',
                   transition: 'all 0.25s ease',
                   boxShadow: isExpanded ? 'var(--admin-shadow)' : 'none'
@@ -221,31 +262,25 @@ export default function CaseStudiesTab({ contentFr, contentEn, showToast }) {
                   onClick={() => setExpandedIndex(isExpanded ? null : index)}
                 >
                   <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-                    <div style={{ 
-                      width: '44px', 
-                      height: '44px', 
-                      borderRadius: '10px', 
-                      background: 'var(--admin-card-inner)', 
-                      border: '1px solid var(--admin-border)',
-                      overflow: 'hidden',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      flexShrink: 0
+                    <span style={{ 
+                      fontSize: '12px', 
+                      fontFamily: 'Sora, sans-serif', 
+                      fontWeight: 800, 
+                      color: 'var(--admin-teal)',
+                      background: 'rgba(111, 160, 208, 0.15)',
+                      border: '1px solid rgba(111, 160, 208, 0.3)',
+                      padding: '4px 10px', 
+                      borderRadius: '8px'
                     }}>
-                      {cs.media ? (
-                        <img src={cs.media} alt="" style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'cover' }} />
-                      ) : (
-                        <Award size={20} color="var(--admin-gold)" />
-                      )}
-                    </div>
+                      #{index + 1}
+                    </span>
                     <div>
-                      <span style={{ fontSize: '11.5px', color: 'var(--admin-coral)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.04em', display: 'block' }}>
-                        {cs.tag || "Catégorie de mission"}
-                      </span>
-                      <strong style={{ fontSize: '15.5px', color: 'var(--admin-text-main)' }}>
+                      <strong style={{ fontSize: '15.5px', color: 'var(--admin-text-main)', letterSpacing: '-0.01em' }}>
                         {cs.title || "Réalisation sans titre"}
                       </strong>
+                      <span style={{ marginLeft: '10px', fontSize: '12px', color: 'var(--admin-text-sub)' }}>
+                        ({cs.tag})
+                      </span>
                     </div>
                   </div>
 
@@ -275,7 +310,7 @@ export default function CaseStudiesTab({ contentFr, contentEn, showToast }) {
                       className="admin-btn admin-btn-danger" 
                       style={{ padding: '4px 8px' }}
                       onClick={() => handleDelete(index)}
-                      title="Supprimer"
+                      title="Supprimer cette étude de cas"
                     >
                       <Trash2 size={14} />
                     </button>
@@ -349,38 +384,84 @@ export default function CaseStudiesTab({ contentFr, contentEn, showToast }) {
                       </div>
                     </div>
 
-                    {/* Image / Media */}
-                    <div style={{ border: '1px solid var(--admin-border)', borderRadius: '12px', padding: '16px', background: 'var(--admin-card-inner)' }}>
-                      <label style={{ fontWeight: 700, display: 'block', marginBottom: '8px', color: 'var(--admin-text-main)' }}>
-                        Image de la réalisation
-                      </label>
-                      <div style={{ display: 'flex', gap: '16px', alignItems: 'center', marginBottom: '12px' }}>
-                        <div className="image-preview-wrap">
-                          <img src={cs.media || '/assets/img/uploads/hemira-hero-illustration.png'} alt="Preview" />
+                    {/* Image pour cette réalisation */}
+                    <div style={{
+                      padding: '12px 14px',
+                      background: '#FFFFFF',
+                      border: '1px solid var(--admin-border, #E2E8F0)',
+                      borderRadius: '10px'
+                    }}>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
+                        <label style={{ fontSize: '12px', fontWeight: 700, color: 'var(--admin-text-main, #0F172A)', margin: 0 }}>
+                          Image de la réalisation #{index + 1}
+                        </label>
+                        {isWithImg && (
+                          <span style={{ fontSize: '11px', fontWeight: 700, color: '#6FA0D0', background: 'rgba(111,160,208,0.15)', padding: '2px 8px', borderRadius: '10px' }}>
+                            ★ Active dans le design avec image sélectionné
+                          </span>
+                        )}
+                      </div>
+                      <div style={{ display: 'flex', gap: '12px', alignItems: 'center', flexWrap: 'wrap' }}>
+                        <div style={{
+                          width: '70px',
+                          height: '54px',
+                          borderRadius: '8px',
+                          background: '#F1F5F9',
+                          border: '1px solid #CBD5E1',
+                          overflow: 'hidden',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          flexShrink: 0
+                        }}>
+                          {cs.media ? (
+                            <img src={cs.media} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                          ) : (
+                            <ImageIcon size={22} color="#94A3B8" />
+                          )}
                         </div>
-                        <div>
-                          <label className="admin-btn admin-btn-outline" style={{ cursor: 'pointer', display: 'inline-flex' }}>
-                            <Upload size={14} />
-                            <span>{uploadingIndex === index ? 'Téléversement...' : 'Changer l\'image'}</span>
-                            <input 
-                              type="file" 
-                              accept="image/*" 
-                              style={{ display: 'none' }}
-                              onChange={(e) => handleImageUpload(e, index)}
-                            />
-                          </label>
+                        <div style={{ flex: 1, minWidth: '200px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                          <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                            <label 
+                              className="admin-btn admin-btn-outline" 
+                              style={{ cursor: 'pointer', fontSize: '12px', padding: '5px 12px' }}
+                            >
+                              <Upload size={13} />
+                              <span>{uploadingIndex === index ? 'Téléversement...' : 'Importer une image'}</span>
+                              <input
+                                type="file"
+                                accept="image/*"
+                                style={{ display: 'none' }}
+                                onChange={(e) => handleImageUpload(e, index)}
+                              />
+                            </label>
+                            {cs.media && (
+                              <button
+                                type="button"
+                                className="admin-btn admin-btn-danger"
+                                style={{ fontSize: '12px', padding: '5px 8px' }}
+                                onClick={() => {
+                                  handleUpdate(index, 'media', '', 'fr');
+                                  handleUpdate(index, 'media', '', 'en');
+                                }}
+                              >
+                                <Trash2 size={13} /> Retirer
+                              </button>
+                            )}
+                          </div>
+                          <input
+                            type="text"
+                            placeholder="Ou collez l'URL d'une image (ex: /assets/img/...)"
+                            className="form-input"
+                            style={{ fontSize: '12px', padding: '4px 8px' }}
+                            value={cs.media || ''}
+                            onChange={(e) => {
+                              handleUpdate(index, 'media', e.target.value, 'fr');
+                              handleUpdate(index, 'media', e.target.value, 'en');
+                            }}
+                          />
                         </div>
                       </div>
-                      <input 
-                        type="text" 
-                        className="form-input" 
-                        value={cs.media || ''} 
-                        onChange={(e) => {
-                          handleUpdate(index, 'media', e.target.value, 'fr');
-                          handleUpdate(index, 'media', e.target.value, 'en');
-                        }}
-                        placeholder="URL de l'image..."
-                      />
                     </div>
                   </div>
                 )}

@@ -7,19 +7,26 @@ import {
   Save, 
   Check, 
   ArrowUp, 
-  ArrowDown,
-  Sparkles,
-  ChevronDown,
-  ChevronUp
+  ArrowDown, 
+  Sparkles, 
+  ChevronDown, 
+  ChevronUp,
+  Image as ImageIcon,
+  Upload
 } from 'lucide-react';
-import { saveContent } from '../services/cmsService';
+import { saveContent, uploadImageFile } from '../services/cmsService';
+import CardAppearancePicker from './CardAppearancePicker';
 
 export default function ServicesTab({ contentFr, contentEn, showToast }) {
   const [servicesFr, setServicesFr] = useState([]);
   const [servicesEn, setServicesEn] = useState([]);
+  const [servicesDesign, setServicesDesign] = useState('default');
+  const [servicesAnimation, setServicesAnimation] = useState('default');
+  const [servicesAccent, setServicesAccent] = useState('coral');
   const [activeLang, setActiveLang] = useState('fr');
   const [expandedIndex, setExpandedIndex] = useState(null);
   const [saving, setSaving] = useState(false);
+  const [uploadingIndex, setUploadingIndex] = useState(null);
 
   useEffect(() => {
     // Services on home page or services page
@@ -27,6 +34,13 @@ export default function ServicesTab({ contentFr, contentEn, showToast }) {
     const listEn = contentEn?.services?.services || contentEn?.home?.services || [];
     setServicesFr(listFr);
     setServicesEn(listEn);
+
+    const des = contentFr?.services?.servicesDesign || contentFr?.home?.servicesDesign || 'default';
+    const anim = contentFr?.services?.servicesAnimation || contentFr?.home?.servicesAnimation || 'default';
+    const acc = contentFr?.services?.servicesAccent || contentFr?.home?.servicesAccent || 'coral';
+    setServicesDesign(des);
+    setServicesAnimation(anim);
+    setServicesAccent(acc);
   }, [contentFr, contentEn]);
 
   const handleAddService = () => {
@@ -63,6 +77,22 @@ export default function ServicesTab({ contentFr, contentEn, showToast }) {
     }
   };
 
+  const handleServiceImageUpload = async (e, index) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploadingIndex(index);
+    try {
+      const url = await uploadImageFile(file, 'services');
+      handleUpdate(index, 'media', url, 'fr');
+      handleUpdate(index, 'media', url, 'en');
+      showToast("Image du service téléversée avec succès !");
+    } catch (err) {
+      alert("Erreur upload image : " + err.message);
+    } finally {
+      setUploadingIndex(null);
+    }
+  };
+
   const handleDelete = (index) => {
     if (window.confirm("Êtes-vous sûr de vouloir supprimer ce service ?")) {
       setServicesFr(servicesFr.filter((_, i) => i !== index));
@@ -91,16 +121,30 @@ export default function ServicesTab({ contentFr, contentEn, showToast }) {
   const handleSaveAll = async () => {
     setSaving(true);
     try {
-      // Update both home.services and services.services in FR and EN
+      // Nettoyer les propriétés individuelles pour garantir l'uniformité du design et de l'animation
+      const cleanServices = (list) => (list || []).map(s => {
+        const copy = { ...s };
+        delete copy.design;
+        delete copy.animation;
+        delete copy.accentColor;
+        return copy;
+      });
+
       const updatedContentFr = {
         ...contentFr,
         home: {
           ...contentFr?.home,
-          services: servicesFr
+          services: cleanServices(servicesFr),
+          servicesDesign,
+          servicesAnimation,
+          servicesAccent
         },
         services: {
           ...contentFr?.services,
-          services: servicesFr
+          services: cleanServices(servicesFr),
+          servicesDesign,
+          servicesAnimation,
+          servicesAccent
         }
       };
 
@@ -108,11 +152,17 @@ export default function ServicesTab({ contentFr, contentEn, showToast }) {
         ...contentEn,
         home: {
           ...contentEn?.home,
-          services: servicesEn
+          services: cleanServices(servicesEn),
+          servicesDesign,
+          servicesAnimation,
+          servicesAccent
         },
         services: {
           ...contentEn?.services,
-          services: servicesEn
+          services: cleanServices(servicesEn),
+          servicesDesign,
+          servicesAnimation,
+          servicesAccent
         }
       };
 
@@ -128,6 +178,7 @@ export default function ServicesTab({ contentFr, contentEn, showToast }) {
   };
 
   const currentList = activeLang === 'fr' ? servicesFr : servicesEn;
+  const isWithImg = servicesDesign && servicesDesign.startsWith('with-img-');
 
   return (
     <div>
@@ -139,7 +190,7 @@ export default function ServicesTab({ contentFr, contentEn, showToast }) {
               Gestion des Services de Voyage ({currentList.length})
             </h3>
             <p className="admin-card-desc">
-              Ajoutez de nouveaux services de voyage, modifiez chaque texte, numéro, description et options.
+              Personnalisez l'apparence uniforme, l'animation et les images de l'ensemble de la section Services.
             </p>
           </div>
           <div style={{ display: 'flex', gap: '10px' }}>
@@ -163,8 +214,22 @@ export default function ServicesTab({ contentFr, contentEn, showToast }) {
           </div>
         </div>
 
+        {/* Sélecteur de Design (6 options) et Animation (6 options) pour TOUS les blocs de la section Services */}
+        <CardAppearancePicker
+          design={servicesDesign}
+          animation={servicesAnimation}
+          accentColor={servicesAccent}
+          showMediaUploader={false}
+          onUpdate={(field, val) => {
+            if (field === 'design') setServicesDesign(val);
+            if (field === 'animation') setServicesAnimation(val);
+            if (field === 'accentColor') setServicesAccent(val);
+          }}
+          label="Apparence & Animation de la section 'Services' (appliqué à tous les blocs)"
+        />
+
         {/* Language Tabs */}
-        <div className="lang-tabs">
+        <div className="lang-tabs" style={{ marginTop: '20px' }}>
           <button 
             type="button"
             className={`lang-tab-btn ${activeLang === 'fr' ? 'active' : ''}`}
@@ -218,7 +283,7 @@ export default function ServicesTab({ contentFr, contentEn, showToast }) {
                       color: 'var(--admin-coral)',
                       background: 'rgba(240, 98, 77, 0.12)',
                       border: '1px solid rgba(240, 98, 77, 0.25)',
-                      padding: '4px 10px',
+                      padding: '4px 10px', 
                       borderRadius: '8px'
                     }}>
                       {service.num || `0${index + 1}`}
@@ -323,7 +388,7 @@ export default function ServicesTab({ contentFr, contentEn, showToast }) {
                       />
                     </div>
 
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '12px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '12px', marginBottom: '16px' }}>
                       <input 
                         type="checkbox" 
                         id={`highlight-${index}`}
@@ -336,6 +401,87 @@ export default function ServicesTab({ contentFr, contentEn, showToast }) {
                       <label htmlFor={`highlight-${index}`} style={{ fontSize: '13.5px', fontWeight: 600, cursor: 'pointer' }}>
                         Mettre ce service en surbrillance dorée (Highlight) sur l'accueil
                       </label>
+                    </div>
+
+                    {/* Image pour ce service individuel */}
+                    <div style={{
+                      padding: '12px 14px',
+                      background: '#FFFFFF',
+                      border: '1px solid var(--admin-border, #E2E8F0)',
+                      borderRadius: '10px',
+                      marginTop: '12px'
+                    }}>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
+                        <label style={{ fontSize: '12px', fontWeight: 700, color: 'var(--admin-text-main, #0F172A)', margin: 0 }}>
+                          Image du service #{service.num || index + 1}
+                        </label>
+                        {isWithImg && (
+                          <span style={{ fontSize: '11px', fontWeight: 700, color: '#C9A968', background: 'rgba(201,169,104,0.15)', padding: '2px 8px', borderRadius: '10px' }}>
+                            ★ Active dans le design avec image sélectionné
+                          </span>
+                        )}
+                      </div>
+                      <div style={{ display: 'flex', gap: '12px', alignItems: 'center', flexWrap: 'wrap' }}>
+                        <div style={{
+                          width: '70px',
+                          height: '54px',
+                          borderRadius: '8px',
+                          background: '#F1F5F9',
+                          border: '1px solid #CBD5E1',
+                          overflow: 'hidden',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          flexShrink: 0
+                        }}>
+                          {service.media ? (
+                            <img src={service.media} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                          ) : (
+                            <ImageIcon size={22} color="#94A3B8" />
+                          )}
+                        </div>
+                        <div style={{ flex: 1, minWidth: '200px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                          <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                            <label 
+                              className="admin-btn admin-btn-outline" 
+                              style={{ cursor: 'pointer', fontSize: '12px', padding: '5px 12px' }}
+                            >
+                              <Upload size={13} />
+                              <span>{uploadingIndex === index ? 'Téléversement...' : 'Importer une image'}</span>
+                              <input
+                                type="file"
+                                accept="image/*"
+                                style={{ display: 'none' }}
+                                onChange={(e) => handleServiceImageUpload(e, index)}
+                              />
+                            </label>
+                            {service.media && (
+                              <button
+                                type="button"
+                                className="admin-btn admin-btn-danger"
+                                style={{ fontSize: '12px', padding: '5px 8px' }}
+                                onClick={() => {
+                                  handleUpdate(index, 'media', '', 'fr');
+                                  handleUpdate(index, 'media', '', 'en');
+                                }}
+                              >
+                                <Trash2 size={13} /> Retirer
+                              </button>
+                            )}
+                          </div>
+                          <input
+                            type="text"
+                            placeholder="Ou collez l'URL d'une image (ex: /assets/img/...)"
+                            className="form-input"
+                            style={{ fontSize: '12px', padding: '4px 8px' }}
+                            value={service.media || ''}
+                            onChange={(e) => {
+                              handleUpdate(index, 'media', e.target.value, 'fr');
+                              handleUpdate(index, 'media', e.target.value, 'en');
+                            }}
+                          />
+                        </div>
+                      </div>
                     </div>
                   </div>
                 )}
