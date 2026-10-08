@@ -46,7 +46,7 @@ export default function CaseStudiesTab({ contentFr, contentEn, showToast, onOpen
       need: "Le client avait besoin d'une prise en charge rapide de son dossier.",
       response: "HEMIRA Travel & Services a mobilisé son réseau de partenaires fiables.",
       result: "Déplacement réussi sans encombre et gain de temps considérable.",
-      media: "/assets/img/uploads/hemira-hero-illustration.png"
+      media: ""
     };
 
     const newCaseEn = {
@@ -55,7 +55,7 @@ export default function CaseStudiesTab({ contentFr, contentEn, showToast, onOpen
       need: "The client needed urgent handling of their travel files.",
       response: "HEMIRA Travel & Services mobilized its network of verified partners.",
       result: "Smooth travel completed on schedule with substantial time savings.",
-      media: "/assets/img/uploads/hemira-hero-illustration.png"
+      media: ""
     };
 
     setCasesFr([...casesFr, newCaseFr]);
@@ -393,8 +393,15 @@ export default function CaseStudiesTab({ contentFr, contentEn, showToast, onOpen
                         <label style={{ fontSize: '12px', fontWeight: 700, color: 'var(--admin-text-main, #0F172A)', margin: 0 }}>
                           Image de la réalisation #{index + 1}
                         </label>
-                        <span style={{ fontSize: '11px', fontWeight: 700, color: 'var(--admin-teal, #6FA0D0)', background: 'rgba(111,160,208,0.15)', padding: '2px 8px', borderRadius: '10px' }}>
-                          ★ Obligatoire & mise en valeur dans tous les designs de réalisations
+                        <span style={{ 
+                          fontSize: '11px', 
+                          fontWeight: 700, 
+                          color: cs.media ? 'var(--admin-teal, #6FA0D0)' : 'var(--admin-gold, #C9A968)', 
+                          background: cs.media ? 'rgba(111,160,208,0.15)' : 'rgba(201,169,104,0.15)', 
+                          padding: '2px 8px', 
+                          borderRadius: '10px' 
+                        }}>
+                          {cs.media ? '✓ Photo active' : '✦ Sans photo (Typographie luxe active)'}
                         </span>
                       </div>
                       <div style={{ display: 'flex', gap: '12px', alignItems: 'center', flexWrap: 'wrap' }}>
