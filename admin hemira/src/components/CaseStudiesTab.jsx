@@ -215,7 +215,7 @@ export default function CaseStudiesTab({ contentFr, contentEn, showToast, onOpen
         }}>
           <Sparkles size={16} color="var(--admin-coral, #F0624D)" style={{ flexShrink: 0 }} />
           <span>
-            <strong>Gestion ergonomique séparée :</strong> Les variantes de mise en page des réalisations (Éditorial, Écrin Nuit VIP, Grille, Timeline) et leurs animations sont gérées dans l'onglet <strong>🎨 Apparence</strong>.
+            <strong>Gestion ergonomique séparée :</strong> Les variantes de mise en page des réalisations (Éditorial, Écrin Nuit VIP, Grille, Timeline) et leurs animations sont gérées dans l'onglet <strong>Apparence</strong>.
           </span>
         </div>
 
@@ -408,7 +408,7 @@ export default function CaseStudiesTab({ contentFr, contentEn, showToast, onOpen
                           padding: '2px 8px', 
                           borderRadius: '10px' 
                         }}>
-                          {cs.media ? '✓ Photo active' : '✦ Sans photo (Typographie luxe active)'}
+                          {cs.media ? 'Photo active' : 'Rendu typographique de prestige'}
                         </span>
                       </div>
                       <div style={{ display: 'flex', gap: '12px', alignItems: 'center', flexWrap: 'wrap' }}>

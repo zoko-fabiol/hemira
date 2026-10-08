@@ -2567,4 +2567,384 @@ body.chatbot-open .back-top {
   color: var(--ink, #16213A);
 }
 
+/* Effet visuel immédiat lors de la sélection d'une section dans le Studio d'Apparence */
+@keyframes sectionPulseHighlight {
+  0% {
+    outline: 4px solid var(--coral, #F0624D);
+    box-shadow: 0 0 30px rgba(240, 98, 77, 0.45);
+  }
+  50% {
+    outline: 4px solid var(--gold, #C9A968);
+    box-shadow: 0 0 40px rgba(201, 169, 104, 0.55);
+  }
+  100% {
+    outline: 4px solid transparent;
+    box-shadow: none;
+  }
+}
+
+.section-highlight-pulse {
+  animation: sectionPulseHighlight 2s ease-out forwards !important;
+  position: relative;
+  z-index: 10;
+}
+
+/* ==========================================================================
+   NOUVEAUX DESIGNS DE SECTIONS RÉELLES (HERO, CARTES, ABOUT) & RESPONSIVE
+   ========================================================================== */
+
+/* 1. HERO VARIANTS */
+/* Centré Prestige */
+.hero-variant--center {
+  text-align: center;
+}
+.hero-inner-center {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+}
+.hero-inner-center .hero-badge {
+  margin: 0 auto 24px auto;
+}
+.hero-title-center {
+  font-size: clamp(36px, 5.2vw, 64px);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  margin-bottom: 22px;
+  line-height: 1.15;
+}
+.hero-lead-center {
+  font-size: clamp(17px, 2vw, 20px);
+  color: rgba(255, 255, 255, 0.8);
+  max-width: 680px;
+  margin: 0 auto 36px auto;
+  line-height: 1.6;
+}
+.hero-ctas-center {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 54px;
+}
+.hero-stats-center {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(8px);
+}
+
+/* Bento Moderne */
+.hero-inner-bento {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: 1.35fr 0.9fr;
+  gap: 32px;
+  align-items: stretch;
+}
+.hero-bento-main {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(12px);
+  padding: clamp(28px, 4vw, 44px);
+  border-radius: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.hero-bento-side {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.hero-bento-card {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(12px);
+  border-radius: 20px;
+  padding: 24px;
+  transition: transform 0.3s ease, border-color 0.3s ease;
+}
+.hero-bento-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+.vip-badge-card .vip-badge-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.vip-badge-card .live-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #10B981;
+  box-shadow: 0 0 10px #10B981;
+}
+.vip-badge-card .vip-status-label {
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #10B981;
+}
+.vip-badge-card .vip-badge-title {
+  font-family: 'Sora', sans-serif;
+  font-size: 18px;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 8px;
+}
+.vip-badge-card .vip-badge-desc {
+  font-size: 13.5px;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0;
+  line-height: 1.5;
+}
+.mosaic-preview-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.hero-mosaic-bento {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.hero-mosaic-bento .sq {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  display: inline-block;
+}
+.hero-mosaic-bento .sq.s1 { background: var(--coral, #F0624D); }
+.hero-mosaic-bento .sq.s2 { background: var(--gold, #C9A968); }
+.hero-mosaic-bento .sq.s3 { background: var(--teal, #6FA0D0); }
+.hero-mosaic-bento .sq.s5 { background: var(--coral, #F0624D); }
+.hero-mosaic-bento .sq.s6 { background: var(--gold, #C9A968); }
+.mosaic-caption {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* Éditorial Haute Couture */
+.hero-inner-minimal {
+  position: relative;
+  z-index: 2;
+  max-width: 960px;
+  margin: 0 auto;
+}
+.hero-minimal-header {
+  border-left: 4px solid var(--gold, #C9A968);
+  padding-left: clamp(20px, 4vw, 40px);
+  margin-bottom: 50px;
+}
+.hero-minimal-title {
+  font-size: clamp(36px, 5.2vw, 62px);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin-bottom: 20px;
+}
+.hero-minimal-lead {
+  font-size: clamp(17px, 2vw, 20px);
+  color: rgba(255, 255, 255, 0.8);
+  max-width: 680px;
+  margin-bottom: 32px;
+  line-height: 1.6;
+}
+.hero-stats-minimal {
+  background: transparent;
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 0;
+  backdrop-filter: none;
+  padding-top: 24px;
+  margin-top: 30px;
+}
+.hero-stats-minimal .hero-stat {
+  padding: 16px 12px;
+}
+
+/* 2. CARD DESIGNS */
+/* Surélévation Moderne 3D (card-elevated) */
+.card-design--card-elevated {
+  position: relative;
+  background: var(--theme-surface, #ffffff);
+  border: 1px solid rgba(14, 31, 61, 0.06);
+  border-radius: 20px;
+  padding: 34px 28px;
+  box-shadow: 0 12px 32px -10px rgba(14, 31, 61, 0.08), 0 2px 6px rgba(14, 31, 61, 0.03);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.35s ease;
+  display: flex;
+  flex-direction: column;
+}
+.card-design--card-elevated:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 24px 48px -12px rgba(14, 31, 61, 0.16), 0 4px 12px rgba(14, 31, 61, 0.05);
+  border-color: rgba(240, 98, 77, 0.25);
+}
+.card-design--card-elevated .card-icon-pill {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 800;
+  transition: transform 0.3s ease;
+}
+.card-design--card-elevated:hover .card-icon-pill {
+  transform: scale(1.08) rotate(3deg);
+}
+
+/* Piliers Architecturaux (card-bordered) */
+.card-design--card-bordered {
+  position: relative;
+  background: var(--theme-surface, #ffffff);
+  border: 1px solid var(--theme-border, #E7E5DE);
+  border-top: 4px solid var(--theme-accent, #F0624D);
+  border-radius: var(--theme-radius, 14px);
+  padding: 32px 28px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+.card-design--card-bordered:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 16px 36px -12px rgba(14, 31, 61, 0.12);
+  border-color: var(--theme-accent, #F0624D);
+}
+.card-design--card-bordered .card-watermark {
+  position: absolute;
+  top: 14px;
+  right: 20px;
+  font-family: 'Sora', sans-serif;
+  font-weight: 900;
+  font-size: 52px;
+  color: var(--theme-border, #E7E5DE);
+  opacity: 0.55;
+  line-height: 1;
+  pointer-events: none;
+  user-select: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.card-design--card-bordered:hover .card-watermark {
+  opacity: 0.85;
+  transform: scale(1.06);
+}
+
+/* Minimaliste Lignes Pures (card-minimal) */
+.card-design--card-minimal {
+  position: relative;
+  background: var(--theme-surface, #ffffff);
+  border: 1px solid var(--theme-border, #E7E5DE);
+  border-left: 3.5px solid var(--theme-accent, #F0624D);
+  border-radius: 10px;
+  padding: 30px 26px;
+  transition: background 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+.card-design--card-minimal:hover {
+  background: var(--theme-surface-alt, #F7F6F2);
+  transform: translateX(4px);
+}
+
+/* Écrin Sombre Nuit & Or VIP (card-dark) */
+.card-design--card-dark {
+  position: relative;
+  background: #0A1322 !important;
+  border: 1px solid rgba(212, 175, 55, 0.28);
+  border-radius: 16px;
+  padding: 32px 28px;
+  color: #F8FAFC !important;
+  box-shadow: 0 14px 34px -10px rgba(0, 0, 0, 0.6);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+.card-design--card-dark:hover {
+  transform: translateY(-6px);
+  border-color: #D4AF37;
+  box-shadow: 0 20px 46px -12px rgba(0, 0, 0, 0.8), 0 0 24px rgba(212, 175, 55, 0.2);
+}
+.card-design--card-dark h3 {
+  color: #F8FAFC !important;
+}
+.card-design--card-dark p {
+  color: #94A3B8 !important;
+}
+.card-design--card-dark li {
+  color: #CBD5E1 !important;
+}
+.card-design--card-dark strong {
+  color: #D4AF37 !important;
+}
+
+/* Nacre & Glassmorphism (card-glass) */
+.card-design--card-glass {
+  position: relative;
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  border-radius: 18px;
+  padding: 32px 28px;
+  box-shadow: 0 10px 30px -8px rgba(14, 31, 61, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+.card-design--card-glass:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 40px -10px rgba(14, 31, 61, 0.14);
+  border-color: var(--coral, #F0624D);
+}
+
+/* 3. RESPONSIVE PERFECTION TRANSVERSALE (MOBILES, TABLETTES, PETITS ÉCRANS) */
+@media (max-width: 900px) {
+  .hero-inner-bento {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .hero-stats-center {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .hero-stats-center {
+    grid-template-columns: 1fr;
+  }
+  .hero-ctas-center {
+    flex-direction: column;
+    width: 100%;
+  }
+  .hero-ctas-center .btn {
+    width: 100%;
+  }
+  .about-variant--editorial-split .wrap {
+    grid-template-columns: 1fr !important;
+    gap: 24px !important;
+  }
+}
+
 

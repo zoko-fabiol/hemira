@@ -20,6 +20,7 @@ export const PRESET_STYLES = {
     density: 'comfortable',
     motion: 'subtle',
     sections: {
+      'home.hero': { variant: 'split', tone: 'dark', visible: true },
       'home.commitments': { variant: 'default', tone: 'light', visible: true },
       'home.services': { variant: 'default', tone: 'alt', visible: true },
       'services.list': { variant: 'default', tone: 'light', visible: true },
@@ -45,11 +46,12 @@ export const PRESET_STYLES = {
     density: 'airy',
     motion: 'expressive',
     sections: {
+      'home.hero': { variant: 'center', tone: 'dark', visible: true },
       'home.commitments': { variant: 'card-dark', tone: 'dark', visible: true },
       'home.services': { variant: 'card-dark', tone: 'dark', visible: true },
       'services.list': { variant: 'card-dark', tone: 'dark', visible: true },
       'cases.list': { variant: 'case-prestige-dark', tone: 'dark', visible: true },
-      'about.founders': { variant: 'default', tone: 'dark', visible: true }
+      'about.founders': { variant: 'centered-vision', tone: 'dark', visible: true }
     }
   },
   editorial: {
@@ -70,11 +72,12 @@ export const PRESET_STYLES = {
     density: 'comfortable',
     motion: 'subtle',
     sections: {
+      'home.hero': { variant: 'minimal', tone: 'dark', visible: true },
       'home.commitments': { variant: 'card-bordered', tone: 'alt', visible: true },
       'home.services': { variant: 'card-minimal', tone: 'light', visible: true },
       'services.list': { variant: 'card-minimal', tone: 'light', visible: true },
       'cases.list': { variant: 'case-editorial', tone: 'alt', visible: true },
-      'about.founders': { variant: 'default', tone: 'light', visible: true }
+      'about.founders': { variant: 'editorial-split', tone: 'light', visible: true }
     }
   },
   modern: {
@@ -95,10 +98,11 @@ export const PRESET_STYLES = {
     density: 'airy',
     motion: 'subtle',
     sections: {
+      'home.hero': { variant: 'bento', tone: 'dark', visible: true },
       'home.commitments': { variant: 'card-elevated', tone: 'light', visible: true },
       'home.services': { variant: 'card-elevated', tone: 'alt', visible: true },
       'services.list': { variant: 'card-elevated', tone: 'light', visible: true },
-      'cases.list': { variant: 'case-minimal-grid', tone: 'light', visible: true },
+      'cases.list': { variant: 'case-bento', tone: 'light', visible: true },
       'about.founders': { variant: 'default', tone: 'light', visible: true }
     }
   }

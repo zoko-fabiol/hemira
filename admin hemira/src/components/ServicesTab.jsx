@@ -12,7 +12,8 @@ import {
   ChevronDown, 
   ChevronUp,
   Image as ImageIcon,
-  Upload
+  Upload,
+  Star
 } from 'lucide-react';
 import { saveContent, uploadImageFile } from '../services/cmsService';
 
@@ -35,10 +36,8 @@ export default function ServicesTab({ contentFr, contentEn, showToast, onOpenThe
 
     const des = contentFr?.services?.servicesDesign || contentFr?.home?.servicesDesign || 'default';
     const anim = contentFr?.services?.servicesAnimation || contentFr?.home?.servicesAnimation || 'default';
-    const acc = contentFr?.services?.servicesAccent || contentFr?.home?.servicesAccent || 'coral';
     setServicesDesign(des);
     setServicesAnimation(anim);
-    setServicesAccent(acc);
   }, [contentFr, contentEn]);
 
   const handleAddService = () => {
@@ -134,15 +133,13 @@ export default function ServicesTab({ contentFr, contentEn, showToast, onOpenThe
           ...contentFr?.home,
           services: cleanServices(servicesFr),
           servicesDesign,
-          servicesAnimation,
-          servicesAccent
+          servicesAnimation
         },
         services: {
           ...contentFr?.services,
           services: cleanServices(servicesFr),
           servicesDesign,
-          servicesAnimation,
-          servicesAccent
+          servicesAnimation
         }
       };
 
@@ -152,15 +149,13 @@ export default function ServicesTab({ contentFr, contentEn, showToast, onOpenThe
           ...contentEn?.home,
           services: cleanServices(servicesEn),
           servicesDesign,
-          servicesAnimation,
-          servicesAccent
+          servicesAnimation
         },
         services: {
           ...contentEn?.services,
           services: cleanServices(servicesEn),
           servicesDesign,
-          servicesAnimation,
-          servicesAccent
+          servicesAnimation
         }
       };
 
@@ -227,7 +222,7 @@ export default function ServicesTab({ contentFr, contentEn, showToast, onOpenThe
         }}>
           <Sparkles size={16} color="var(--admin-coral, #F0624D)" style={{ flexShrink: 0 }} />
           <span>
-            <strong>Gestion ergonomique séparée :</strong> Les variantes des cartes de services et leurs animations sont gérées dans l'onglet <strong>🎨 Apparence</strong>.
+            <strong>Gestion ergonomique séparée :</strong> Les variantes des cartes de services et leurs animations sont gérées dans l'onglet <strong>Apparence</strong>.
           </span>
         </div>
 
@@ -304,9 +299,12 @@ export default function ServicesTab({ contentFr, contentEn, showToast, onOpenThe
                           border: '1px solid rgba(201, 169, 104, 0.35)',
                           padding: '3px 10px', 
                           borderRadius: '12px', 
-                          fontWeight: 700 
+                          fontWeight: 700,
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '4px'
                         }}>
-                          ★ Mis en avant
+                          <Star size={11} fill="currentColor" /> Mis en avant
                         </span>
                       )}
                     </div>
@@ -420,7 +418,7 @@ export default function ServicesTab({ contentFr, contentEn, showToast, onOpenThe
                         </label>
                         {isWithImg && (
                           <span style={{ fontSize: '11px', fontWeight: 700, color: '#C9A968', background: 'rgba(201,169,104,0.15)', padding: '2px 8px', borderRadius: '10px' }}>
-                            ★ Active dans le design avec image sélectionné
+                            Active dans le design sélectionné
                           </span>
                         )}
                       </div>

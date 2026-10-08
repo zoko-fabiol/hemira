@@ -173,6 +173,12 @@ export default function CustomSectionCard({
     if (design === 'case-showcase') {
       design = 'case-prestige-dark';
     }
+    if (design === 'case-minimal-grid') {
+      design = 'case-bento';
+    }
+    if (design === 'case-timeline') {
+      design = 'case-cinema';
+    }
 
     const hasMedia = Boolean(c.media && typeof c.media === 'string' && c.media.trim().length > 0);
     const caseImg = hasMedia ? c.media.trim() : null;
@@ -762,27 +768,19 @@ export default function CustomSectionCard({
     className
   ].filter(Boolean).join(' ');
 
-  // Design 1: Minimaliste Épuré (No Image)
-  if (design === 'no-img-minimal') {
+  // Design: Surélévation Moderne 3D (card-elevated ou no-img-minimal)
+  if (design === 'card-elevated' || design === 'no-img-minimal') {
     return (
-      <div className={containerClasses} onClick={onClick}>
+      <div className={`card-design--card-elevated ${containerClasses}`} onClick={onClick}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '18px' }}>
-          <div style={{
-            width: '44px',
-            height: '44px',
-            borderRadius: '12px',
+          <div className="card-icon-pill" style={{
             background: currentAccent.bgLight,
             color: currentAccent.color,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontSize: '15px',
-            fontWeight: 800,
-            fontFamily: "'Sora', sans-serif"
+            boxShadow: `inset 0 0 0 1px ${currentAccent.border}`
           }}>
             {icon || num}
           </div>
-          {item.highlight && (
+          {item.highlight ? (
             <span style={{
               fontSize: '11px',
               fontWeight: 700,
@@ -794,6 +792,16 @@ export default function CustomSectionCard({
             }}>
               ★ Mis en avant
             </span>
+          ) : (
+            <span style={{
+              fontSize: '11px',
+              fontWeight: 800,
+              letterSpacing: '0.08em',
+              color: currentAccent.color,
+              opacity: 0.8
+            }}>
+              0{index + 1}
+            </span>
           )}
         </div>
         {renderCardContent()}
@@ -801,10 +809,106 @@ export default function CustomSectionCard({
     );
   }
 
-  // Design 2: Nacre & Glassmorphism (No Image)
-  if (design === 'no-img-glass') {
+  // Design: Piliers Architecturaux (card-bordered ou no-img-architect)
+  if (design === 'card-bordered' || design === 'no-img-architect') {
     return (
-      <div className={containerClasses} onClick={onClick} style={{ borderColor: currentAccent.border }}>
+      <div className={`card-design--card-bordered ${containerClasses}`} onClick={onClick} style={{ borderTopColor: currentAccent.color }}>
+        <span className="card-watermark">{num}</span>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
+          <span style={{
+            fontSize: '11.5px',
+            fontFamily: "'Sora', sans-serif",
+            fontWeight: 800,
+            color: currentAccent.color,
+            textTransform: 'uppercase',
+            letterSpacing: '0.08em',
+            background: currentAccent.bgLight,
+            padding: '4px 10px',
+            borderRadius: '6px'
+          }}>
+            Pilier {num}
+          </span>
+          {icon && (
+            <div style={{ color: currentAccent.color, opacity: 0.9 }}>
+              {icon}
+            </div>
+          )}
+        </div>
+        {renderCardContent()}
+      </div>
+    );
+  }
+
+  // Design: Minimaliste Typographique & Lignes Pures (card-minimal)
+  if (design === 'card-minimal') {
+    return (
+      <div className={`card-design--card-minimal ${containerClasses}`} onClick={onClick} style={{ borderLeftColor: currentAccent.color }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px' }}>
+          <span style={{
+            fontSize: '12px',
+            fontFamily: "'Sora', sans-serif",
+            fontWeight: 800,
+            color: currentAccent.color,
+            letterSpacing: '0.08em',
+            textTransform: 'uppercase'
+          }}>
+            // {num}
+          </span>
+          {icon && (
+            <span style={{ color: currentAccent.color, opacity: 0.8 }}>
+              {icon}
+            </span>
+          )}
+        </div>
+        {renderCardContent()}
+      </div>
+    );
+  }
+
+  // Design: Écrin Sombre Nuit & Or VIP (card-dark ou no-img-dark)
+  if (design === 'card-dark' || design === 'no-img-dark') {
+    return (
+      <div className={`card-design--card-dark ${containerClasses}`} onClick={onClick}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '18px' }}>
+          <div style={{
+            width: '44px',
+            height: '44px',
+            borderRadius: '12px',
+            background: 'rgba(212, 175, 55, 0.15)',
+            border: '1px solid rgba(212, 175, 55, 0.35)',
+            color: '#D4AF37',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: '15px',
+            fontWeight: 800,
+            fontFamily: "'Sora', sans-serif"
+          }}>
+            {icon || num}
+          </div>
+          <span style={{
+            fontSize: '11px',
+            fontWeight: 800,
+            color: '#D4AF37',
+            letterSpacing: '0.08em',
+            textTransform: 'uppercase',
+            background: 'rgba(212, 175, 55, 0.1)',
+            padding: '4px 10px',
+            borderRadius: '12px',
+            border: '1px solid rgba(212, 175, 55, 0.25)'
+          }}>
+            VIP ★ #{num}
+          </span>
+        </div>
+        {renderCardContent()}
+      </div>
+    );
+  }
+
+  // Design: Nacre & Glassmorphism (card-glass ou no-img-glass)
+  if (design === 'card-glass' || design === 'no-img-glass') {
+    return (
+      <div className={`card-design--card-glass ${containerClasses}`} onClick={onClick} style={{ borderColor: currentAccent.border }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
           <div style={{
             padding: '5px 12px',
@@ -821,28 +925,18 @@ export default function CustomSectionCard({
             {icon}
             <span>{num}</span>
           </div>
-        </div>
-        {renderCardContent()}
-      </div>
-    );
-  }
-
-  // Design 3: Architectural Numéroté (No Image)
-  if (design === 'no-img-architect') {
-    return (
-      <div className={containerClasses} onClick={onClick} style={{ borderTopColor: currentAccent.color }}>
-        <span className="architect-watermark">{num}</span>
-        <div style={{ marginBottom: '16px' }}>
-          <span style={{
-            fontSize: '12px',
-            fontFamily: "'Sora', sans-serif",
-            fontWeight: 800,
-            color: currentAccent.color,
-            textTransform: 'uppercase',
-            letterSpacing: '0.08em'
-          }}>
-            Pilier {num}
-          </span>
+          {item.highlight && (
+            <span style={{
+              fontSize: '11px',
+              fontWeight: 700,
+              color: 'var(--gold, #C9A968)',
+              background: 'rgba(201, 169, 104, 0.15)',
+              padding: '3px 8px',
+              borderRadius: '12px'
+            }}>
+              ★ Phare
+            </span>
+          )}
         </div>
         {renderCardContent()}
       </div>

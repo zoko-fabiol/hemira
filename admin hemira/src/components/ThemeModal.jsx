@@ -267,7 +267,7 @@ export default function ThemeModal({ isOpen, onClose, currentTheme, showToast })
           gap: '10px'
         }}>
           <span style={{ fontSize: '12px', color: '#64748B' }}>
-            💡 Le thème couleur choisi s'applique automatiquement sur le Hero, les boutons, les sections, les cartes et le pied de page.
+            Le thème couleur choisi s'applique automatiquement sur le Hero, les boutons, les sections, les cartes et le pied de page.
           </span>
           <button
             type="button"

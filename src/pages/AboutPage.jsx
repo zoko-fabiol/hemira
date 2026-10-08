@@ -42,38 +42,126 @@ export default function AboutPage({ onNavigate, lang = 'fr', content, appearance
         </div>
       </section>
 
-      <section className="about-founders-section" data-section-id="about.founders">
-        <div className="wrap about-layout">
-          <div className="about-photo-wrap">
-            <img 
-              src="/assets/img/uploads/avatar-duo.svg" 
-              alt="Jeanne Helene Epée Nsome &amp; Miriam J. Nguemdo Epse Nouzeda" 
-              className="about-photo" 
-            />
-            <div className="about-photo-name">Jeanne Helene Epée Nsome &amp; Miriam J. Nguemdo Epse Nouzeda</div>
-            <div className="about-photo-title">{a.role}</div>
-            <div className="mosaic-mini" style={{ justifyContent: 'center' }} aria-hidden="true">
-              <span className="sq coral"></span>
-              <span className="sq gold"></span>
-              <span className="sq teal"></span>
-              <span className="sq gold"></span>
-            </div>
-          </div>
-          <div>
-            <div className="bullet-list">
-              {a.bullets.map((item, i) => (
-                <div key={i} className="bullet-item">
-                  <span className={`bullet-marker sq ${item.color}`}></span>
-                  <div>
-                    <h4>{item.title}</h4>
-                    <p>{item.desc}</p>
+      {/* FONDATRICES SECTION */}
+      {(() => {
+        const foundersConfig = appearance?.sections?.['about.founders'] || {};
+        if (foundersConfig.visible === false) return null;
+        const foundersVariant = foundersConfig.variant || 'default';
+
+        if (foundersVariant === 'centered-vision') {
+          return (
+            <section className="about-founders-section about-variant--centered-vision" data-section-id="about.founders">
+              <div className="wrap" style={{ textAlign: 'center', maxWidth: '1000px' }}>
+                <div className="about-vision-hero" style={{ marginBottom: '40px' }}>
+                  <div className="about-vision-avatar-wrap" style={{ position: 'relative', display: 'inline-block', marginBottom: '20px' }}>
+                    <img 
+                      src="/assets/img/uploads/avatar-duo.svg" 
+                      alt="Jeanne Helene Epée Nsome &amp; Miriam J. Nguemdo Epse Nouzeda" 
+                      style={{ width: '180px', height: '180px', borderRadius: '50%', objectFit: 'cover', border: '5px solid var(--gold, #C9A968)', boxShadow: '0 12px 30px rgba(0,0,0,0.12)' }}
+                    />
+                    <div style={{ position: 'absolute', bottom: '0', right: '0', background: 'var(--coral, #F0624D)', color: '#fff', borderRadius: '50%', width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '18px', fontWeight: 800 }}>
+                      ★
+                    </div>
+                  </div>
+                  <h3 style={{ fontFamily: "'Sora', sans-serif", fontSize: '24px', fontWeight: 800, color: 'var(--ink, #16213A)', marginBottom: '6px' }}>
+                    Jeanne Helene Epée Nsome &amp; Miriam J. Nguemdo
+                  </h3>
+                  <div style={{ fontSize: '14px', fontWeight: 700, color: 'var(--coral, #F0624D)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '16px' }}>
+                    {a.role}
+                  </div>
+                  <p style={{ fontStyle: 'italic', fontSize: '18px', color: 'var(--slate, #5B6B7C)', maxWidth: '720px', margin: '0 auto', lineHeight: 1.6 }}>
+                    « Deux fondatrices, une mission indéfectible : faire de chaque voyage diplomatique et d'affaires une expérience fluide, sécurisée et d'une sérénité absolue. »
+                  </p>
+                </div>
+
+                <div className="grid-3" style={{ textAlign: 'left', marginTop: '30px' }}>
+                  {a.bullets.map((item, i) => (
+                    <div key={i} className="card" style={{ padding: '26px', borderRadius: '16px', borderTop: '3px solid var(--coral)' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
+                        <span className={`sq ${item.color}`} style={{ width: '10px', height: '10px', borderRadius: '50%' }}></span>
+                        <h4 style={{ margin: 0, fontSize: '17px', fontWeight: 800 }}>{item.title}</h4>
+                      </div>
+                      <p style={{ margin: 0, fontSize: '14px', color: 'var(--slate)', lineHeight: 1.55 }}>{item.desc}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </section>
+          );
+        }
+
+        if (foundersVariant === 'editorial-split') {
+          return (
+            <section className="about-founders-section about-variant--editorial-split" data-section-id="about.founders">
+              <div className="wrap" style={{ display: 'grid', gridTemplateColumns: '1fr 1.2fr', gap: '48px', alignItems: 'center' }}>
+                <div style={{ background: 'var(--bg-light, #F7F6F2)', border: '1px solid var(--border, #E7E5DE)', borderRadius: '20px', padding: '36px 30px', textAlign: 'center', boxShadow: '0 12px 32px rgba(14,31,61,0.06)' }}>
+                  <img 
+                    src="/assets/img/uploads/avatar-duo.svg" 
+                    alt="Jeanne Helene Epée Nsome &amp; Miriam J. Nguemdo Epse Nouzeda" 
+                    style={{ width: '100%', maxWidth: '280px', height: 'auto', borderRadius: '16px', objectFit: 'cover', marginBottom: '18px', border: '3px solid var(--border)' }}
+                  />
+                  <div style={{ fontFamily: "'Sora', sans-serif", fontSize: '17px', fontWeight: 800, color: 'var(--ink)' }}>
+                    Jeanne Helene Epée Nsome &amp; Miriam J. Nguemdo
+                  </div>
+                  <div style={{ fontSize: '13px', color: 'var(--slate)', marginTop: '4px' }}>{a.role}</div>
+                </div>
+                <div>
+                  <div style={{ borderLeft: '4px solid var(--coral)', paddingLeft: '20px', marginBottom: '24px' }}>
+                    <div className="eyebrow" style={{ marginBottom: '6px' }}>Vision &amp; Ambition</div>
+                    <h2 style={{ fontSize: 'clamp(26px, 3.2vw, 36px)', margin: 0, lineHeight: 1.25 }}>L'Excellence du Voyage Sans Frontières</h2>
+                  </div>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                    {a.bullets.map((item, i) => (
+                      <div key={i} style={{ display: 'flex', gap: '14px', alignItems: 'flex-start' }}>
+                        <span style={{ fontFamily: "'Sora', sans-serif", fontWeight: 900, fontSize: '20px', color: 'var(--coral)', lineHeight: 1 }}>0{i+1}.</span>
+                        <div>
+                          <strong style={{ fontSize: '16px', color: 'var(--ink)', display: 'block', marginBottom: '2px' }}>{item.title}</strong>
+                          <span style={{ fontSize: '14px', color: 'var(--slate)', lineHeight: 1.5 }}>{item.desc}</span>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 </div>
-              ))}
+              </div>
+            </section>
+          );
+        }
+
+        return (
+          <section className="about-founders-section" data-section-id="about.founders">
+            <div className="wrap about-layout">
+              <div className="about-photo-wrap">
+                <img 
+                  src="/assets/img/uploads/avatar-duo.svg" 
+                  alt="Jeanne Helene Epée Nsome &amp; Miriam J. Nguemdo Epse Nouzeda" 
+                  className="about-photo" 
+                />
+                <div className="about-photo-name">Jeanne Helene Epée Nsome &amp; Miriam J. Nguemdo Epse Nouzeda</div>
+                <div className="about-photo-title">{a.role}</div>
+                <div className="mosaic-mini" style={{ justifyContent: 'center' }} aria-hidden="true">
+                  <span className="sq coral"></span>
+                  <span className="sq gold"></span>
+                  <span className="sq teal"></span>
+                  <span className="sq gold"></span>
+                </div>
+              </div>
+              <div>
+                <div className="bullet-list">
+                  {a.bullets.map((item, i) => (
+                    <div key={i} className="bullet-item">
+                      <span className={`bullet-marker sq ${item.color}`}></span>
+                      <div>
+                        <h4>{item.title}</h4>
+                        <p>{item.desc}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-      </section>
+          </section>
+        );
+      })()}
 
       <section className="bg-light reveal">
         <div className="wrap" style={{ maxWidth: '820px' }}>

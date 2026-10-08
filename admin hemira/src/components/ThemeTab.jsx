@@ -109,7 +109,7 @@ export default function ThemeTab({ theme, showToast, onOpenThemeModal }) {
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px', flexWrap: 'wrap', gap: '8px' }}>
             <div>
               <h4 style={{ margin: 0, fontSize: '15px', fontWeight: 800, color: 'var(--admin-text-main, #0F172A)' }}>
-                ✨ Palettes Harmonieuses Prédéfinies (Appliquées à tout le site)
+                Palettes Harmonieuses Prédéfinies (Appliquées à tout le site)
               </h4>
               <span style={{ fontSize: '12px', color: 'var(--admin-text-muted, #64748B)' }}>
                 Cliquez sur une palette pour habiller instantanément l'intégralité du site avec des teintes professionnelles.

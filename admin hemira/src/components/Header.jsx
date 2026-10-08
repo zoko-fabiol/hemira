@@ -41,7 +41,7 @@ export default function Header({
           style={{ gap: '6px', background: 'rgba(240, 98, 77, 0.08)', borderColor: 'rgba(240, 98, 77, 0.3)' }}
         >
           <Sparkles size={15} color="var(--admin-coral, #F0624D)" />
-          <span className="theme-toggle-text" style={{ fontWeight: 700 }}>🎨 Apparence</span>
+          <span className="theme-toggle-text" style={{ fontWeight: 700 }}>Apparence</span>
         </button>
 
         {/* Theme mode toggle (Light / Dark) */}

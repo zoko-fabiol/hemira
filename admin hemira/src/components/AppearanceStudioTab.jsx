@@ -40,7 +40,7 @@ import {
 const SECTIONS_CONFIG = [
   {
     id: 'global',
-    name: '🌐 Style & Thème Global',
+    name: 'Style & Thème Global',
     group: 'global',
     description: 'Preset d’ambiance, palette de couleurs, typographie et animations globales.'
   },
@@ -50,8 +50,10 @@ const SECTIONS_CONFIG = [
     group: 'home',
     description: 'Bannière d\'introduction et promesse de voyage.',
     variants: [
-      { id: 'split', name: 'Split Image & Accroche', desc: 'Texte à gauche avec visuel à droite (classique équilibré)' },
-      { id: 'center', name: 'Centré Typographique', desc: 'Grand titre centré à fort impact visuel' }
+      { id: 'split', name: 'Signature Split (Défaut)', desc: 'Texte à gauche, mosaïque artistique à droite et métriques' },
+      { id: 'center', name: 'Prestige Centré VIP', desc: 'Grand titre centré de luxe, badge lumineux et métriques alignées' },
+      { id: 'bento', name: 'Bento Moderne Asymétrique', desc: 'Disposition moderne en blocs asymétriques avec conciergerie 24/7' },
+      { id: 'minimal', name: 'Éditorial Haute Couture', desc: 'Typographie noble épurée, barre d\'accent et clarté maximale' }
     ]
   },
   {
@@ -60,11 +62,12 @@ const SECTIONS_CONFIG = [
     group: 'home',
     description: 'Les 3 piliers de réassurance et d’excellence pour le voyageur.',
     variants: [
-      { id: 'default', name: 'Signature HEMIRA (Défaut)', desc: 'Design officiel fidèle et épuré avec icônes' },
-      { id: 'card-bordered', name: 'Bordures Raffinées', desc: 'Liseré subtil et fond clair moderne' },
-      { id: 'card-elevated', name: 'Surélévation & Ombres Douces', desc: 'Cartes flottantes 3D contemporaines' },
-      { id: 'card-minimal', name: 'Minimaliste & Typographique', desc: 'Lignes pures et lisibilité maximale' },
-      { id: 'card-dark', name: 'Écrin Sombre Nuit', desc: 'Fond sombre feutré pour une ambiance VIP' }
+      { id: 'default', name: 'Signature HEMIRA (Défaut)', desc: 'Design officiel fidèle avec numéro d\'ordre' },
+      { id: 'card-elevated', name: 'Surélévation Moderne 3D', desc: 'Cartes 3D flottantes contemporaines avec ombres douces et pastille accent' },
+      { id: 'card-bordered', name: 'Piliers Architecturaux', desc: 'Liseré supérieur accentué et numéro filigrane géant' },
+      { id: 'card-minimal', name: 'Minimaliste Lignes Pures', desc: 'Barre verticale d\'accent, lecture pure et lisibilité maximale' },
+      { id: 'card-dark', name: 'Écrin Sombre Nuit & Or', desc: 'Fond sombre feutré avec liseré or pour une ambiance VIP' },
+      { id: 'card-glass', name: 'Nacre & Glassmorphism', desc: 'Effet verre dépoli moderne avec reflets translucides' }
     ]
   },
   {
@@ -74,10 +77,11 @@ const SECTIONS_CONFIG = [
     description: 'Les 6 services de voyage présentés sur la page d\'accueil.',
     variants: [
       { id: 'default', name: 'Signature HEMIRA (Défaut)', desc: 'Design officiel fidèle avec numéro d\'ordre' },
-      { id: 'card-elevated', name: 'Surélévation Moderne', desc: 'Cartes 3D surélevées avec ombre douce' },
-      { id: 'card-bordered', name: 'Lignes Fines & Encadrement', desc: 'Design structuré haute couture' },
-      { id: 'card-minimal', name: 'Minimaliste Intemporel', desc: 'Focus direct sur le titre et l\'illustration' },
-      { id: 'card-dark', name: 'Mode Nuit VIP', desc: 'Cartes sombres avec reflets bleus/dorés' }
+      { id: 'card-elevated', name: 'Surélévation Moderne 3D', desc: 'Cartes 3D surélevées avec ombre douce et pastille accent' },
+      { id: 'card-bordered', name: 'Piliers Architecturaux', desc: 'Bordure supérieure stylisée et numérotation forte' },
+      { id: 'card-minimal', name: 'Minimaliste Intemporel', desc: 'Ligne pure et focus direct sur l\'expertise' },
+      { id: 'card-dark', name: 'Mode Nuit VIP & Or', desc: 'Cartes sombres avec reflets dorés et contrastes VIP' },
+      { id: 'card-glass', name: 'Nacre & Glassmorphism', desc: 'Cartes translucides frosted glass haute couture' }
     ]
   },
   {
@@ -86,10 +90,12 @@ const SECTIONS_CONFIG = [
     group: 'services',
     description: 'Présentation complète de l\'ensemble des services sur la page dédiée.',
     variants: [
-      { id: 'default', name: 'Signature HEMIRA (Défaut)', desc: 'Affichage détaillé classique' },
-      { id: 'card-elevated', name: 'Cartes Premium Surélevées', desc: 'Cartes aérées avec mise en relief' },
-      { id: 'card-bordered', name: 'Bordures Élégantes', desc: 'Style catalogue haut de gamme' },
-      { id: 'card-dark', name: 'Contraste Sombre', desc: 'Style sombre pour standing prestige' }
+      { id: 'default', name: 'Signature HEMIRA (Défaut)', desc: 'Affichage détaillé classique avec icônes' },
+      { id: 'card-elevated', name: 'Cartes Premium Surélevées', desc: 'Cartes aérées 3D avec mise en relief contemporaine' },
+      { id: 'card-bordered', name: 'Piliers Architecturaux', desc: 'Bordure stylisée avec numérotation de prestige' },
+      { id: 'card-minimal', name: 'Minimaliste Éditorial', desc: 'Épure contemporaine et mise en valeur des prestations' },
+      { id: 'card-dark', name: 'Contraste Sombre VIP', desc: 'Style sombre feutré pour standing haut de gamme' },
+      { id: 'card-glass', name: 'Nacre & Glassmorphism', desc: 'Effet verre translucide lumineux' }
     ]
   },
   {
@@ -99,11 +105,12 @@ const SECTIONS_CONFIG = [
     description: 'Cas clients, anecdotes d’urgence et dossiers de voyage résolus avec succès.',
     variants: [
       { id: 'default', name: 'Signature HEMIRA (Défaut)', desc: 'Mise en page originale avec photo ou typographie' },
-      { id: 'case-editorial', name: 'Split Éditorial Magazine', desc: 'Grand visuel plein cadre et texte magazine' },
-      { id: 'case-prestige-dark', name: 'Écrin Sombre Black Tie VIP', desc: 'Fond noir onyx, liseré or champagne et citations' },
-      { id: 'case-minimal-grid', name: 'Grille Épurée Contemporaine', desc: 'Affichage compact, net et sans fioritures' },
-      { id: 'case-timeline', name: 'Timeline Chronologique VIP', desc: 'Fil d’accompagnement étape par étape' },
-      { id: 'case-bento', name: 'Bento Moderne Asymétrique', desc: 'Disposition moderne en blocs asymétriques' }
+      { id: 'case-editorial', name: 'Split Éditorial Magazine', desc: 'Grand visuel plein cadre et composition magazine de luxe' },
+      { id: 'case-cinema', name: 'Panoramique Cinéma & Timeline', desc: 'Bandeau cinématographique supérieur et étapes du voyage' },
+      { id: 'case-bento', name: 'Bento Moderne Asymétrique', desc: 'Grille moderne bento multi-blocs avec défi, solution et résultat' },
+      { id: 'case-carnet', name: 'Fiche Carnet d\'Expédition VIP', desc: 'Dossier diplomatique officiel avec sceau d\'intervention' },
+      { id: 'case-prestige-dark', name: 'Écrin Sombre Nuit & Or', desc: 'Fond noir onyx, liseré or champagne et contrastes VIP' },
+      { id: 'case-floating', name: 'Studio Luxe & Relief 3D', desc: 'Photo décalée en relief flottant avec badge sceau' }
     ]
   },
   {
@@ -112,7 +119,9 @@ const SECTIONS_CONFIG = [
     group: 'about',
     description: 'Présentation des fondatrices Jeanne Helene et Miriam J.',
     variants: [
-      { id: 'default', name: 'Signature HEMIRA (Défaut)', desc: 'Duo portrait et mot d’introduction officiel' }
+      { id: 'default', name: 'Duo Signature & Piliers (Défaut)', desc: 'Photo officielle du duo à gauche et liste des engagements à droite' },
+      { id: 'centered-vision', name: 'Prestige Centré & Citation VIP', desc: 'Portrait centré majestueux avec citation et 3 cartes piliers' },
+      { id: 'editorial-split', name: 'Éditorial Magazine Haute Couture', desc: 'Composition asymétrique de magazine de prestige avec signature' }
     ]
   }
 ];
@@ -204,6 +213,20 @@ export default function AppearanceStudioTab({ showToast }) {
     window.addEventListener('message', handleMessage);
     return () => window.removeEventListener('message', handleMessage);
   }, [showToast]);
+
+  // Synchronisation contextuelle : quand l'utilisateur sélectionne une section, ordonne à l'iframe de naviguer et scroller vers celle-ci
+  useEffect(() => {
+    if (iframeRef.current && iframeRef.current.contentWindow && selectedSectionId) {
+      try {
+        iframeRef.current.contentWindow.postMessage({
+          type: 'HEMIRA_NAVIGATE_SECTION',
+          sectionId: selectedSectionId
+        }, '*');
+      } catch (err) {
+        console.warn("Iframe section navigation error:", err);
+      }
+    }
+  }, [selectedSectionId]);
 
   // Gestion de l'historique Undo / Redo
   const updateAppearance = (updater) => {
@@ -299,6 +322,12 @@ export default function AppearanceStudioTab({ showToast }) {
         }
       }
     }));
+    try {
+      iframeRef.current?.contentWindow?.postMessage({
+        type: 'HEMIRA_NAVIGATE_SECTION',
+        sectionId: secId
+      }, '*');
+    } catch (_) {}
   };
 
   const handleSectionToneChange = (secId, tone) => {
@@ -312,6 +341,12 @@ export default function AppearanceStudioTab({ showToast }) {
         }
       }
     }));
+    try {
+      iframeRef.current?.contentWindow?.postMessage({
+        type: 'HEMIRA_NAVIGATE_SECTION',
+        sectionId: secId
+      }, '*');
+    } catch (_) {}
   };
 
   const handleSectionVisibilityToggle = (secId) => {
@@ -347,7 +382,7 @@ export default function AppearanceStudioTab({ showToast }) {
     try {
       await saveAppearanceLive(currentAppearance);
       setPublishedAppearance(currentAppearance);
-      showToast("✨ Apparence publiée avec succès sur le site en ligne !");
+      showToast("Apparence publiée avec succès sur le site en ligne !");
     } catch (err) {
       console.error("Publication error:", err);
       alert("Erreur lors de la publication : " + err.message);
@@ -503,7 +538,7 @@ export default function AppearanceStudioTab({ showToast }) {
                   <div className="nav-item-icon"><Layout size={15} /></div>
                   <div className="nav-item-info">
                     <strong>{s.name}</strong>
-                    <span>{isHidden ? '⚠️ Masqué sur le site' : (s.variants?.find(v => v.id === state.variant)?.name || 'Défaut')}</span>
+                    <span>{isHidden ? 'Section masquée' : (s.variants?.find(v => v.id === state.variant)?.name || 'Défaut')}</span>
                   </div>
                 </button>
               );
@@ -523,7 +558,7 @@ export default function AppearanceStudioTab({ showToast }) {
                   <div className="nav-item-icon"><Layers size={15} /></div>
                   <div className="nav-item-info">
                     <strong>{s.name}</strong>
-                    <span>{isHidden ? '⚠️ Masqué sur le site' : (s.variants?.find(v => v.id === state.variant)?.name || 'Défaut')}</span>
+                    <span>{isHidden ? 'Section masquée' : (s.variants?.find(v => v.id === state.variant)?.name || 'Défaut')}</span>
                   </div>
                 </button>
               );

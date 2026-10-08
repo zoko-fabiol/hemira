@@ -12,61 +12,214 @@ export default function HomePage({ onNavigate, lang = 'fr', content, appearance 
   return (
     <>
       {/* HERO SECTION */}
-      {isHeroVisible && (
-        <section className={`hero ${heroConfig.tone === 'light' ? 'theme-tone-light' : ''}`} data-section-id="home.hero">
-        <div className="wrap hero-inner">
-          <div>
-            <div className="hero-badge">
-              <span className="dot"></span>{h.badge}
-            </div>
-            <h1>{h.title}</h1>
-            <p className="lead">{h.lead}</p>
-            <div className="hero-ctas">
-              <a 
-                href="#contact" 
-                onClick={(e) => { e.preventDefault(); onNavigate('contact'); }} 
-                className="btn btn-primary" 
-                data-track="hero_cta_primary"
-              >
-                {h.ctaPrimary}
-              </a>
-              <a 
-                href="#services" 
-                onClick={(e) => { e.preventDefault(); onNavigate('services'); }} 
-                className="btn btn-outline" 
-                data-track="hero_cta_secondary"
-              >
-                {h.ctaSecondary}
-              </a>
-            </div>
-          </div>
+      {/* HERO SECTION */}
+      {isHeroVisible && (() => {
+        const heroVariant = heroConfig.variant || 'split';
 
-          <div className="hero-mosaic" aria-hidden="true">
-            <span className="sq s1"></span>
-            <span className="sq s2"></span>
-            <span className="sq s3"></span>
-            <span className="sq s4"></span>
-            <span className="sq s5"></span>
-            <span className="sq s6"></span>
-            <span className="sq s7"></span>
-            <span className="sq s8"></span>
-            <span className="sq s9"></span>
-            <span className="sq s10"></span>
-            <span className="sq s11"></span>
-            <span className="sq s12"></span>
-          </div>
-
-          <div className="hero-stats" style={{ gridColumn: '1 / -1' }}>
-            {(h.stats || []).map((s, idx) => (
-              <div key={idx} className="hero-stat">
-                <div className="num" data-count-to={s.num}>{s.num}</div>
-                <div className="lbl">{s.lbl}</div>
+        // 1. Variante Prestige Centré
+        if (heroVariant === 'center') {
+          return (
+            <section className={`hero hero-variant--center ${heroConfig.tone === 'light' ? 'theme-tone-light' : ''}`} data-section-id="home.hero">
+              <div className="wrap hero-inner-center">
+                <div className="hero-badge">
+                  <span className="dot"></span>{h.badge}
+                </div>
+                <h1 className="hero-title-center">{h.title}</h1>
+                <p className="lead hero-lead-center">{h.lead}</p>
+                <div className="hero-ctas hero-ctas-center">
+                  <a 
+                    href="#contact" 
+                    onClick={(e) => { e.preventDefault(); onNavigate('contact'); }} 
+                    className="btn btn-primary" 
+                    data-track="hero_cta_primary"
+                  >
+                    {h.ctaPrimary}
+                  </a>
+                  <a 
+                    href="#services" 
+                    onClick={(e) => { e.preventDefault(); onNavigate('services'); }} 
+                    className="btn btn-outline" 
+                    data-track="hero_cta_secondary"
+                  >
+                    {h.ctaSecondary}
+                  </a>
+                </div>
+                <div className="hero-stats hero-stats-center">
+                  {(h.stats || []).map((s, idx) => (
+                    <div key={idx} className="hero-stat">
+                      <div className="num" data-count-to={s.num}>{s.num}</div>
+                      <div className="lbl">{s.lbl}</div>
+                    </div>
+                  ))}
+                </div>
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
-      )}
+            </section>
+          );
+        }
+
+        // 2. Variante Bento Moderne Asymétrique
+        if (heroVariant === 'bento') {
+          return (
+            <section className={`hero hero-variant--bento ${heroConfig.tone === 'light' ? 'theme-tone-light' : ''}`} data-section-id="home.hero">
+              <div className="wrap hero-inner-bento">
+                <div className="hero-bento-main">
+                  <div className="hero-badge">
+                    <span className="dot"></span>{h.badge}
+                  </div>
+                  <h1>{h.title}</h1>
+                  <p className="lead">{h.lead}</p>
+                  <div className="hero-ctas">
+                    <a 
+                      href="#contact" 
+                      onClick={(e) => { e.preventDefault(); onNavigate('contact'); }} 
+                      className="btn btn-primary" 
+                      data-track="hero_cta_primary"
+                    >
+                      {h.ctaPrimary}
+                    </a>
+                    <a 
+                      href="#services" 
+                      onClick={(e) => { e.preventDefault(); onNavigate('services'); }} 
+                      className="btn btn-outline" 
+                      data-track="hero_cta_secondary"
+                    >
+                      {h.ctaSecondary}
+                    </a>
+                  </div>
+                </div>
+                <div className="hero-bento-side">
+                  <div className="hero-bento-card vip-badge-card">
+                    <div className="vip-badge-head">
+                      <span className="live-dot pulse"></span>
+                      <span className="vip-status-label">Conciergerie Active 24/7</span>
+                    </div>
+                    <div className="vip-badge-title">Départ &amp; Visa 100% Sécurisés</div>
+                    <p className="vip-badge-desc">Accompagnement d’urgence et protocoles diplomatiques en direct.</p>
+                  </div>
+                  <div className="hero-bento-card mosaic-preview-card">
+                    <div className="hero-mosaic-bento">
+                      <span className="sq s1"></span>
+                      <span className="sq s2"></span>
+                      <span className="sq s3"></span>
+                      <span className="sq s5"></span>
+                      <span className="sq s6"></span>
+                    </div>
+                    <div className="mosaic-caption">Excellence &amp; Fluidité HEMIRA</div>
+                  </div>
+                </div>
+                <div className="hero-stats" style={{ gridColumn: '1 / -1' }}>
+                  {(h.stats || []).map((s, idx) => (
+                    <div key={idx} className="hero-stat">
+                      <div className="num" data-count-to={s.num}>{s.num}</div>
+                      <div className="lbl">{s.lbl}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </section>
+          );
+        }
+
+        // 3. Variante Éditoriale Haute Couture
+        if (heroVariant === 'minimal') {
+          return (
+            <section className={`hero hero-variant--minimal ${heroConfig.tone === 'light' ? 'theme-tone-light' : ''}`} data-section-id="home.hero">
+              <div className="wrap hero-inner-minimal">
+                <div className="hero-minimal-header">
+                  <div className="hero-badge">
+                    <span className="dot"></span>{h.badge}
+                  </div>
+                  <h1 className="hero-minimal-title">{h.title}</h1>
+                  <p className="lead hero-minimal-lead">{h.lead}</p>
+                  <div className="hero-ctas">
+                    <a 
+                      href="#contact" 
+                      onClick={(e) => { e.preventDefault(); onNavigate('contact'); }} 
+                      className="btn btn-primary" 
+                      data-track="hero_cta_primary"
+                    >
+                      {h.ctaPrimary}
+                    </a>
+                    <a 
+                      href="#services" 
+                      onClick={(e) => { e.preventDefault(); onNavigate('services'); }} 
+                      className="btn btn-outline" 
+                      data-track="hero_cta_secondary"
+                    >
+                      {h.ctaSecondary}
+                    </a>
+                  </div>
+                </div>
+                <div className="hero-stats hero-stats-minimal">
+                  {(h.stats || []).map((s, idx) => (
+                    <div key={idx} className="hero-stat">
+                      <div className="num" data-count-to={s.num}>{s.num}</div>
+                      <div className="lbl">{s.lbl}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </section>
+          );
+        }
+
+        // 4. Variante Split Signature (Défaut)
+        return (
+          <section className={`hero ${heroConfig.tone === 'light' ? 'theme-tone-light' : ''}`} data-section-id="home.hero">
+            <div className="wrap hero-inner">
+              <div>
+                <div className="hero-badge">
+                  <span className="dot"></span>{h.badge}
+                </div>
+                <h1>{h.title}</h1>
+                <p className="lead">{h.lead}</p>
+                <div className="hero-ctas">
+                  <a 
+                    href="#contact" 
+                    onClick={(e) => { e.preventDefault(); onNavigate('contact'); }} 
+                    className="btn btn-primary" 
+                    data-track="hero_cta_primary"
+                  >
+                    {h.ctaPrimary}
+                  </a>
+                  <a 
+                    href="#services" 
+                    onClick={(e) => { e.preventDefault(); onNavigate('services'); }} 
+                    className="btn btn-outline" 
+                    data-track="hero_cta_secondary"
+                  >
+                    {h.ctaSecondary}
+                  </a>
+                </div>
+              </div>
+
+              <div className="hero-mosaic" aria-hidden="true">
+                <span className="sq s1"></span>
+                <span className="sq s2"></span>
+                <span className="sq s3"></span>
+                <span className="sq s4"></span>
+                <span className="sq s5"></span>
+                <span className="sq s6"></span>
+                <span className="sq s7"></span>
+                <span className="sq s8"></span>
+                <span className="sq s9"></span>
+                <span className="sq s10"></span>
+                <span className="sq s11"></span>
+                <span className="sq s12"></span>
+              </div>
+
+              <div className="hero-stats" style={{ gridColumn: '1 / -1' }}>
+                {(h.stats || []).map((s, idx) => (
+                  <div key={idx} className="hero-stat">
+                    <div className="num" data-count-to={s.num}>{s.num}</div>
+                    <div className="lbl">{s.lbl}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+        );
+      })()}
 
       {/* POURQUOI HEMIRA - NOS ENGAGEMENTS */}
       {appearance?.sections?.['home.commitments']?.visible !== false && (

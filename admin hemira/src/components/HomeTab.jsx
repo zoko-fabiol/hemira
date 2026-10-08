@@ -301,7 +301,7 @@ export default function HomeTab({ contentFr, contentEn, showToast, onOpenThemeMo
             }}>
               <Sparkles size={16} color="var(--admin-coral, #F0624D)" style={{ flexShrink: 0 }} />
               <span>
-                <strong>Gestion ergonomique séparée :</strong> Les variantes de cartes, les couleurs et les animations de cette section sont pilotées en temps réel dans l'onglet <strong>🎨 Apparence</strong>.
+                <strong>Gestion ergonomique séparée :</strong> Les variantes de cartes, les couleurs et les animations de cette section sont pilotées en temps réel dans l'onglet <strong>Apparence</strong>.
               </span>
             </div>
 
@@ -343,7 +343,7 @@ export default function HomeTab({ contentFr, contentEn, showToast, onOpenThemeMo
                       borderRadius: '10px'
                     }}>
                       <label style={{ fontSize: '12px', fontWeight: 700, color: 'var(--admin-text-main, #0F172A)', display: 'block', marginBottom: '8px' }}>
-                        Image de cet engagement {isWithImg ? '(★ Requis/Actif pour le design avec image sélectionné)' : '(Optionnelle)'}
+                        Image de cet engagement {isWithImg ? '(Requis pour le design sélectionné)' : '(Optionnelle)'}
                       </label>
                       <div style={{ display: 'flex', gap: '12px', alignItems: 'center', flexWrap: 'wrap' }}>
                         <div style={{

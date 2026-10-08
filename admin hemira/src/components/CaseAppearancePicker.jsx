@@ -525,7 +525,7 @@ export default function CaseAppearancePicker({
                   <div className="case-editorial-body">
                     {!hasPhoto && (
                       <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '11px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--admin-coral, #F0624D)', background: 'rgba(240,98,77,0.08)', border: '1px solid rgba(240,98,77,0.25)', padding: '4px 12px', borderRadius: '20px', marginBottom: '14px', width: 'fit-content' }}>
-                        ✦ {sampleData.tag}
+                         {sampleData.tag}
                       </div>
                     )}
                     <h3 className="case-editorial-title">{sampleData.title}</h3>
@@ -623,19 +623,19 @@ export default function CaseAppearancePicker({
                   <div className="case-bento-stack">
                     <div className="case-bento-card">
                       <strong style={{ fontSize: '11px', textTransform: 'uppercase', color: 'var(--admin-coral, #F0624D)', letterSpacing: '0.06em', marginBottom: '4px' }}>
-                        ✦ Le Défi & Problématique
+                         Le Défi & Problématique
                       </strong>
                       <p style={{ margin: 0, fontSize: '13px', color: '#64748B' }}>{sampleData.need}</p>
                     </div>
                     <div className="case-bento-card">
                       <strong style={{ fontSize: '11px', textTransform: 'uppercase', color: 'var(--admin-teal, #6FA0D0)', letterSpacing: '0.06em', marginBottom: '4px' }}>
-                        ✦ L'Approche & Solution HEMIRA
+                         L'Approche & Solution HEMIRA
                       </strong>
                       <p style={{ margin: 0, fontSize: '13px', color: '#64748B' }}>{sampleData.response}</p>
                     </div>
                     <div className="case-bento-card result">
                       <strong style={{ fontSize: '11px', textTransform: 'uppercase', color: 'var(--admin-gold, #C9A968)', letterSpacing: '0.06em', marginBottom: '4px' }}>
-                        ★ Le Succès Obtenu
+                         Le Succès Obtenu
                       </strong>
                       <p style={{ margin: 0, fontSize: '13px', color: '#0F172A', fontWeight: 600 }}>{sampleData.result}</p>
                     </div>
@@ -668,19 +668,19 @@ export default function CaseAppearancePicker({
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                       <div>
                         <div style={{ fontSize: '11px', fontWeight: 800, textTransform: 'uppercase', color: '#0F172A', letterSpacing: '0.05em', marginBottom: '2px' }}>
-                          ✦ Contexte Officiel
+                           Contexte Officiel
                         </div>
                         <p style={{ margin: 0, fontSize: '13px', color: '#64748B' }}>{sampleData.context}</p>
                       </div>
                       <div>
                         <div style={{ fontSize: '11px', fontWeight: 800, textTransform: 'uppercase', color: '#0F172A', letterSpacing: '0.05em', marginBottom: '2px' }}>
-                          ✦ Demande Client Exprimée
+                           Demande Client Exprimée
                         </div>
                         <p style={{ margin: 0, fontSize: '13px', color: '#64748B' }}>{sampleData.need}</p>
                       </div>
                       <div>
                         <div style={{ fontSize: '11px', fontWeight: 800, textTransform: 'uppercase', color: '#0F172A', letterSpacing: '0.05em', marginBottom: '2px' }}>
-                          ✦ Réponse Opérationnelle Déployée
+                           Réponse Opérationnelle Déployée
                         </div>
                         <p style={{ margin: 0, fontSize: '13px', color: '#64748B' }}>{sampleData.response}</p>
                       </div>
@@ -708,20 +708,20 @@ export default function CaseAppearancePicker({
                   <div className="case-prestige-dark-body">
                     {!hasPhoto && (
                       <div className="case-prestige-dark-tag">
-                        ★ {sampleData.tag}
+                         {sampleData.tag}
                       </div>
                     )}
                     <h3 className="case-prestige-dark-title">{sampleData.title}</h3>
                     <div className="case-prestige-dark-step">
-                      <strong>✦ Contexte :</strong>
+                      <strong> Contexte :</strong>
                       <p>{sampleData.context}</p>
                     </div>
                     <div className="case-prestige-dark-step">
-                      <strong>✦ Besoin client :</strong>
+                      <strong> Besoin client :</strong>
                       <p>{sampleData.need}</p>
                     </div>
                     <div className="case-prestige-dark-step">
-                      <strong>✦ Intervention HEMIRA :</strong>
+                      <strong> Intervention HEMIRA :</strong>
                       <p>{sampleData.response}</p>
                     </div>
                     <div className="case-prestige-dark-result">
@@ -742,7 +742,7 @@ export default function CaseAppearancePicker({
                   </div>
                 )}
                 <div className="case-floating-body">
-                  <span className="case-floating-tag">✦ {sampleData.tag}</span>
+                  <span className="case-floating-tag"> {sampleData.tag}</span>
                   <h3 className="case-floating-title">{sampleData.title}</h3>
                   <div className="case-floating-box">
                     <div>

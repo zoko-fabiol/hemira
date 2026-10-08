@@ -119,6 +119,45 @@ function AppContent() {
     }
   };
 
+  // Synchronisation contextuelle : quand l'admin sélectionne une section, navigue et scroll automatiquement vers celle-ci
+  useEffect(() => {
+    const handleAdminMessage = (event) => {
+      if (event.data?.type === 'HEMIRA_NAVIGATE_SECTION' && event.data.sectionId) {
+        const secId = event.data.sectionId;
+        const triggerHighlight = (selector) => {
+          setTimeout(() => {
+            const el = document.querySelector(selector);
+            if (el) {
+              el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              el.classList.add('section-highlight-pulse');
+              setTimeout(() => el.classList.remove('section-highlight-pulse'), 2000);
+            }
+          }, 200);
+        };
+
+        if (secId === 'cases.list') {
+          navigateTo('case-studies');
+          triggerHighlight('[data-section-id="cases.list"]');
+        } else if (secId === 'services.list') {
+          navigateTo('services');
+          triggerHighlight('[data-section-id="services.list"]');
+        } else if (secId === 'about.founders') {
+          navigateTo('about');
+          triggerHighlight('[data-section-id="about.founders"]');
+        } else if (secId.startsWith('home.')) {
+          navigateTo('home');
+          if (secId === 'home.hero') {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          } else {
+            triggerHighlight(`[data-section-id="${secId}"]`);
+          }
+        }
+      }
+    };
+    window.addEventListener('message', handleAdminMessage);
+    return () => window.removeEventListener('message', handleAdminMessage);
+  }, []);
+
   // Re-run animations whenever page changes
   useEffect(() => {
     if (currentPage === 'admin') return;
