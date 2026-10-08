@@ -39,15 +39,203 @@ html {
 }
 body {
   font-family: 'Inter', -apple-system, sans-serif;
-  color: var(--ink);
-  background: #fff;
+  color: var(--theme-ink, var(--ink, #16213A));
+  background-color: var(--theme-page-bg, #FFFFFF);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: clip;
   width: 100%;
   min-height: 100vh;
+  transition: background-color 0.35s ease, color 0.35s ease;
 }
+
+/* ==========================================================================
+   STRICT CONTRAST & ANTI-CONFLICT SYSTEM (FONDS SOMBRES & CLAIRS)
+   ========================================================================== */
+
+/* Conteneurs et sections sombres */
+.on-dark,
+.bg-navy,
+section.bg-navy {
+  background-color: var(--navy, #0E1F3D) !important;
+  color: #F8FAFC !important;
+}
+
+.on-dark h1, .on-dark h2, .on-dark h3, .on-dark h4,
+.bg-navy h1, .bg-navy h2, .bg-navy h3, .bg-navy h4,
+.on-dark .section-head h2, .bg-navy .section-head h2 {
+  color: #FFFFFF !important;
+}
+
+.on-dark p, .on-dark .lead,
+.bg-navy p, .bg-navy .lead,
+.on-dark .section-head p, .bg-navy .section-head p {
+  color: rgba(255, 255, 255, 0.82) !important;
+}
+
+.on-dark .eyebrow,
+.bg-navy .eyebrow {
+  color: var(--gold, #C9A968) !important;
+}
+.on-dark .eyebrow::before,
+.bg-navy .eyebrow::before {
+  background-color: var(--gold, #C9A968) !important;
+}
+
+/* Cartes à l'intérieur d'une section sombre (.on-dark) */
+.on-dark .card-design--card-bordered,
+.bg-navy .card-design--card-bordered {
+  background-color: rgba(255, 255, 255, 0.06) !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+  border-top-color: var(--gold, #C9A968) !important;
+  color: #F8FAFC !important;
+}
+.on-dark .card-design--card-bordered h3,
+.bg-navy .card-design--card-bordered h3 {
+  color: #FFFFFF !important;
+}
+.on-dark .card-design--card-bordered p,
+.bg-navy .card-design--card-bordered p {
+  color: #CBD5E1 !important;
+}
+.on-dark .card-design--card-bordered .card-watermark,
+.bg-navy .card-design--card-bordered .card-watermark {
+  color: rgba(255, 255, 255, 0.15) !important;
+}
+
+.on-dark .card-design--card-elevated,
+.bg-navy .card-design--card-elevated {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+  border-color: rgba(255, 255, 255, 0.16) !important;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4) !important;
+  color: #F8FAFC !important;
+}
+.on-dark .card-design--card-elevated h3,
+.bg-navy .card-design--card-elevated h3 {
+  color: #FFFFFF !important;
+}
+.on-dark .card-design--card-elevated p,
+.bg-navy .card-design--card-elevated p {
+  color: #CBD5E1 !important;
+}
+
+.on-dark .card-design--card-minimal,
+.bg-navy .card-design--card-minimal {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  border-left-color: var(--gold, #C9A968) !important;
+  color: #F8FAFC !important;
+}
+.on-dark .card-design--card-minimal h3,
+.bg-navy .card-design--card-minimal h3 {
+  color: #FFFFFF !important;
+}
+.on-dark .card-design--card-minimal p,
+.bg-navy .card-design--card-minimal p {
+  color: #CBD5E1 !important;
+}
+
+.on-dark .card-design--card-glass,
+.bg-navy .card-design--card-glass {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+  color: #F8FAFC !important;
+}
+.on-dark .card-design--card-glass h3,
+.bg-navy .card-design--card-glass h3 {
+  color: #FFFFFF !important;
+}
+.on-dark .card-design--card-glass p,
+.bg-navy .card-design--card-glass p {
+  color: #CBD5E1 !important;
+}
+
+/* Sections claires avec .bg-light */
+.bg-light {
+  background-color: var(--bg-light, #F7F6F2) !important;
+  color: var(--theme-ink, #16213A);
+}
+.bg-light h1, .bg-light h2, .bg-light h3, .bg-light h4,
+.bg-light .section-head h2 {
+  color: var(--theme-ink, #16213A) !important;
+}
+.bg-light p, .bg-light .section-head p {
+  color: var(--slate, #5B6B7C) !important;
+}
+
+/* Hero en tonalité claire */
+.hero.theme-tone-light {
+  background: var(--bg-light, #F7F6F2) !important;
+  color: var(--ink, #16213A) !important;
+}
+.hero.theme-tone-light::before {
+  background:
+    radial-gradient(800px 600px at 90% 10%, rgba(240,98,77,0.12), transparent 60%),
+    radial-gradient(600px 500px at 10% 90%, rgba(57,173,198,0.1), transparent 60%),
+    radial-gradient(400px 400px at 50% 50%, rgba(245,197,24,0.06), transparent 70%);
+}
+.hero.theme-tone-light h1,
+.hero.theme-tone-light .hero-title-center,
+.hero.theme-tone-light .hero-minimal-title {
+  color: var(--ink, #16213A) !important;
+}
+.hero.theme-tone-light p.lead,
+.hero.theme-tone-light .hero-lead-center,
+.hero.theme-tone-light .hero-minimal-lead {
+  color: var(--slate, #5B6B7C) !important;
+}
+.hero.theme-tone-light .hero-badge {
+  background: rgba(14, 31, 61, 0.06);
+  border-color: rgba(14, 31, 61, 0.12);
+  color: var(--ink, #16213A);
+}
+.hero.theme-tone-light .hero-stats,
+.hero.theme-tone-light .hero-stats-center {
+  background: #FFFFFF;
+  border-color: var(--border, #E7E5DE);
+  box-shadow: 0 10px 30px rgba(14, 31, 61, 0.06);
+}
+.hero.theme-tone-light .hero-stat .num {
+  color: var(--ink, #16213A);
+}
+.hero.theme-tone-light .hero-stat .lbl {
+  color: var(--slate, #5B6B7C);
+}
+.hero.theme-tone-light .hero-bento-main,
+.hero.theme-tone-light .hero-bento-card {
+  background: #FFFFFF;
+  border-color: var(--border, #E7E5DE);
+  box-shadow: 0 8px 24px rgba(14, 31, 61, 0.05);
+}
+.hero.theme-tone-light .vip-badge-card .vip-badge-title {
+  color: var(--ink, #16213A);
+}
+.hero.theme-tone-light .vip-badge-card .vip-badge-desc {
+  color: var(--slate, #5B6B7C);
+}
+.hero.theme-tone-light .mosaic-caption {
+  color: var(--ink, #16213A);
+}
+
+/* Classes génériques de titres et paragraphes de cartes */
+.custom-card-title {
+  color: var(--theme-ink, var(--ink, #16213A));
+}
+.custom-card-desc {
+  color: var(--slate, #5B6B7C);
+}
+.card-design--card-dark .custom-card-title,
+.on-dark .custom-card-title,
+.bg-navy .custom-card-title {
+  color: #FFFFFF !important;
+}
+.card-design--card-dark .custom-card-desc,
+.on-dark .custom-card-desc,
+.bg-navy .custom-card-desc {
+  color: #CBD5E1 !important;
+}
+
 img { max-width: 100%; display: block; }
 a { text-decoration: none; color: inherit; }
 ul { list-style: none; padding: 0; }
@@ -1867,62 +2055,72 @@ body.chatbot-open .back-top {
    ========================================================================== */
 
 /* 1. Fade Up */
-.card-anim--anim-fade-up {
-  opacity: 0;
-  transform: translateY(28px);
-  transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: opacity, transform;
+@keyframes cardFadeUpAnim {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
-.card-anim--anim-fade-up.visible,
-.visible .card-anim--anim-fade-up,
-.reveal.visible .card-anim--anim-fade-up {
-  opacity: 1 !important;
-  transform: translateY(0) !important;
+.card-anim--anim-fade-up {
+  animation: cardFadeUpAnim 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: opacity, transform;
 }
 
 /* 2. Zoom In */
-.card-anim--anim-zoom-in {
-  opacity: 0;
-  transform: scale(0.92);
-  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: opacity, transform;
+@keyframes cardZoomInAnim {
+  from {
+    opacity: 0;
+    transform: scale(0.93);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
-.card-anim--anim-zoom-in.visible,
-.visible .card-anim--anim-zoom-in,
-.reveal.visible .card-anim--anim-zoom-in {
-  opacity: 1 !important;
-  transform: scale(1) !important;
+.card-anim--anim-zoom-in {
+  animation: cardZoomInAnim 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: opacity, transform;
 }
 
 /* 3. 3D Tilt & Perspective */
-.card-anim--anim-tilt-3d {
-  opacity: 0;
-  transform: perspective(1000px) rotateX(6deg) translateY(20px);
-  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-  transform-style: preserve-3d;
+@keyframes cardTiltAnim {
+  from {
+    opacity: 0;
+    transform: perspective(1000px) rotateX(6deg) translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: perspective(1000px) rotateX(0deg) translateY(0);
+  }
 }
-.card-anim--anim-tilt-3d.visible,
-.visible .card-anim--anim-tilt-3d,
-.reveal.visible .card-anim--anim-tilt-3d {
-  opacity: 1 !important;
-  transform: perspective(1000px) rotateX(0deg) translateY(0) !important;
+.card-anim--anim-tilt-3d {
+  animation: cardTiltAnim 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  transform-style: preserve-3d;
+  will-change: opacity, transform;
 }
 .card-anim--anim-tilt-3d:hover {
   transform: perspective(1000px) rotateX(-2deg) rotateY(3deg) translateY(-6px) !important;
 }
 
 /* 4. Shimmer Border Glow */
-.card-anim--anim-shimmer {
-  opacity: 0;
-  transform: translateY(20px);
-  position: relative;
-  transition: opacity 0.7s ease, transform 0.7s ease;
+@keyframes cardShimmerFade {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
-.card-anim--anim-shimmer.visible,
-.visible .card-anim--anim-shimmer,
-.reveal.visible .card-anim--anim-shimmer {
-  opacity: 1 !important;
-  transform: translateY(0) !important;
+.card-anim--anim-shimmer {
+  position: relative;
+  animation: cardShimmerFade 0.55s ease forwards;
+  will-change: opacity, transform;
 }
 .card-anim--anim-shimmer::after {
   content: '';
@@ -1930,7 +2128,7 @@ body.chatbot-open .back-top {
   top: 0; left: -100%;
   width: 50%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(201, 169, 104, 0.25), transparent);
+  background: linear-gradient(90deg, transparent, rgba(201, 169, 104, 0.28), transparent);
   transform: skewX(-20deg);
   pointer-events: none;
 }
@@ -1943,16 +2141,19 @@ body.chatbot-open .back-top {
 }
 
 /* 5. Continuous Gentle Float */
-.card-anim--anim-float {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.7s ease, transform 0.7s ease;
+@keyframes cardFloatEntrance {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
-.card-anim--anim-float.visible,
-.visible .card-anim--anim-float,
-.reveal.visible .card-anim--anim-float {
-  opacity: 1 !important;
-  animation: floatLevitate 4.5s ease-in-out infinite alternate;
+.card-anim--anim-float {
+  animation: cardFloatEntrance 0.6s ease forwards, floatLevitate 5s ease-in-out infinite alternate 0.6s;
+  will-change: opacity, transform;
 }
 @keyframes floatLevitate {
   0% { transform: translateY(0); }
@@ -1960,19 +2161,21 @@ body.chatbot-open .back-top {
 }
 
 /* 6. Cinematic Blur Reveal */
-.card-anim--anim-blur-reveal {
-  opacity: 0;
-  filter: blur(10px);
-  transform: translateY(16px);
-  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), filter 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: opacity, filter, transform;
+@keyframes cardBlurRevealAnim {
+  from {
+    opacity: 0;
+    filter: blur(8px);
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+  }
 }
-.card-anim--anim-blur-reveal.visible,
-.visible .card-anim--anim-blur-reveal,
-.reveal.visible .card-anim--anim-blur-reveal {
-  opacity: 1 !important;
-  filter: blur(0) !important;
-  transform: translateY(0) !important;
+.card-anim--anim-blur-reveal {
+  animation: cardBlurRevealAnim 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: opacity, filter, transform;
 }
 
 /* ==========================================================================

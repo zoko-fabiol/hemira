@@ -179,6 +179,12 @@ export function applyAppearanceToDOM(appearance) {
     root.style.setProperty('--theme-border', p.border);
   }
 
+  // Fond de page et tonalité globale
+  const isDark = appearance.style === 'prestige' || (p.surface && (p.surface.startsWith('#0') || p.surface.startsWith('#1')));
+  const pageBg = isDark ? (p.surface || '#0B1120') : (p.surface || '#FFFFFF');
+  root.style.setProperty('--theme-page-bg', pageBg);
+  root.setAttribute('data-theme-tone', isDark ? 'dark' : 'light');
+
   // Forme / Rayon
   const radius = SHAPE_RADIUS[appearance.shape] || SHAPE_RADIUS.rounded;
   root.style.setProperty('--radius', radius);

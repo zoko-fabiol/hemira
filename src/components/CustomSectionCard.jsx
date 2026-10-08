@@ -91,8 +91,8 @@ export default function CustomSectionCard({
             <div className="card-icon">
               {icon}
             </div>
-            <h3>{item.title}</h3>
-            <p>{item.desc}</p>
+            <h3 className="custom-card-title">{item.title}</h3>
+            <p className="custom-card-desc">{item.desc}</p>
           </div>
         );
       }
@@ -101,8 +101,8 @@ export default function CustomSectionCard({
           <div className="card-icon">
             {icon}
           </div>
-          <h3>{item.title}</h3>
-          <p>{item.desc}</p>
+          <h3 className="custom-card-title">{item.title}</h3>
+          <p className="custom-card-desc">{item.desc}</p>
         </div>
       );
     }
@@ -112,8 +112,8 @@ export default function CustomSectionCard({
       return (
         <div key={index} className={`mini-card ${item.highlight ? 'highlight' : ''} ${animClass}`} onClick={onClick}>
           <span className="step-num">{item.num}</span>
-          <h4>{item.title}</h4>
-          <p>{item.desc}</p>
+          <h4 className="custom-card-title">{item.title}</h4>
+          <p className="custom-card-desc">{item.desc}</p>
         </div>
       );
     }
@@ -142,8 +142,8 @@ export default function CustomSectionCard({
             {icon}
           </span>
         )}
-        <h4 style={{ fontSize: '17px', marginBottom: '6px' }}>{item.title}</h4>
-        <p style={{ fontSize: '14px', color: 'var(--slate)', margin: 0 }}>{item.desc}</p>
+        <h4 className="custom-card-title" style={{ fontSize: '17px', marginBottom: '6px' }}>{item.title}</h4>
+        <p className="custom-card-desc" style={{ fontSize: '14px', margin: 0 }}>{item.desc}</p>
         {item.highlight && (
           <span style={{ 
             marginTop: '10px', 
@@ -661,11 +661,10 @@ export default function CustomSectionCard({
       )}
 
       {title && (
-        <h3 style={{
+        <h3 className="custom-card-title" style={{
           fontFamily: "'Sora', sans-serif",
           fontSize: '19px',
           fontWeight: 800,
-          color: 'var(--ink, #16213A)',
           marginBottom: '10px',
           lineHeight: 1.35,
           letterSpacing: '-0.01em'
@@ -675,10 +674,9 @@ export default function CustomSectionCard({
       )}
 
       {desc && (
-        <p style={{
+        <p className="custom-card-desc" style={{
           fontSize: '14.5px',
           lineHeight: 1.6,
-          color: 'var(--slate, #5B6B7C)',
           marginBottom: (items.length > 0 || item.need || action) ? '16px' : '0'
         }}>
           {desc}
