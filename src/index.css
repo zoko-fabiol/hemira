@@ -1272,6 +1272,37 @@ body.chatbot-open .back-top {
   .cta-contact-box a { font-size: 16px !important; }
 }
 
+@media (max-width: 380px) {
+  .wrap {
+    padding: 0 12px !important;
+  }
+  .hero {
+    padding: 110px 0 50px !important;
+  }
+  .hero h1, .hero-title-center, .hero-minimal-title {
+    font-size: 24px !important;
+    line-height: 1.2 !important;
+  }
+  .hero-badge {
+    padding: 6px 12px !important;
+    font-size: 11.5px !important;
+  }
+  .hero-ctas {
+    gap: 8px !important;
+  }
+  .btn {
+    padding: 10px 14px !important;
+    font-size: 13px !important;
+  }
+  .card-design--card-bordered,
+  .card-design--card-elevated,
+  .card-design--card-minimal,
+  .card-design--card-dark,
+  .card-design--card-glass {
+    padding: 24px 18px !important;
+  }
+}
+
 
 /* ===== CHATBOT OFFICIAL LIVE STYLES ===== */
 #chatbot-widget {

@@ -2577,3 +2577,61 @@
   gap: 6px;
 }
 
+/* ==========================================================================
+   RESPONSIVE OPTIMIZATIONS FOR APPEARANCE STUDIO & ADMIN INTERFACE
+   ========================================================================== */
+@media (max-width: 1200px) {
+  .appearance-nav-sidebar {
+    width: 230px;
+  }
+  .appearance-inspector {
+    width: 330px;
+  }
+}
+
+@media (max-width: 992px) {
+  .appearance-studio-workspace {
+    flex-direction: column;
+    min-height: auto;
+    overflow-y: auto;
+  }
+  .appearance-nav-sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid var(--admin-border, #334155);
+    max-height: 220px;
+  }
+  .appearance-preview-viewport {
+    min-height: 520px;
+    padding: 16px 12px;
+  }
+  .appearance-inspector {
+    width: 100%;
+    border-left: none;
+    border-top: 1px solid var(--admin-border, #334155);
+    max-height: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .appearance-studio-topbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    padding: 12px 14px;
+    height: auto;
+  }
+  .appearance-topbar-left,
+  .appearance-device-switcher,
+  .appearance-topbar-actions {
+    justify-content: center;
+  }
+  .appearance-preview-viewport {
+    padding: 10px 4px;
+    min-height: 420px;
+  }
+  .device-screen-frame {
+    border-width: 4px;
+  }
+}
+

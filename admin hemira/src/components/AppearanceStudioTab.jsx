@@ -820,6 +820,22 @@ export default function AppearanceStudioTab({ showToast }) {
                   <div className="variants-list">
                     {selectedSection.variants.map(v => {
                       const isSelected = (sectionState.variant || 'default') === v.id;
+                      const getVariantBadge = (vId) => {
+                        if (vId.includes('elevated')) return { label: '3D Floating', color: '#38BDF8' };
+                        if (vId.includes('bordered') || vId.includes('architect')) return { label: 'Architecte', color: '#F0624D' };
+                        if (vId.includes('dark') || vId.includes('prestige')) return { label: 'VIP Or & Nuit', color: '#D4AF37' };
+                        if (vId.includes('glass')) return { label: 'Verre Nacre', color: '#818CF8' };
+                        if (vId.includes('bento')) return { label: 'Bento Grid', color: '#10B981' };
+                        if (vId.includes('minimal')) return { label: 'Épuré', color: '#94A3B8' };
+                        if (vId.includes('center')) return { label: 'Centré VIP', color: '#C9A968' };
+                        if (vId.includes('cinema')) return { label: 'Panoramique', color: '#F43F5E' };
+                        if (vId.includes('carnet')) return { label: 'Dossier VIP', color: '#F59E0B' };
+                        if (vId.includes('floating')) return { label: 'Relief 3D', color: '#A855F7' };
+                        if (vId.includes('editorial')) return { label: 'Magazine', color: '#FB923C' };
+                        return { label: 'Signature', color: '#6FA0D0' };
+                      };
+                      const badge = getVariantBadge(v.id);
+
                       return (
                         <div 
                           key={v.id}
@@ -827,8 +843,23 @@ export default function AppearanceStudioTab({ showToast }) {
                           onClick={() => handleSectionVariantChange(selectedSectionId, v.id)}
                         >
                           <div className="variant-card-header">
-                            <strong className="variant-title">{v.name}</strong>
-                            {isSelected && <span className="variant-check"><Check size={12} /></span>}
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                              <strong className="variant-title">{v.name}</strong>
+                              <span style={{
+                                fontSize: '10px',
+                                fontWeight: 800,
+                                textTransform: 'uppercase',
+                                letterSpacing: '0.06em',
+                                color: badge.color,
+                                background: 'rgba(255,255,255,0.06)',
+                                border: `1px solid ${badge.color}44`,
+                                padding: '1px 6px',
+                                borderRadius: '6px'
+                              }}>
+                                {badge.label}
+                              </span>
+                            </div>
+                            {isSelected && <span className="variant-check"><Check size={14} /></span>}
                           </div>
                           <p className="variant-desc">{v.desc}</p>
                         </div>
