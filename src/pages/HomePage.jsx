@@ -9,9 +9,22 @@ export default function HomePage({ onNavigate, lang = 'fr', content, appearance 
   const heroConfig = appearance?.sections?.['home.hero'] || {};
   const isHeroVisible = heroConfig.visible !== false;
 
+  const getHeroToneClass = (tone) => {
+    const t = tone || 'dark';
+    if (t === 'light') return 'theme-tone-light section-tone--light';
+    if (t === 'alt') return 'theme-tone-alt section-tone--alt';
+    return 'theme-tone-dark section-tone--dark';
+  };
+
+  const getSectionToneClass = (tone, defaultTone = 'light') => {
+    const t = tone || defaultTone;
+    if (t === 'dark') return 'bg-navy on-dark section-tone--dark';
+    if (t === 'alt') return 'bg-light section-tone--alt';
+    return 'bg-white section-tone--light';
+  };
+
   return (
     <>
-      {/* HERO SECTION */}
       {/* HERO SECTION */}
       {isHeroVisible && (() => {
         const heroVariant = heroConfig.variant || 'split';
@@ -19,7 +32,7 @@ export default function HomePage({ onNavigate, lang = 'fr', content, appearance 
         // 1. Variante Prestige Centré
         if (heroVariant === 'center') {
           return (
-            <section className={`hero hero-variant--center ${heroConfig.tone === 'light' ? 'theme-tone-light' : ''}`} data-section-id="home.hero">
+            <section className={`hero hero-variant--center ${getHeroToneClass(heroConfig.tone)}`} data-section-id="home.hero">
               <div className="wrap hero-inner-center">
                 <div className="hero-badge">
                   <span className="dot"></span>{h.badge}
@@ -60,7 +73,7 @@ export default function HomePage({ onNavigate, lang = 'fr', content, appearance 
         // 2. Variante Bento Moderne Asymétrique
         if (heroVariant === 'bento') {
           return (
-            <section className={`hero hero-variant--bento ${heroConfig.tone === 'light' ? 'theme-tone-light' : ''}`} data-section-id="home.hero">
+            <section className={`hero hero-variant--bento ${getHeroToneClass(heroConfig.tone)}`} data-section-id="home.hero">
               <div className="wrap hero-inner-bento">
                 <div className="hero-bento-main">
                   <div className="hero-badge">
@@ -123,7 +136,7 @@ export default function HomePage({ onNavigate, lang = 'fr', content, appearance 
         // 3. Variante Éditoriale Haute Couture
         if (heroVariant === 'minimal') {
           return (
-            <section className={`hero hero-variant--minimal ${heroConfig.tone === 'light' ? 'theme-tone-light' : ''}`} data-section-id="home.hero">
+            <section className={`hero hero-variant--minimal ${getHeroToneClass(heroConfig.tone)}`} data-section-id="home.hero">
               <div className="wrap hero-inner-minimal">
                 <div className="hero-minimal-header">
                   <div className="hero-badge">
@@ -165,7 +178,7 @@ export default function HomePage({ onNavigate, lang = 'fr', content, appearance 
 
         // 4. Variante Split Signature (Défaut)
         return (
-          <section className={`hero ${heroConfig.tone === 'light' ? 'theme-tone-light' : ''}`} data-section-id="home.hero">
+          <section className={`hero ${getHeroToneClass(heroConfig.tone)}`} data-section-id="home.hero">
             <div className="wrap hero-inner">
               <div>
                 <div className="hero-badge">
@@ -224,10 +237,7 @@ export default function HomePage({ onNavigate, lang = 'fr', content, appearance 
       {/* POURQUOI HEMIRA - NOS ENGAGEMENTS */}
       {appearance?.sections?.['home.commitments']?.visible !== false && (
         <section 
-          className={`reveal ${
-            appearance?.sections?.['home.commitments']?.tone === 'dark' ? 'bg-navy on-dark' :
-            appearance?.sections?.['home.commitments']?.tone === 'alt' ? 'bg-light' : ''
-          }`}
+          className={`reveal ${getSectionToneClass(appearance?.sections?.['home.commitments']?.tone, 'light')}`}
           data-section-id="home.commitments"
         >
           <div className="wrap">
@@ -287,9 +297,7 @@ export default function HomePage({ onNavigate, lang = 'fr', content, appearance 
       {/* NOS FONDATRICES */}
       {appearance?.sections?.['about.founders']?.visible !== false && (
         <section 
-          className={`reveal ${
-            appearance?.sections?.['about.founders']?.tone === 'dark' ? 'bg-navy on-dark' : 'bg-light'
-          }`}
+          className={`reveal ${getSectionToneClass(appearance?.sections?.['about.founders']?.tone, 'light')}`}
           data-section-id="about.founders"
         >
           <div className="wrap about-layout" style={{ alignItems: 'center' }}>
@@ -326,10 +334,7 @@ export default function HomePage({ onNavigate, lang = 'fr', content, appearance 
       {/* NOS 6 SERVICES DE VOYAGE */}
       {appearance?.sections?.['home.services']?.visible !== false && (
         <section 
-          className={`reveal ${
-            appearance?.sections?.['home.services']?.tone === 'dark' ? 'bg-navy on-dark' :
-            appearance?.sections?.['home.services']?.tone === 'alt' ? 'bg-light' : ''
-          }`}
+          className={`reveal ${getSectionToneClass(appearance?.sections?.['home.services']?.tone, 'alt')}`}
           data-section-id="home.services"
         >
           <div className="wrap">

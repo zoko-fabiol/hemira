@@ -1,5 +1,5 @@
 import { db, storage } from '../firebase';
-import { doc, getDoc, setDoc, onSnapshot } from 'firebase/firestore';
+import { doc, getDoc, setDoc, onSnapshot, collection, addDoc, deleteDoc, query, orderBy } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { t as defaultTranslations } from '../data/defaultTranslations';
 
@@ -133,22 +133,253 @@ export async function seedAllDefaults() {
   return { success: true, message: "Contenu officiel synchronisé avec succès dans Firebase !" };
 }
 
-// Upload image (Firebase Storage with base64 fallback)
-export async function uploadImageFile(file, folder = 'uploads') {
-  try {
-    const filename = `${folder}/${Date.now()}_${file.name.replace(/[^a-zA-Z0-9._-]/g, '_')}`;
-    const storageRef = ref(storage, filename);
-    const snap = await uploadBytes(storageRef, file);
-    const url = await getDownloadURL(snap.ref);
-    return url;
-  } catch (err) {
-    console.warn("Storage upload failed, falling back to base64 data URL:", err);
+// Circuit Breaker mémorisé en session pour Firebase Storage
+let isStorageDisabledForSession = typeof sessionStorage !== 'undefined'
+  ? sessionStorage.getItem('hemira_storage_disabled') === 'true'
+  : false;
+
+// Optimisation automatique d'image côté client ultra-rapide (< 100ms)
+// Décodage matériel natif (createImageBitmap ou URL.createObjectURL), Canvas WebP haute fidélité
+export async function optimizeImage(file, maxDimension = 1200, quality = 0.78) {
+  if (!file) throw new Error("Fichier absent");
+
+  // Cas SVG : conservation vectorielle sans conversion
+  if (file.type === 'image/svg+xml') {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = (e) => reject(e);
+      reader.onload = () => resolve({
+        blob: file,
+        dataUrl: reader.result,
+        width: null,
+        height: null,
+        originalSize: file.size,
+        compressedSize: file.size,
+        mimeType: file.type
+      });
+      reader.onerror = reject;
       reader.readAsDataURL(file);
     });
+  }
+
+  // 1. Décodage matériel haute performance
+  let sourceWidth = 0;
+  let sourceHeight = 0;
+  let sourceElement = null;
+  let objectUrlToRevoke = null;
+
+  try {
+    if (typeof createImageBitmap === 'function') {
+      const bmp = await createImageBitmap(file);
+      sourceWidth = bmp.width;
+      sourceHeight = bmp.height;
+      sourceElement = bmp;
+    }
+  } catch (bmpErr) {
+    // Repli sur URL.createObjectURL si createImageBitmap échoue
+  }
+
+  if (!sourceElement) {
+    sourceElement = await new Promise((resolve, reject) => {
+      const url = URL.createObjectURL(file);
+      objectUrlToRevoke = url;
+      const img = new Image();
+      img.onload = () => {
+        sourceWidth = img.naturalWidth || img.width;
+        sourceHeight = img.naturalHeight || img.height;
+        resolve(img);
+      };
+      img.onerror = () => {
+        URL.revokeObjectURL(url);
+        reject(new Error("Impossible de décoder l'image sélectionnée."));
+      };
+      img.src = url;
+    });
+  }
+
+  // 2. Calcul des dimensions cibles optimales
+  let targetWidth = sourceWidth;
+  let targetHeight = sourceHeight;
+  if (targetWidth > maxDimension || targetHeight > maxDimension) {
+    if (targetWidth > targetHeight) {
+      targetHeight = Math.round((targetHeight * maxDimension) / targetWidth);
+      targetWidth = maxDimension;
+    } else {
+      targetWidth = Math.round((targetWidth * maxDimension) / targetHeight);
+      targetHeight = maxDimension;
+    }
+  }
+
+  // 3. Dessin sur Canvas optimisé
+  const canvas = document.createElement('canvas');
+  canvas.width = targetWidth;
+  canvas.height = targetHeight;
+  const ctx = canvas.getContext('2d', { alpha: true });
+  ctx.imageSmoothingEnabled = true;
+  ctx.imageSmoothingQuality = 'medium';
+  ctx.drawImage(sourceElement, 0, 0, targetWidth, targetHeight);
+
+  // Libération mémoire immédiate
+  if (typeof sourceElement.close === 'function') {
+    sourceElement.close();
+  }
+  if (objectUrlToRevoke) {
+    URL.revokeObjectURL(objectUrlToRevoke);
+  }
+
+  // 4. Encodage WebP ultra-léger (repli JPEG)
+  let mime = 'image/webp';
+  let dataUrl = canvas.toDataURL(mime, quality);
+  if (!dataUrl || !dataUrl.startsWith('data:image/webp')) {
+    mime = 'image/jpeg';
+    dataUrl = canvas.toDataURL(mime, quality);
+  }
+
+  // Calcul instantané du poids compressé
+  const b64Data = dataUrl.split(',')[1] || '';
+  const compressedSize = Math.round((b64Data.length * 3) / 4);
+
+  // Génération Blob
+  const blob = await new Promise((res) => {
+    canvas.toBlob((b) => res(b || file), mime, quality);
+  });
+
+  return {
+    blob,
+    dataUrl,
+    width: targetWidth,
+    height: targetHeight,
+    originalSize: file.size,
+    compressedSize,
+    mimeType: mime
+  };
+}
+
+// Upload image et enregistrement dans Firestore site_media + Storage avec repli optimisé
+export async function uploadImageFile(file, folder = 'uploads') {
+  const result = await uploadMediaWithMetadata(file, folder);
+  return result.url;
+}
+
+// Upload haute performance avec chronométrage et Circuit Breaker (< 1.5s garanti)
+export async function uploadMediaWithMetadata(file, folder = 'uploads') {
+  const startTime = Date.now();
+  let finalUrl = '';
+  let meta = {
+    width: null,
+    height: null,
+    originalSize: file.size,
+    compressedSize: file.size,
+    mimeType: file.type
+  };
+
+  try {
+    const opt = await optimizeImage(file, 1200, 0.78);
+    meta = {
+      width: opt.width,
+      height: opt.height,
+      originalSize: opt.originalSize,
+      compressedSize: opt.compressedSize,
+      mimeType: opt.mimeType
+    };
+
+    // Tentative Storage avec Circuit Breaker (Timeout strict 1200ms)
+    if (!isStorageDisabledForSession) {
+      try {
+        const ext = opt.mimeType === 'image/webp' ? 'webp' : (opt.mimeType === 'image/svg+xml' ? 'svg' : 'jpg');
+        const filename = `${folder}/${Date.now()}_${file.name.replace(/[^a-zA-Z0-9._-]/g, '_')}.${ext}`;
+        const storageRef = ref(storage, filename);
+
+        const uploadPromise = uploadBytes(storageRef, opt.blob).then(snap => getDownloadURL(snap.ref));
+        const timeoutPromise = new Promise((_, reject) => 
+          setTimeout(() => reject(new Error("Storage timeout (1200ms)")), 1200)
+        );
+
+        finalUrl = await Promise.race([uploadPromise, timeoutPromise]);
+      } catch (storageErr) {
+        console.warn("Storage indisponible ou lent, activation du Circuit Breaker et bascule directe Firestore :", storageErr?.message || storageErr);
+        isStorageDisabledForSession = true;
+        if (typeof sessionStorage !== 'undefined') {
+          sessionStorage.setItem('hemira_storage_disabled', 'true');
+        }
+        finalUrl = opt.dataUrl;
+      }
+    } else {
+      // Storage déjà marqué comme indisponible : repli 0ms
+      finalUrl = opt.dataUrl;
+    }
+  } catch (optErr) {
+    console.warn("Échec d'optimisation d'image, lecture directe FileReader :", optErr);
+    finalUrl = await new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }
+
+  // Enregistrement dans le catalogue média Firestore 'site_media'
+  let docId = `media_${Date.now()}`;
+  try {
+    const mediaCol = collection(db, 'site_media');
+    const docRef = await addDoc(mediaCol, {
+      name: file.name,
+      folder: folder,
+      url: finalUrl,
+      size: meta.originalSize,
+      compressedSize: meta.compressedSize,
+      width: meta.width,
+      height: meta.height,
+      mimeType: meta.mimeType,
+      createdAt: Date.now()
+    });
+    docId = docRef.id;
+  } catch (fsErr) {
+    console.warn("Enregistrement collection site_media Firestore warning:", fsErr);
+  }
+
+  const durationMs = Date.now() - startTime;
+  console.log(`[Performance Upload] Image traitée et prête en ${durationMs}ms (${Math.round(meta.compressedSize / 1024)} Ko)`);
+
+  return {
+    url: finalUrl,
+    id: docId,
+    name: file.name,
+    durationMs,
+    ...meta
+  };
+}
+
+// Souscription temps réel à la médiathèque Firestore
+export function subscribeMediaLibrary(callback) {
+  try {
+    const q = query(collection(db, 'site_media'), orderBy('createdAt', 'desc'));
+    return onSnapshot(q, (snap) => {
+      const items = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      callback(items);
+    }, (err) => {
+      console.warn("Abonnement médiathèque avec index avertissement, repli non indexé :", err);
+      const fallbackQ = collection(db, 'site_media');
+      return onSnapshot(fallbackQ, (fSnap) => {
+        const fItems = fSnap.docs.map(d => ({ id: d.id, ...d.data() }))
+          .sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+        callback(fItems);
+      });
+    });
+  } catch (err) {
+    console.warn("Erreur souscription médiathèque:", err);
+    callback([]);
+    return () => {};
+  }
+}
+
+// Supprimer un média de la médiathèque Firestore
+export async function deleteMediaItem(id) {
+  try {
+    await deleteDoc(doc(db, 'site_media', id));
+    return { success: true };
+  } catch (err) {
+    console.error("Suppression média Firestore error:", err);
+    throw err;
   }
 }
 

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Users, Save, Upload, Plus, Trash2 } from 'lucide-react';
-import { saveContent, uploadImageFile } from '../services/cmsService';
+import { Users, Save, Sparkles } from 'lucide-react';
+import { saveContent } from '../services/cmsService';
+import FirestoreImageUploader from './FirestoreImageUploader';
 
 export default function AboutTab({ contentFr, contentEn, showToast }) {
   const [activeLang, setActiveLang] = useState('fr');
@@ -20,29 +21,30 @@ export default function AboutTab({ contentFr, contentEn, showToast }) {
     setCurrent(prev => ({ ...prev, [field]: val }));
   };
 
-  const handleFounderChange = (founderKey, field, val) => {
-    setCurrent(prev => ({
+  const setFounderPhoto = (founderKey, url) => {
+    setDataFr(prev => ({
       ...prev,
+      [founderKey + 'Photo']: url,
+      [founderKey]: { ...(prev?.[founderKey] || {}), photo: url },
       founders: {
-        ...prev.founders,
-        [founderKey]: {
-          ...prev.founders?.[founderKey],
-          [field]: val
-        }
+        ...(prev?.founders || {}),
+        [founderKey]: { ...(prev?.founders?.[founderKey] || {}), photo: url }
+      }
+    }));
+    setDataEn(prev => ({
+      ...prev,
+      [founderKey + 'Photo']: url,
+      [founderKey]: { ...(prev?.[founderKey] || {}), photo: url },
+      founders: {
+        ...(prev?.founders || {}),
+        [founderKey]: { ...(prev?.founders?.[founderKey] || {}), photo: url }
       }
     }));
   };
 
-  const handleFounderPhoto = async (e, founderKey) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    try {
-      const url = await uploadImageFile(file, 'founders');
-      handleFounderChange(founderKey, 'photo', url);
-      showToast("Photo de profil mise à jour !");
-    } catch (err) {
-      alert("Erreur upload photo : " + err.message);
-    }
+  const setDuoPhoto = (url) => {
+    setDataFr(prev => ({ ...prev, duoPhoto: url }));
+    setDataEn(prev => ({ ...prev, duoPhoto: url }));
   };
 
   const handleSave = async (e) => {
@@ -184,18 +186,16 @@ export default function AboutTab({ contentFr, contentEn, showToast }) {
               />
             </div>
 
-            {/* Photo Jeanne */}
-            <div style={{ marginTop: '14px', display: 'flex', gap: '16px', alignItems: 'center' }}>
-              <div className="image-preview-wrap" style={{ width: '70px', height: '70px', borderRadius: '50%' }}>
-                <img src={current.jeanne?.photo || "/avatar-jeanne.svg"} alt="Jeanne" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-              </div>
-              <div>
-                <label className="admin-btn admin-btn-outline" style={{ cursor: 'pointer', display: 'inline-flex' }}>
-                  <Upload size={14} />
-                  <span>Changer la photo de Jeanne</span>
-                  <input type="file" accept="image/*" style={{ display: 'none' }} onChange={(e) => handleFounderPhoto(e, 'jeanne')} />
-                </label>
-              </div>
+            {/* Photo Jeanne avec FirestoreImageUploader */}
+            <div style={{ marginTop: '16px' }}>
+              <FirestoreImageUploader 
+                value={current.jeannePhoto || current.jeanne?.photo || ''}
+                folder="founders"
+                label="Photo de profil - Jeanne Helene Epée Nsome"
+                description="Format recommandé: carré ou portrait. Optimisation WebP automatique et stockage Firestore."
+                aspectRatio="1/1"
+                onChange={(url) => setFounderPhoto('jeanne', url)}
+              />
             </div>
           </div>
 
@@ -250,19 +250,30 @@ export default function AboutTab({ contentFr, contentEn, showToast }) {
               />
             </div>
 
-            {/* Photo Miriam */}
-            <div style={{ marginTop: '14px', display: 'flex', gap: '16px', alignItems: 'center' }}>
-              <div className="image-preview-wrap" style={{ width: '70px', height: '70px', borderRadius: '50%' }}>
-                <img src={current.miriam?.photo || "/avatar-miriam.svg"} alt="Miriam" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-              </div>
-              <div>
-                <label className="admin-btn admin-btn-outline" style={{ cursor: 'pointer', display: 'inline-flex' }}>
-                  <Upload size={14} />
-                  <span>Changer la photo de Miriam</span>
-                  <input type="file" accept="image/*" style={{ display: 'none' }} onChange={(e) => handleFounderPhoto(e, 'miriam')} />
-                </label>
-              </div>
+            {/* Photo Miriam avec FirestoreImageUploader */}
+            <div style={{ marginTop: '16px' }}>
+              <FirestoreImageUploader 
+                value={current.miriamPhoto || current.miriam?.photo || ''}
+                folder="founders"
+                label="Photo de profil - Miriam Nguemdo Nouzeda"
+                description="Format recommandé: carré ou portrait. Optimisation WebP automatique et stockage Firestore."
+                aspectRatio="1/1"
+                onChange={(url) => setFounderPhoto('miriam', url)}
+              />
             </div>
+          </div>
+
+          {/* Photo Duo Fondatrices */}
+          <div style={{ marginBottom: '28px', borderBottom: '1px solid var(--admin-border)', paddingBottom: '24px' }}>
+            <h4 style={{ marginBottom: '14px', color: 'var(--admin-text-main)', fontSize: '16px' }}>Photo officielle du Duo de Fondatrices</h4>
+            <FirestoreImageUploader 
+              value={current.duoPhoto || ''}
+              folder="founders"
+              label="Photo conjointe des associées (affichée en haut de la section À Propos)"
+              description="Optimisation automatique et enregistrement direct dans Firestore."
+              aspectRatio="4/3"
+              onChange={(url) => setDuoPhoto(url)}
+            />
           </div>
         </form>
       </div>

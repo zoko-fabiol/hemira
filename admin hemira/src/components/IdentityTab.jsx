@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Image as ImageIcon, Upload, Save, Check, RefreshCw } from 'lucide-react';
-import { DEFAULT_SETTINGS, saveSettings, uploadImageFile } from '../services/cmsService';
+import { Image as ImageIcon, Save } from 'lucide-react';
+import { DEFAULT_SETTINGS, saveSettings } from '../services/cmsService';
+import FirestoreImageUploader from './FirestoreImageUploader';
 
 export default function IdentityTab({ settings, showToast }) {
   const [form, setForm] = useState(settings || DEFAULT_SETTINGS);
-  const [uploadingLogo, setUploadingLogo] = useState(false);
-  const [uploadingMark, setUploadingMark] = useState(false);
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
@@ -14,23 +13,6 @@ export default function IdentityTab({ settings, showToast }) {
 
   const handleChange = (key, val) => {
     setForm(prev => ({ ...prev, [key]: val }));
-  };
-
-  const handleFileUpload = async (e, field, setUploadingState) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    setUploadingState(true);
-    try {
-      const url = await uploadImageFile(file, 'identity');
-      handleChange(field, url);
-      showToast("Fichier téléversé avec succès ! N'oubliez pas d'enregistrer.");
-    } catch (err) {
-      console.error("Upload failed:", err);
-      alert("Erreur lors de l'envoi de l'image : " + err.message);
-    } finally {
-      setUploadingState(false);
-    }
   };
 
   const handleSave = async (e) => {
@@ -98,86 +80,28 @@ export default function IdentityTab({ settings, showToast }) {
             </div>
           </div>
 
-          {/* Logo Principal Upload */}
+          {/* Logo Principal & Favicon Upload avec FirestoreImageUploader */}
           <div className="form-grid" style={{ marginBottom: '24px' }}>
-            <div style={{ border: '1px solid var(--admin-border)', borderRadius: '14px', padding: '20px', background: 'var(--admin-card-inner)' }}>
-              <label style={{ fontWeight: 700, display: 'block', marginBottom: '8px', color: 'var(--admin-text-main)' }}>
-                Logo Principal (Header & Footer)
-              </label>
-              
-              <div style={{ display: 'flex', gap: '16px', alignItems: 'center', marginBottom: '14px', flexWrap: 'wrap' }}>
-                <div className="image-preview-wrap">
-                  <img 
-                    src={form.logoUrl || '/assets/img/uploads/logo-hemira-full.png'} 
-                    alt="Logo preview" 
-                    onError={(e) => { e.target.src = '/assets/img/uploads/logo-hemira-full.png'; }}
-                  />
-                </div>
-                <div>
-                  <label className="admin-btn admin-btn-outline" style={{ cursor: 'pointer', display: 'inline-flex' }}>
-                    <Upload size={14} />
-                    <span>{uploadingLogo ? 'Envoi...' : 'Choisir un fichier'}</span>
-                    <input 
-                      type="file" 
-                      accept="image/*" 
-                      style={{ display: 'none' }}
-                      onChange={(e) => handleFileUpload(e, 'logoUrl', setUploadingLogo)}
-                    />
-                  </label>
-                </div>
-              </div>
-
-              <div className="form-field">
-                <label style={{ fontSize: '12px' }}>Ou collez une URL d'image directe</label>
-                <input 
-                  type="text" 
-                  className="form-input" 
-                  value={form.logoUrl || ''} 
-                  onChange={(e) => handleChange('logoUrl', e.target.value)}
-                  placeholder="/assets/img/uploads/logo-hemira-full.png ou https://..." 
-                />
-              </div>
+            <div>
+              <FirestoreImageUploader 
+                value={form.logoUrl || ''}
+                folder="identity"
+                label="Logo Principal (Header, Barre de navigation & Pied de page)"
+                description="Format SVG, PNG transparent ou WebP. Compression automatique et stockage Firestore."
+                aspectRatio="auto"
+                onChange={(url) => handleChange('logoUrl', url)}
+              />
             </div>
 
-            {/* Logo Mark (Favicon) */}
-            <div style={{ border: '1px solid var(--admin-border)', borderRadius: '14px', padding: '20px', background: 'var(--admin-card-inner)' }}>
-              <label style={{ fontWeight: 700, display: 'block', marginBottom: '8px', color: 'var(--admin-text-main)' }}>
-                Icône de Marque / Favicon (Carré)
-              </label>
-              
-              <div style={{ display: 'flex', gap: '16px', alignItems: 'center', marginBottom: '14px' }}>
-                <div className="image-preview-wrap" style={{ width: '60px', height: '60px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <img 
-                    src={form.logoMarkUrl || '/assets/img/uploads/logo-hemira-mark.png'} 
-                    alt="Mark preview" 
-                    style={{ maxHeight: '48px', maxWidth: '48px' }}
-                    onError={(e) => { e.target.src = '/assets/img/uploads/logo-hemira-mark.png'; }}
-                  />
-                </div>
-                <div>
-                  <label className="admin-btn admin-btn-outline" style={{ cursor: 'pointer', display: 'inline-flex' }}>
-                    <Upload size={14} />
-                    <span>{uploadingMark ? 'Envoi...' : 'Choisir un fichier'}</span>
-                    <input 
-                      type="file" 
-                      accept="image/*" 
-                      style={{ display: 'none' }}
-                      onChange={(e) => handleFileUpload(e, 'logoMarkUrl', setUploadingMark)}
-                    />
-                  </label>
-                </div>
-              </div>
-
-              <div className="form-field">
-                <label style={{ fontSize: '12px' }}>Ou collez une URL d'icône directe</label>
-                <input 
-                  type="text" 
-                  className="form-input" 
-                  value={form.logoMarkUrl || ''} 
-                  onChange={(e) => handleChange('logoMarkUrl', e.target.value)}
-                  placeholder="/assets/img/uploads/logo-hemira-mark.png" 
-                />
-              </div>
+            <div>
+              <FirestoreImageUploader 
+                value={form.logoMarkUrl || ''}
+                folder="identity"
+                label="Icône de Marque & Favicon (Carré)"
+                description="Icône d'onglet de navigation et pictogramme de marque officiel. Recommandé : format carré."
+                aspectRatio="1/1"
+                onChange={(url) => handleChange('logoMarkUrl', url)}
+              />
             </div>
           </div>
         </form>

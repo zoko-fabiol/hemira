@@ -4,6 +4,7 @@ import {
   BarChart3,
   Sparkles, 
   Image as ImageIcon, 
+  FolderHeart,
   Home, 
   Briefcase, 
   Award, 
@@ -32,6 +33,7 @@ export default function Sidebar({ activeTab, setActiveTab, isOpen, onClose }) {
     {
       title: "Contenu Textes & Médias",
       items: [
+        { id: 'media', label: 'Médiathèque Firestore', icon: FolderHeart, badge: 'Images' },
         { id: 'home', label: 'Accueil & Chiffres', icon: Home },
         { id: 'services', label: 'Services de voyage', icon: Briefcase },
         { id: 'case-studies', label: 'Nos réalisations', icon: Award },
@@ -48,9 +50,9 @@ export default function Sidebar({ activeTab, setActiveTab, isOpen, onClose }) {
     if (onClose) onClose();
   };
 
-  const publicSiteUrl = typeof window !== 'undefined' && window.location.port === '5174'
-    ? `${window.location.protocol}//${window.location.hostname}:5173/`
-    : 'http://localhost:5173/';
+  const publicSiteUrl = typeof window !== 'undefined'
+    ? `${window.location.protocol}//${window.location.hostname}:5175/`
+    : 'http://localhost:5175/';
 
   return (
     <>

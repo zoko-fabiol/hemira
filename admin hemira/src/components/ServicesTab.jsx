@@ -16,6 +16,7 @@ import {
   Star
 } from 'lucide-react';
 import { saveContent, uploadImageFile } from '../services/cmsService';
+import FirestoreImageUploader from './FirestoreImageUploader';
 
 export default function ServicesTab({ contentFr, contentEn, showToast, onOpenThemeModal }) {
   const [servicesFr, setServicesFr] = useState([]);
@@ -404,85 +405,19 @@ export default function ServicesTab({ contentFr, contentEn, showToast, onOpenThe
                       </label>
                     </div>
 
-                    {/* Image pour ce service individuel */}
-                    <div style={{
-                      padding: '12px 14px',
-                      background: '#FFFFFF',
-                      border: '1px solid var(--admin-border, #E2E8F0)',
-                      borderRadius: '10px',
-                      marginTop: '12px'
-                    }}>
-                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
-                        <label style={{ fontSize: '12px', fontWeight: 700, color: 'var(--admin-text-main, #0F172A)', margin: 0 }}>
-                          Image du service #{service.num || index + 1}
-                        </label>
-                        {isWithImg && (
-                          <span style={{ fontSize: '11px', fontWeight: 700, color: '#C9A968', background: 'rgba(201,169,104,0.15)', padding: '2px 8px', borderRadius: '10px' }}>
-                            Active dans le design sélectionné
-                          </span>
-                        )}
-                      </div>
-                      <div style={{ display: 'flex', gap: '12px', alignItems: 'center', flexWrap: 'wrap' }}>
-                        <div style={{
-                          width: '70px',
-                          height: '54px',
-                          borderRadius: '8px',
-                          background: '#F1F5F9',
-                          border: '1px solid #CBD5E1',
-                          overflow: 'hidden',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          flexShrink: 0
-                        }}>
-                          {service.media ? (
-                            <img src={service.media} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                          ) : (
-                            <ImageIcon size={22} color="#94A3B8" />
-                          )}
-                        </div>
-                        <div style={{ flex: 1, minWidth: '200px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                          <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                            <label 
-                              className="admin-btn admin-btn-outline" 
-                              style={{ cursor: 'pointer', fontSize: '12px', padding: '5px 12px' }}
-                            >
-                              <Upload size={13} />
-                              <span>{uploadingIndex === index ? 'Téléversement...' : 'Importer une image'}</span>
-                              <input
-                                type="file"
-                                accept="image/*"
-                                style={{ display: 'none' }}
-                                onChange={(e) => handleServiceImageUpload(e, index)}
-                              />
-                            </label>
-                            {service.media && (
-                              <button
-                                type="button"
-                                className="admin-btn admin-btn-danger"
-                                style={{ fontSize: '12px', padding: '5px 8px' }}
-                                onClick={() => {
-                                  handleUpdate(index, 'media', '', 'fr');
-                                  handleUpdate(index, 'media', '', 'en');
-                                }}
-                              >
-                                <Trash2 size={13} /> Retirer
-                              </button>
-                            )}
-                          </div>
-                          <input
-                            type="text"
-                            placeholder="Ou collez l'URL d'une image (ex: /assets/img/...)"
-                            className="form-input"
-                            style={{ fontSize: '12px', padding: '4px 8px' }}
-                            value={service.media || ''}
-                            onChange={(e) => {
-                              handleUpdate(index, 'media', e.target.value, 'fr');
-                              handleUpdate(index, 'media', e.target.value, 'en');
-                            }}
-                          />
-                        </div>
-                      </div>
+                    {/* Bloc puissant de téléversement d'image Firestore */}
+                    <div style={{ marginTop: '14px' }}>
+                      <FirestoreImageUploader 
+                        value={service.media || ''}
+                        folder="services"
+                        label={`Illustration du service #${service.num || index + 1}`}
+                        description="Illustration haute qualité. Optimisation WebP automatique et stockage Firestore."
+                        aspectRatio="16/9"
+                        onChange={(url) => {
+                          handleUpdate(index, 'media', url, 'fr');
+                          handleUpdate(index, 'media', url, 'en');
+                        }}
+                      />
                     </div>
                   </div>
                 )}

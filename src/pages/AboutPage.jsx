@@ -47,29 +47,34 @@ export default function AboutPage({ onNavigate, lang = 'fr', content, appearance
         const foundersConfig = appearance?.sections?.['about.founders'] || {};
         if (foundersConfig.visible === false) return null;
         const foundersVariant = foundersConfig.variant || 'default';
+        const toneClass = foundersConfig.tone === 'dark' 
+          ? 'bg-navy on-dark section-tone--dark' 
+          : foundersConfig.tone === 'alt' 
+            ? 'bg-light section-tone--alt' 
+            : 'bg-white section-tone--light';
 
         if (foundersVariant === 'centered-vision') {
           return (
-            <section className="about-founders-section about-variant--centered-vision" data-section-id="about.founders">
+            <section className={`about-founders-section about-variant--centered-vision ${toneClass}`} data-section-id="about.founders">
               <div className="wrap" style={{ textAlign: 'center', maxWidth: '1000px' }}>
                 <div className="about-vision-hero" style={{ marginBottom: '40px' }}>
                   <div className="about-vision-avatar-wrap" style={{ position: 'relative', display: 'inline-block', marginBottom: '20px' }}>
                     <img 
-                      src="/assets/img/uploads/avatar-duo.svg" 
-                      alt="Jeanne Helene Epée Nsome &amp; Miriam J. Nguemdo Epse Nouzeda" 
+                      src={a.duoPhoto || "/assets/img/uploads/avatar-duo.svg"} 
+                      alt="Jeanne Helene Epée Nsome & Miriam J. Nguemdo Epse Nouzeda" 
                       style={{ width: '180px', height: '180px', borderRadius: '50%', objectFit: 'cover', border: '5px solid var(--gold, #C9A968)', boxShadow: '0 12px 30px rgba(0,0,0,0.12)' }}
                     />
                     <div style={{ position: 'absolute', bottom: '0', right: '0', background: 'var(--coral, #F0624D)', color: '#fff', borderRadius: '50%', width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '18px', fontWeight: 800 }}>
                       ★
                     </div>
                   </div>
-                  <h3 style={{ fontFamily: "'Sora', sans-serif", fontSize: '24px', fontWeight: 800, color: 'var(--ink, #16213A)', marginBottom: '6px' }}>
+                  <h3 style={{ fontFamily: "'Sora', sans-serif", fontSize: '24px', fontWeight: 800, color: 'inherit', marginBottom: '6px' }}>
                     Jeanne Helene Epée Nsome &amp; Miriam J. Nguemdo
                   </h3>
                   <div style={{ fontSize: '14px', fontWeight: 700, color: 'var(--coral, #F0624D)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '16px' }}>
                     {a.role}
                   </div>
-                  <p style={{ fontStyle: 'italic', fontSize: '18px', color: 'var(--slate, #5B6B7C)', maxWidth: '720px', margin: '0 auto', lineHeight: 1.6 }}>
+                  <p style={{ fontStyle: 'italic', fontSize: '18px', color: 'inherit', opacity: 0.85, maxWidth: '720px', margin: '0 auto', lineHeight: 1.6 }}>
                     « Deux fondatrices, une mission indéfectible : faire de chaque voyage diplomatique et d'affaires une expérience fluide, sécurisée et d'une sérénité absolue. »
                   </p>
                 </div>
@@ -81,7 +86,7 @@ export default function AboutPage({ onNavigate, lang = 'fr', content, appearance
                         <span className={`sq ${item.color}`} style={{ width: '10px', height: '10px', borderRadius: '50%' }}></span>
                         <h4 style={{ margin: 0, fontSize: '17px', fontWeight: 800 }}>{item.title}</h4>
                       </div>
-                      <p style={{ margin: 0, fontSize: '14px', color: 'var(--slate)', lineHeight: 1.55 }}>{item.desc}</p>
+                      <p style={{ margin: 0, fontSize: '14px', lineHeight: 1.55 }}>{item.desc}</p>
                     </div>
                   ))}
                 </div>
@@ -92,16 +97,16 @@ export default function AboutPage({ onNavigate, lang = 'fr', content, appearance
 
         if (foundersVariant === 'editorial-split') {
           return (
-            <section className="about-founders-section about-variant--editorial-split" data-section-id="about.founders">
+            <section className={`about-founders-section about-variant--editorial-split ${toneClass}`} data-section-id="about.founders">
               <div className="wrap" style={{ display: 'grid', gridTemplateColumns: '1fr 1.2fr', gap: '48px', alignItems: 'center' }}>
-                <div style={{ background: 'var(--bg-light, #F7F6F2)', border: '1px solid var(--border, #E7E5DE)', borderRadius: '20px', padding: '36px 30px', textAlign: 'center', boxShadow: '0 12px 32px rgba(14,31,61,0.06)' }}>
+                <div style={{ background: foundersConfig.tone === 'dark' ? 'rgba(255,255,255,0.06)' : 'var(--bg-light, #F7F6F2)', border: '1px solid var(--border, #E7E5DE)', borderRadius: '20px', padding: '36px 30px', textAlign: 'center', boxShadow: '0 12px 32px rgba(14,31,61,0.06)' }}>
                   <img 
-                    src="/assets/img/uploads/avatar-duo.svg" 
-                    alt="Jeanne Helene Epée Nsome &amp; Miriam J. Nguemdo Epse Nouzeda" 
+                    src={a.duoPhoto || "/assets/img/uploads/avatar-duo.svg"} 
+                    alt="Jeanne Helene Epée Nsome & Miriam J. Nguemdo Epse Nouzeda" 
                     style={{ width: '100%', maxWidth: '280px', height: 'auto', borderRadius: '16px', objectFit: 'cover', marginBottom: '18px', border: '3px solid var(--border)' }}
                   />
-                  <div style={{ fontFamily: "'Sora', sans-serif", fontSize: '17px', fontWeight: 800, color: 'var(--ink)' }}>
-                    Jeanne Helene Epée Nsome &amp; Miriam J. Nguemdo
+                  <div style={{ fontFamily: "'Sora', sans-serif", fontSize: '17px', fontWeight: 800, color: 'inherit' }}>
+                    Jeanne Helene Epée Nsome & Miriam J. Nguemdo
                   </div>
                   <div style={{ fontSize: '13px', color: 'var(--slate)', marginTop: '4px' }}>{a.role}</div>
                 </div>
@@ -115,8 +120,8 @@ export default function AboutPage({ onNavigate, lang = 'fr', content, appearance
                       <div key={i} style={{ display: 'flex', gap: '14px', alignItems: 'flex-start' }}>
                         <span style={{ fontFamily: "'Sora', sans-serif", fontWeight: 900, fontSize: '20px', color: 'var(--coral)', lineHeight: 1 }}>0{i+1}.</span>
                         <div>
-                          <strong style={{ fontSize: '16px', color: 'var(--ink)', display: 'block', marginBottom: '2px' }}>{item.title}</strong>
-                          <span style={{ fontSize: '14px', color: 'var(--slate)', lineHeight: 1.5 }}>{item.desc}</span>
+                          <strong style={{ fontSize: '16px', color: 'inherit', display: 'block', marginBottom: '2px' }}>{item.title}</strong>
+                          <span style={{ fontSize: '14px', color: 'inherit', opacity: 0.8, lineHeight: 1.5 }}>{item.desc}</span>
                         </div>
                       </div>
                     ))}
@@ -128,15 +133,15 @@ export default function AboutPage({ onNavigate, lang = 'fr', content, appearance
         }
 
         return (
-          <section className="about-founders-section" data-section-id="about.founders">
+          <section className={`about-founders-section ${toneClass}`} data-section-id="about.founders">
             <div className="wrap about-layout">
               <div className="about-photo-wrap">
                 <img 
-                  src="/assets/img/uploads/avatar-duo.svg" 
-                  alt="Jeanne Helene Epée Nsome &amp; Miriam J. Nguemdo Epse Nouzeda" 
+                  src={a.duoPhoto || "/assets/img/uploads/avatar-duo.svg"} 
+                  alt="Jeanne Helene Epée Nsome & Miriam J. Nguemdo Epse Nouzeda" 
                   className="about-photo" 
                 />
-                <div className="about-photo-name">Jeanne Helene Epée Nsome &amp; Miriam J. Nguemdo Epse Nouzeda</div>
+                <div className="about-photo-name">Jeanne Helene Epée Nsome & Miriam J. Nguemdo Epse Nouzeda</div>
                 <div className="about-photo-title">{a.role}</div>
                 <div className="mosaic-mini" style={{ justifyContent: 'center' }} aria-hidden="true">
                   <span className="sq coral"></span>
@@ -182,14 +187,14 @@ export default function AboutPage({ onNavigate, lang = 'fr', content, appearance
           <div className="grid-2 reveal-stagger">
             <div className="card" style={{ textAlign: 'center' }}>
               <img 
-                src="/assets/img/uploads/avatar-jeanne.svg" 
+                src={a.jeannePhoto || a.jeanne?.photo || "/assets/img/uploads/avatar-jeanne.svg"} 
                 alt="Jeanne Helene Epée Nsome" 
                 style={{ width: '140px', height: '140px', borderRadius: '50%', objectFit: 'cover', margin: '0 auto 20px', border: '4px solid var(--coral)' }} 
               />
               <h3>Jeanne Helene Epée Nsome</h3>
-              <p style={{ color: 'var(--coral)', fontWeight: 600, fontSize: '14px' }}>{a.jeanneRole}</p>
+              <p style={{ color: 'var(--coral)', fontWeight: 600, fontSize: '14px' }}>{a.jeanneRole || a.jeanne?.role}</p>
               <p style={{ fontSize: '14px', color: 'var(--slate)', margin: '12px 0' }}>
-                {a.jeanneBio}
+                {a.jeanneBio || a.jeanne?.bio}
               </p>
               <a 
                 href="tel:+237699976258" 
@@ -204,14 +209,14 @@ export default function AboutPage({ onNavigate, lang = 'fr', content, appearance
 
             <div className="card" style={{ textAlign: 'center' }}>
               <img 
-                src="/assets/img/uploads/avatar-miriam.svg" 
+                src={a.miriamPhoto || a.miriam?.photo || "/assets/img/uploads/avatar-miriam.svg"} 
                 alt="Miriam J. Nguemdo Epse Nouzeda" 
                 style={{ width: '140px', height: '140px', borderRadius: '50%', objectFit: 'cover', margin: '0 auto 20px', border: '4px solid var(--coral)' }} 
               />
               <h3>Miriam J. Nguemdo Epse Nouzeda</h3>
-              <p style={{ color: 'var(--coral)', fontWeight: 600, fontSize: '14px' }}>{a.miriamRole}</p>
+              <p style={{ color: 'var(--coral)', fontWeight: 600, fontSize: '14px' }}>{a.miriamRole || a.miriam?.role}</p>
               <p style={{ fontSize: '14px', color: 'var(--slate)', margin: '12px 0' }}>
-                {a.miriamBio}
+                {a.miriamBio || a.miriam?.bio}
               </p>
               <a 
                 href="tel:+237699430256" 

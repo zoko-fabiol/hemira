@@ -186,13 +186,13 @@ export default function AppearanceStudioTab({ showToast }) {
   useEffect(() => {
     broadcastToIframe(currentAppearance);
 
-    // Déclencheur autosave draft (debounced 1.2s)
+    // Déclencheur autosave draft (debounced 400ms)
     if (draftSaveTimeoutRef.current) clearTimeout(draftSaveTimeoutRef.current);
     draftSaveTimeoutRef.current = setTimeout(() => {
       saveAppearanceDraft(currentAppearance).catch(err => {
         console.warn("Autosave draft error:", err);
       });
-    }, 1200);
+    }, 400);
 
     return () => {
       if (draftSaveTimeoutRef.current) clearTimeout(draftSaveTimeoutRef.current);
@@ -312,16 +312,19 @@ export default function AppearanceStudioTab({ showToast }) {
 
   // Réglage de section
   const handleSectionVariantChange = (secId, variantId) => {
-    updateAppearance(prev => ({
-      ...prev,
-      sections: {
-        ...prev.sections,
-        [secId]: {
-          ...(prev.sections?.[secId] || { tone: 'light', visible: true }),
-          variant: variantId
-        }
+    const updatedSections = {
+      ...currentAppearance.sections,
+      [secId]: {
+        ...(currentAppearance.sections?.[secId] || { tone: 'light', visible: true }),
+        variant: variantId
       }
-    }));
+    };
+    const nextAppearance = {
+      ...currentAppearance,
+      sections: updatedSections
+    };
+    updateAppearance(nextAppearance);
+    broadcastToIframe(nextAppearance);
     try {
       iframeRef.current?.contentWindow?.postMessage({
         type: 'HEMIRA_NAVIGATE_SECTION',
@@ -331,16 +334,20 @@ export default function AppearanceStudioTab({ showToast }) {
   };
 
   const handleSectionToneChange = (secId, tone) => {
-    updateAppearance(prev => ({
-      ...prev,
-      sections: {
-        ...prev.sections,
-        [secId]: {
-          ...(prev.sections?.[secId] || { variant: 'default', visible: true }),
-          tone: tone
-        }
+    const defaultSecTone = secId === 'home.hero' ? 'dark' : (secId === 'home.services' ? 'alt' : 'light');
+    const updatedSections = {
+      ...currentAppearance.sections,
+      [secId]: {
+        ...(currentAppearance.sections?.[secId] || { variant: 'default', tone: defaultSecTone, visible: true }),
+        tone: tone
       }
-    }));
+    };
+    const nextAppearance = {
+      ...currentAppearance,
+      sections: updatedSections
+    };
+    updateAppearance(nextAppearance);
+    broadcastToIframe(nextAppearance);
     try {
       iframeRef.current?.contentWindow?.postMessage({
         type: 'HEMIRA_NAVIGATE_SECTION',
@@ -350,29 +357,35 @@ export default function AppearanceStudioTab({ showToast }) {
   };
 
   const handleSectionVisibilityToggle = (secId) => {
-    updateAppearance(prev => {
-      const currentVal = prev.sections?.[secId]?.visible !== false;
-      return {
-        ...prev,
-        sections: {
-          ...prev.sections,
-          [secId]: {
-            ...(prev.sections?.[secId] || { variant: 'default', tone: 'light' }),
-            visible: !currentVal
-          }
-        }
-      };
-    });
+    const currentVal = currentAppearance.sections?.[secId]?.visible !== false;
+    const defaultSecTone = secId === 'home.hero' ? 'dark' : (secId === 'home.services' ? 'alt' : 'light');
+    const updatedSections = {
+      ...currentAppearance.sections,
+      [secId]: {
+        ...(currentAppearance.sections?.[secId] || { variant: 'default', tone: defaultSecTone }),
+        visible: !currentVal
+      }
+    };
+    const nextAppearance = {
+      ...currentAppearance,
+      sections: updatedSections
+    };
+    updateAppearance(nextAppearance);
+    broadcastToIframe(nextAppearance);
   };
 
   const handleResetSection = (secId) => {
-    updateAppearance(prev => ({
-      ...prev,
-      sections: {
-        ...prev.sections,
-        [secId]: { variant: 'default', tone: 'light', visible: true }
-      }
-    }));
+    const defaultSecTone = secId === 'home.hero' ? 'dark' : (secId === 'home.services' ? 'alt' : 'light');
+    const updatedSections = {
+      ...currentAppearance.sections,
+      [secId]: { variant: 'default', tone: defaultSecTone, visible: true }
+    };
+    const nextAppearance = {
+      ...currentAppearance,
+      sections: updatedSections
+    };
+    updateAppearance(nextAppearance);
+    broadcastToIframe(nextAppearance);
     showToast(`Section ${secId} réinitialisée au style global.`);
   };
 
@@ -395,10 +408,13 @@ export default function AppearanceStudioTab({ showToast }) {
   const isModified = JSON.stringify(currentAppearance) !== JSON.stringify(publishedAppearance);
 
   const selectedSection = SECTIONS_CONFIG.find(s => s.id === selectedSectionId) || SECTIONS_CONFIG[0];
-  const sectionState = currentAppearance.sections?.[selectedSectionId] || { variant: 'default', tone: 'light', visible: true };
+  const defaultSecTone = selectedSectionId === 'home.hero' ? 'dark' : (selectedSectionId === 'home.services' ? 'alt' : 'light');
+  const sectionState = currentAppearance.sections?.[selectedSectionId] || { variant: 'default', tone: defaultSecTone, visible: true };
 
   // URL cible de l'aperçu du site
-  const sitePreviewUrl = 'http://localhost:5173/?admin_preview=1';
+  const sitePreviewUrl = typeof window !== 'undefined' && window.location.search.includes('preview_target=')
+    ? new URLSearchParams(window.location.search).get('preview_target')
+    : `${window.location.protocol}//${window.location.hostname}:5175/?admin_preview=1`;
 
   return (
     <div className="appearance-studio">
@@ -881,7 +897,8 @@ export default function AppearanceStudioTab({ showToast }) {
                     { id: 'alt', label: 'Alterné', desc: 'Fond doux', bg: '#F7F6F2', color: '#16213A' },
                     { id: 'dark', label: 'Sombre', desc: 'Marine / Nuit', bg: '#0E1F3D', color: '#FFFFFF' }
                   ].map(t => {
-                    const isSelected = (sectionState.tone || 'light') === t.id;
+                    const currentTone = sectionState.tone || defaultSecTone;
+                    const isSelected = currentTone === t.id;
                     return (
                       <button
                         key={t.id}

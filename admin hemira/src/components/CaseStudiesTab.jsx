@@ -13,6 +13,7 @@ import {
   Sparkles
 } from 'lucide-react';
 import { saveContent, uploadImageFile } from '../services/cmsService';
+import FirestoreImageUploader from './FirestoreImageUploader';
 
 export default function CaseStudiesTab({ contentFr, contentEn, showToast, onOpenThemeModal }) {
   const [casesFr, setCasesFr] = useState([]);
@@ -25,9 +26,31 @@ export default function CaseStudiesTab({ contentFr, contentEn, showToast, onOpen
   const [saving, setSaving] = useState(false);
   const [uploadingIndex, setUploadingIndex] = useState(null);
 
+  const normalizeCase = (c) => {
+    if (!c) return {};
+    const contexte = c.contexte ?? c.context ?? '';
+    const besoin = c.besoin ?? c.need ?? '';
+    const intervention = c.intervention ?? c.response ?? '';
+    const resultat = c.resultat ?? c.result ?? '';
+    return {
+      ...c,
+      contexte,
+      context: contexte,
+      besoin,
+      need: besoin,
+      intervention,
+      response: intervention,
+      resultat,
+      result: resultat,
+      tag: c.tag || '',
+      title: c.title || '',
+      media: c.media || ''
+    };
+  };
+
   useEffect(() => {
-    const listFr = contentFr?.caseStudies?.cases || [];
-    const listEn = contentEn?.caseStudies?.cases || [];
+    const listFr = (contentFr?.caseStudies?.cases || []).map(normalizeCase);
+    const listEn = (contentEn?.caseStudies?.cases || []).map(normalizeCase);
     setCasesFr(listFr);
     setCasesEn(listEn);
 
@@ -43,8 +66,13 @@ export default function CaseStudiesTab({ contentFr, contentEn, showToast, onOpen
     const newCaseFr = {
       tag: "Exemple de mission — Nouveau service",
       title: "Organisation complète d'un déplacement d'envergure",
+      contexte: "Un client souhaitant organiser un déplacement dans les meilleures conditions.",
+      context: "Un client souhaitant organiser un déplacement dans les meilleures conditions.",
+      besoin: "Le client avait besoin d'une prise en charge rapide de son dossier.",
       need: "Le client avait besoin d'une prise en charge rapide de son dossier.",
+      intervention: "HEMIRA Travel & Services a mobilisé son réseau de partenaires fiables.",
       response: "HEMIRA Travel & Services a mobilisé son réseau de partenaires fiables.",
+      resultat: "Déplacement réussi sans encombre et gain de temps considérable.",
       result: "Déplacement réussi sans encombre et gain de temps considérable.",
       media: ""
     };
@@ -52,8 +80,13 @@ export default function CaseStudiesTab({ contentFr, contentEn, showToast, onOpen
     const newCaseEn = {
       tag: "Mission example — New service",
       title: "Complete organization of a major trip",
+      contexte: "A client needing urgent travel arrangements for their team.",
+      context: "A client needing urgent travel arrangements for their team.",
+      besoin: "The client needed urgent handling of their travel files.",
       need: "The client needed urgent handling of their travel files.",
+      intervention: "HEMIRA Travel & Services mobilized its network of verified partners.",
       response: "HEMIRA Travel & Services mobilized its network of verified partners.",
+      resultat: "Smooth travel completed on schedule with substantial time savings.",
       result: "Smooth travel completed on schedule with substantial time savings.",
       media: ""
     };
@@ -64,14 +97,33 @@ export default function CaseStudiesTab({ contentFr, contentEn, showToast, onOpen
   };
 
   const handleUpdate = (index, field, value, lang) => {
+    const updates = { [field]: value };
+    if (field === 'contexte' || field === 'context') {
+      updates.contexte = value;
+      updates.context = value;
+    } else if (field === 'besoin' || field === 'need') {
+      updates.besoin = value;
+      updates.need = value;
+    } else if (field === 'intervention' || field === 'response') {
+      updates.intervention = value;
+      updates.response = value;
+    } else if (field === 'resultat' || field === 'result') {
+      updates.resultat = value;
+      updates.result = value;
+    }
+
     if (lang === 'fr') {
-      const updated = [...casesFr];
-      updated[index] = { ...updated[index], [field]: value };
-      setCasesFr(updated);
+      setCasesFr(prev => {
+        const next = [...prev];
+        next[index] = { ...next[index], ...updates };
+        return next;
+      });
     } else {
-      const updated = [...casesEn];
-      updated[index] = { ...updated[index], [field]: value };
-      setCasesEn(updated);
+      setCasesEn(prev => {
+        const next = [...prev];
+        next[index] = { ...next[index], ...updates };
+        return next;
+      });
     }
   };
 
@@ -127,6 +179,18 @@ export default function CaseStudiesTab({ contentFr, contentEn, showToast, onOpen
         delete copy.design;
         delete copy.animation;
         delete copy.accentColor;
+        const con = copy.contexte ?? copy.context ?? '';
+        const bes = copy.besoin ?? copy.need ?? '';
+        const int = copy.intervention ?? copy.response ?? '';
+        const res = copy.resultat ?? copy.result ?? '';
+        copy.contexte = con;
+        copy.context = con;
+        copy.besoin = bes;
+        copy.need = bes;
+        copy.intervention = int;
+        copy.response = int;
+        copy.resultat = res;
+        copy.result = res;
         return copy;
       });
 
@@ -359,119 +423,63 @@ export default function CaseStudiesTab({ contentFr, contentEn, showToast, onOpen
 
                     <div className="form-grid-1" style={{ marginBottom: '16px' }}>
                       <div className="form-field">
-                        <label>1. Le Défi / Besoin initial du client ({activeLang.toUpperCase()})</label>
+                        <label>1. Le Contexte initial du client ({activeLang.toUpperCase()})</label>
                         <textarea 
                           className="form-textarea" 
-                          value={cs.need || ''} 
-                          onChange={(e) => handleUpdate(index, 'need', e.target.value, activeLang)}
+                          value={cs.contexte ?? cs.context ?? ''} 
+                          onChange={(e) => handleUpdate(index, 'contexte', e.target.value, activeLang)}
+                          placeholder="Ex: Un client devant voyager à l'étranger sous peu de délai..."
                           rows={2}
                         />
                       </div>
 
                       <div className="form-field">
-                        <label>2. La Réponse apportée par HEMIRA ({activeLang.toUpperCase()})</label>
+                        <label>2. Le Défi / Besoin initial du client ({activeLang.toUpperCase()})</label>
                         <textarea 
                           className="form-textarea" 
-                          value={cs.response || ''} 
-                          onChange={(e) => handleUpdate(index, 'response', e.target.value, activeLang)}
+                          value={cs.besoin ?? cs.need ?? ''} 
+                          onChange={(e) => handleUpdate(index, 'besoin', e.target.value, activeLang)}
+                          placeholder="Ex: Trouver rapidement un vol disponible au meilleur tarif..."
                           rows={2}
                         />
                       </div>
 
                       <div className="form-field">
-                        <label>3. Le Résultat concret obtenu ({activeLang.toUpperCase()})</label>
+                        <label>3. L'Intervention & Réponse apportée par HEMIRA ({activeLang.toUpperCase()})</label>
                         <textarea 
                           className="form-textarea" 
-                          value={cs.result || ''} 
-                          onChange={(e) => handleUpdate(index, 'result', e.target.value, activeLang)}
+                          value={cs.intervention ?? cs.response ?? ''} 
+                          onChange={(e) => handleUpdate(index, 'intervention', e.target.value, activeLang)}
+                          placeholder="Ex: HEMIRA a comparé plusieurs compagnies et émis le billet..."
+                          rows={2}
+                        />
+                      </div>
+
+                      <div className="form-field">
+                        <label>4. Le Résultat concret obtenu ({activeLang.toUpperCase()})</label>
+                        <textarea 
+                          className="form-textarea" 
+                          value={cs.resultat ?? cs.result ?? ''} 
+                          onChange={(e) => handleUpdate(index, 'resultat', e.target.value, activeLang)}
+                          placeholder="Ex: Un billet confirmé en quelques heures, sans démarche à effectuer..."
                           rows={2}
                         />
                       </div>
                     </div>
 
-                    {/* Image pour cette réalisation */}
-                    <div style={{
-                      padding: '12px 14px',
-                      background: '#FFFFFF',
-                      border: '1px solid var(--admin-border, #E2E8F0)',
-                      borderRadius: '10px'
-                    }}>
-                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
-                        <label style={{ fontSize: '12px', fontWeight: 700, color: 'var(--admin-text-main, #0F172A)', margin: 0 }}>
-                          Image de la réalisation #{index + 1}
-                        </label>
-                        <span style={{ 
-                          fontSize: '11px', 
-                          fontWeight: 700, 
-                          color: cs.media ? 'var(--admin-teal, #6FA0D0)' : 'var(--admin-gold, #C9A968)', 
-                          background: cs.media ? 'rgba(111,160,208,0.15)' : 'rgba(201,169,104,0.15)', 
-                          padding: '2px 8px', 
-                          borderRadius: '10px' 
-                        }}>
-                          {cs.media ? 'Photo active' : 'Rendu typographique de prestige'}
-                        </span>
-                      </div>
-                      <div style={{ display: 'flex', gap: '12px', alignItems: 'center', flexWrap: 'wrap' }}>
-                        <div style={{
-                          width: '70px',
-                          height: '54px',
-                          borderRadius: '8px',
-                          background: '#F1F5F9',
-                          border: '1px solid #CBD5E1',
-                          overflow: 'hidden',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          flexShrink: 0
-                        }}>
-                          {cs.media ? (
-                            <img src={cs.media} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                          ) : (
-                            <ImageIcon size={22} color="#94A3B8" />
-                          )}
-                        </div>
-                        <div style={{ flex: 1, minWidth: '200px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                          <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                            <label 
-                              className="admin-btn admin-btn-outline" 
-                              style={{ cursor: 'pointer', fontSize: '12px', padding: '5px 12px' }}
-                            >
-                              <Upload size={13} />
-                              <span>{uploadingIndex === index ? 'Téléversement...' : 'Importer une image'}</span>
-                              <input
-                                type="file"
-                                accept="image/*"
-                                style={{ display: 'none' }}
-                                onChange={(e) => handleImageUpload(e, index)}
-                              />
-                            </label>
-                            {cs.media && (
-                              <button
-                                type="button"
-                                className="admin-btn admin-btn-danger"
-                                style={{ fontSize: '12px', padding: '5px 8px' }}
-                                onClick={() => {
-                                  handleUpdate(index, 'media', '', 'fr');
-                                  handleUpdate(index, 'media', '', 'en');
-                                }}
-                              >
-                                <Trash2 size={13} /> Retirer
-                              </button>
-                            )}
-                          </div>
-                          <input
-                            type="text"
-                            placeholder="Ou collez l'URL d'une image (ex: /assets/img/...)"
-                            className="form-input"
-                            style={{ fontSize: '12px', padding: '4px 8px' }}
-                            value={cs.media || ''}
-                            onChange={(e) => {
-                              handleUpdate(index, 'media', e.target.value, 'fr');
-                              handleUpdate(index, 'media', e.target.value, 'en');
-                            }}
-                          />
-                        </div>
-                      </div>
+                    {/* Bloc puissant de téléversement d'image Firestore */}
+                    <div style={{ marginTop: '14px' }}>
+                      <FirestoreImageUploader 
+                        value={cs.media || ''}
+                        folder="cases"
+                        label={`Photo de la réalisation #${index + 1}`}
+                        description="Téléversez ou glissez une photo haute résolution. Compression automatique et stockage Firestore sécurisé."
+                        aspectRatio="16/9"
+                        onChange={(url) => {
+                          handleUpdate(index, 'media', url, 'fr');
+                          handleUpdate(index, 'media', url, 'en');
+                        }}
+                      />
                     </div>
                   </div>
                 )}

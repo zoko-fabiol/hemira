@@ -18,6 +18,10 @@ service cloud.firestore {
       allow read: if true;
       allow write: if true;
     }
+    match /site_media/{docId} {
+      allow read: if true;
+      allow write: if true;
+    }
 
     // Forms and inquiries
     match /quotes/{quoteId} {

@@ -215,25 +215,45 @@ export function applyAppearanceToDOM(appearance) {
 
 /**
  * Souscription temps réel à l'apparence publiée (Live)
+ * Avec détection intelligente du mode aperçu admin pour synchroniser instantanément le brouillon
  */
 export function subscribeAppearance(callback) {
   try {
-    const docRef = doc(db, 'site_settings', 'appearance');
-    return onSnapshot(docRef, (snap) => {
+    const isPreview = typeof window !== 'undefined' && (
+      window.location.search.includes('admin_preview=1') || 
+      (window.parent && window.parent !== window)
+    );
+    const targetDoc = isPreview ? 'appearance_draft' : 'appearance';
+    const docRef = doc(db, 'site_settings', targetDoc);
+
+    return onSnapshot(docRef, async (snap) => {
       if (snap.exists()) {
-        const live = { ...DEFAULT_APPEARANCE, ...snap.data() };
-        applyAppearanceToDOM(live);
-        callback(live);
+        const data = { ...DEFAULT_APPEARANCE, ...snap.data() };
+        applyAppearanceToDOM(data);
+        callback(data);
+      } else if (!isPreview) {
+        // Si le live n'a pas encore été publié, repli gracieux sur le brouillon existant
+        try {
+          const draftSnap = await getDoc(doc(db, 'site_settings', 'appearance_draft'));
+          if (draftSnap.exists()) {
+            const draftData = { ...DEFAULT_APPEARANCE, ...draftSnap.data() };
+            applyAppearanceToDOM(draftData);
+            callback(draftData);
+            return;
+          }
+        } catch (_) {}
+        applyAppearanceToDOM(DEFAULT_APPEARANCE);
+        callback(DEFAULT_APPEARANCE);
       } else {
         applyAppearanceToDOM(DEFAULT_APPEARANCE);
         callback(DEFAULT_APPEARANCE);
       }
     }, (err) => {
-      console.warn("Firestore appearance live subscribe warning:", err);
+      console.warn("Firestore appearance subscribe warning:", err);
       callback(DEFAULT_APPEARANCE);
     });
   } catch (err) {
-    console.warn("Appearance live listener error:", err);
+    console.warn("Appearance listener error:", err);
     callback(DEFAULT_APPEARANCE);
     return () => {};
   }

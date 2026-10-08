@@ -688,22 +688,22 @@ export default function CustomSectionCard({
         <div style={{ marginTop: '12px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
           {(item.contexte || item.context) && (
             <div style={{ fontSize: '13.5px' }}>
-              <strong style={{ color: 'var(--navy)', textTransform: 'uppercase', fontSize: '11px', letterSpacing: '0.04em', display: 'block' }}>Contexte :</strong>
-              <span style={{ color: 'var(--slate)' }}>{item.contexte || item.context}</span>
+              <strong className="case-field-label" style={{ textTransform: 'uppercase', fontSize: '11px', letterSpacing: '0.04em', display: 'block' }}>Contexte :</strong>
+              <span className="case-field-value">{item.contexte || item.context}</span>
             </div>
           )}
           <div style={{ fontSize: '13.5px' }}>
-            <strong style={{ color: 'var(--navy)', textTransform: 'uppercase', fontSize: '11px', letterSpacing: '0.04em', display: 'block' }}>Besoin client :</strong>
-            <span style={{ color: 'var(--slate)' }}>{item.besoin || item.need}</span>
+            <strong className="case-field-label" style={{ textTransform: 'uppercase', fontSize: '11px', letterSpacing: '0.04em', display: 'block' }}>Besoin client :</strong>
+            <span className="case-field-value">{item.besoin || item.need}</span>
           </div>
           {(item.intervention || item.response) && (
             <div style={{ fontSize: '13.5px' }}>
-              <strong style={{ color: 'var(--navy)', textTransform: 'uppercase', fontSize: '11px', letterSpacing: '0.04em', display: 'block' }}>Intervention HEMIRA :</strong>
-              <span style={{ color: 'var(--slate)' }}>{item.intervention || item.response}</span>
+              <strong className="case-field-label" style={{ textTransform: 'uppercase', fontSize: '11px', letterSpacing: '0.04em', display: 'block' }}>Intervention HEMIRA :</strong>
+              <span className="case-field-value">{item.intervention || item.response}</span>
             </div>
           )}
           {(item.resultat || item.result) && (
-            <div style={{
+            <div className="case-field-result-box" style={{
               background: 'rgba(111, 160, 208, 0.12)',
               borderLeft: '3px solid var(--teal, #6FA0D0)',
               padding: '10px 14px',
@@ -711,8 +711,8 @@ export default function CustomSectionCard({
               marginTop: '6px',
               fontSize: '13.5px'
             }}>
-              <strong style={{ color: 'var(--navy)' }}>Résultat : </strong>
-              <span style={{ color: 'var(--slate)' }}>{item.resultat || item.result}</span>
+              <strong className="case-field-label">Résultat : </strong>
+              <span className="case-field-value">{item.resultat || item.result}</span>
             </div>
           )}
         </div>

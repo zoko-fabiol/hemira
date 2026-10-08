@@ -11,6 +11,7 @@ import AboutTab from './components/AboutTab';
 import GeneralTextsTab from './components/GeneralTextsTab';
 import ContactTab from './components/ContactTab';
 import AnalyticsTab from './components/AnalyticsTab';
+import MediaLibraryTab from './components/MediaLibraryTab';
 
 import { 
   DEFAULT_THEME, 
@@ -25,6 +26,7 @@ import {
   BarChart3,
   Sparkles, 
   Image as ImageIcon, 
+  FolderHeart,
   Home, 
   Briefcase, 
   Award, 
@@ -59,6 +61,7 @@ export default function App() {
     { id: 'dashboard', label: 'Tableau de bord', icon: LayoutDashboard },
     { id: 'analytics', label: 'Statistiques', icon: BarChart3 },
     { id: 'appearance', label: 'Apparence', icon: Sparkles },
+    { id: 'media', label: 'Médiathèque', icon: FolderHeart },
     { id: 'home', label: 'Accueil', icon: Home },
     { id: 'services', label: 'Services', icon: Briefcase },
     { id: 'case-studies', label: 'Réalisations', icon: Award },
@@ -96,6 +99,7 @@ export default function App() {
       case 'analytics': return 'Statistiques & Visiteurs';
       case 'appearance': return 'Studio d\'Apparence & Design Visuel';
       case 'theme': return 'Studio d\'Apparence & Design Visuel';
+      case 'media': return 'Médiathèque Firestore & Gestionnaire d\'Images';
       case 'identity': return 'Logo & Identité Visuelle';
       case 'home': return 'Page d\'Accueil & Engagements';
       case 'services': return 'Services de Voyage';
@@ -166,6 +170,13 @@ export default function App() {
           {(activeTab === 'appearance' || activeTab === 'theme') && (
             <AppearanceStudioTab 
               showToast={showToast}
+            />
+          )}
+
+          {activeTab === 'media' && (
+            <MediaLibraryTab 
+              showToast={showToast}
+              onNavigateToSection={(s) => setActiveTab(s)}
             />
           )}
 

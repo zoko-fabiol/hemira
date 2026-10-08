@@ -28,12 +28,18 @@ export default function ServicesPage({ onNavigate, lang = 'fr', content, appeara
       </section>
 
       {/* 1. NOS AXES STRATÉGIQUES (CE QUE NOUS FAISONS) */}
-      <section className="reveal">
+      <section 
+        className={`reveal ${
+          appearance?.sections?.['home.commitments']?.tone === 'dark' ? 'bg-navy on-dark section-tone--dark' :
+          appearance?.sections?.['home.commitments']?.tone === 'alt' ? 'bg-light section-tone--alt' : 'bg-white section-tone--light'
+        }`}
+        data-section-id="home.commitments"
+      >
         <div className="wrap">
           <div className="section-head center">
             <div className="eyebrow">{s.eyebrow}</div>
             <h2>{s.commitmentsTitle}</h2>
-            <p style={{ fontSize: '17px', color: 'var(--slate)' }}>
+            <p style={{ fontSize: '17px' }}>
               {s.commitmentsSub}
             </p>
           </div>
@@ -90,8 +96,8 @@ export default function ServicesPage({ onNavigate, lang = 'fr', content, appeara
       {appearance?.sections?.['services.list']?.visible !== false && (
         <section 
           className={`reveal ${
-            appearance?.sections?.['services.list']?.tone === 'dark' ? 'bg-navy on-dark' :
-            appearance?.sections?.['services.list']?.tone === 'alt' ? 'bg-light' : 'bg-light'
+            appearance?.sections?.['services.list']?.tone === 'dark' ? 'bg-navy on-dark section-tone--dark' :
+            appearance?.sections?.['services.list']?.tone === 'alt' ? 'bg-light section-tone--alt' : 'bg-white section-tone--light'
           }`}
           data-section-id="services.list"
         >
@@ -99,7 +105,7 @@ export default function ServicesPage({ onNavigate, lang = 'fr', content, appeara
             <div className="section-head center">
               <div className="eyebrow">{s.servicesEyebrow}</div>
               <h2>{s.servicesTitle}</h2>
-              <p style={{ fontSize: '17px', color: 'var(--slate)' }}>
+              <p style={{ fontSize: '17px' }}>
                 {s.servicesSub}
               </p>
             </div>

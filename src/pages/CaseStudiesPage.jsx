@@ -28,8 +28,8 @@ export default function CaseStudiesPage({ onNavigate, lang = 'fr', content, appe
       {isCasesVisible && (
         <section 
           className={`reveal visible ${
-            casesConfig.tone === 'dark' ? 'bg-navy on-dark' :
-            casesConfig.tone === 'alt' ? 'bg-light' : ''
+            casesConfig.tone === 'dark' ? 'bg-navy on-dark section-tone--dark' :
+            casesConfig.tone === 'alt' ? 'bg-light section-tone--alt' : 'bg-white section-tone--light'
           }`} 
           style={{ padding: '60px 0' }}
           data-section-id="cases.list"

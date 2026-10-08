@@ -10,9 +10,9 @@ export default function Header({
   onToggleTheme,
   onNavigateAppearance 
 }) {
-  const publicSiteUrl = typeof window !== 'undefined' && window.location.port === '5174'
-    ? `${window.location.protocol}//${window.location.hostname}:5173/`
-    : 'http://localhost:5173/';
+  const publicSiteUrl = typeof window !== 'undefined'
+    ? `${window.location.protocol}//${window.location.hostname}:5175/`
+    : 'http://localhost:5175/';
 
   return (
     <header className="admin-header">

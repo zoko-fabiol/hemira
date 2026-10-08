@@ -51,171 +51,438 @@ body {
 }
 
 /* ==========================================================================
-   STRICT CONTRAST & ANTI-CONFLICT SYSTEM (FONDS SOMBRES & CLAIRS)
+   STRICT CONTRAST & ANTI-CONFLICT SYSTEM (FONDS SOMBRES & CLAIRS & ALTERNÉS)
    ========================================================================== */
 
-/* Conteneurs et sections sombres */
+/* 1. SECTIONS CLAIRES (FOND BLANC #FFFFFF) */
+.bg-white,
+.section-tone--light,
+section.bg-white,
+section.section-tone--light {
+  background-color: #FFFFFF !important;
+  color: var(--theme-ink, #16213A) !important;
+}
+.bg-white h1, .bg-white h2, .bg-white h3, .bg-white h4,
+.section-tone--light h1, .section-tone--light h2, .section-tone--light h3, .section-tone--light h4,
+.bg-white .section-head h2, .section-tone--light .section-head h2 {
+  color: var(--theme-ink, #16213A) !important;
+}
+.bg-white p, .bg-white .lead,
+.section-tone--light p, .section-tone--light .lead,
+.bg-white .section-head p, .section-tone--light .section-head p {
+  color: var(--slate, #5B6B7C) !important;
+}
+.bg-white .eyebrow,
+.section-tone--light .eyebrow {
+  color: var(--coral, #F0624D) !important;
+}
+.bg-white .eyebrow::before,
+.section-tone--light .eyebrow::before {
+  background-color: var(--coral, #F0624D) !important;
+}
+
+/* 2. SECTIONS ALTERNÉES (FOND DOUX / TEINTÉ #F7F6F2) */
+.bg-light,
+.section-tone--alt,
+section.bg-light,
+section.section-tone--alt {
+  background-color: var(--bg-light, #F7F6F2) !important;
+  color: var(--theme-ink, #16213A) !important;
+}
+.bg-light h1, .bg-light h2, .bg-light h3, .bg-light h4,
+.section-tone--alt h1, .section-tone--alt h2, .section-tone--alt h3, .section-tone--alt h4,
+.bg-light .section-head h2, .section-tone--alt .section-head h2 {
+  color: var(--theme-ink, #16213A) !important;
+}
+.bg-light p, .bg-light .lead,
+.section-tone--alt p, .section-tone--alt .lead,
+.bg-light .section-head p, .section-tone--alt .section-head p {
+  color: var(--slate, #5B6B7C) !important;
+}
+.bg-light .eyebrow,
+.section-tone--alt .eyebrow {
+  color: var(--coral, #F0624D) !important;
+}
+.bg-light .eyebrow::before,
+.section-tone--alt .eyebrow::before {
+  background-color: var(--coral, #F0624D) !important;
+}
+
+/* 3. SECTIONS SOMBRES (MARINE / NUIT VIP #0E1F3D) */
 .on-dark,
 .bg-navy,
-section.bg-navy {
+.section-tone--dark,
+section.bg-navy,
+section.on-dark,
+section.section-tone--dark {
   background-color: var(--navy, #0E1F3D) !important;
   color: #F8FAFC !important;
 }
-
 .on-dark h1, .on-dark h2, .on-dark h3, .on-dark h4,
 .bg-navy h1, .bg-navy h2, .bg-navy h3, .bg-navy h4,
-.on-dark .section-head h2, .bg-navy .section-head h2 {
+.section-tone--dark h1, .section-tone--dark h2, .section-tone--dark h3, .section-tone--dark h4,
+.on-dark .section-head h2, .bg-navy .section-head h2, .section-tone--dark .section-head h2 {
   color: #FFFFFF !important;
 }
-
 .on-dark p, .on-dark .lead,
 .bg-navy p, .bg-navy .lead,
-.on-dark .section-head p, .bg-navy .section-head p {
+.section-tone--dark p, .section-tone--dark .lead,
+.on-dark .section-head p, .bg-navy .section-head p, .section-tone--dark .section-head p {
   color: rgba(255, 255, 255, 0.82) !important;
 }
-
 .on-dark .eyebrow,
-.bg-navy .eyebrow {
+.bg-navy .eyebrow,
+.section-tone--dark .eyebrow {
   color: var(--gold, #C9A968) !important;
 }
 .on-dark .eyebrow::before,
-.bg-navy .eyebrow::before {
+.bg-navy .eyebrow::before,
+.section-tone--dark .eyebrow::before {
   background-color: var(--gold, #C9A968) !important;
 }
 
-/* Cartes à l'intérieur d'une section sombre (.on-dark) */
+/* ==========================================================================
+   ADAPTATION DES CARTES DANS LES SECTIONS SOMBRES (.on-dark / .section-tone--dark)
+   ========================================================================== */
+
+/* Cartes classiques (.card) */
+.on-dark .card,
+.bg-navy .card,
+.section-tone--dark .card {
+  background: rgba(255, 255, 255, 0.07) !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35) !important;
+  color: #F8FAFC !important;
+}
+.on-dark .card h3,
+.bg-navy .card h3,
+.section-tone--dark .card h3,
+.on-dark .card .custom-card-title,
+.bg-navy .card .custom-card-title,
+.section-tone--dark .card .custom-card-title {
+  color: #FFFFFF !important;
+}
+.on-dark .card p,
+.bg-navy .card p,
+.section-tone--dark .card p,
+.on-dark .card .custom-card-desc,
+.bg-navy .card .custom-card-desc,
+.section-tone--dark .card .custom-card-desc {
+  color: #CBD5E1 !important;
+}
+.on-dark .card .card-icon,
+.bg-navy .card .card-icon,
+.section-tone--dark .card .card-icon {
+  background: rgba(201, 169, 104, 0.18) !important;
+  color: var(--gold, #C9A968) !important;
+}
+
+/* Cartes compactes 6 services (.mini-card) */
+.on-dark .mini-card,
+.bg-navy .mini-card,
+.section-tone--dark .mini-card {
+  background: rgba(255, 255, 255, 0.07) !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3) !important;
+  color: #F8FAFC !important;
+}
+.on-dark .mini-card h4,
+.bg-navy .mini-card h4,
+.section-tone--dark .mini-card h4,
+.on-dark .mini-card .custom-card-title,
+.bg-navy .mini-card .custom-card-title,
+.section-tone--dark .mini-card .custom-card-title {
+  color: #FFFFFF !important;
+}
+.on-dark .mini-card p,
+.bg-navy .mini-card p,
+.section-tone--dark .mini-card p,
+.on-dark .mini-card .custom-card-desc,
+.bg-navy .mini-card .custom-card-desc,
+.section-tone--dark .mini-card .custom-card-desc {
+  color: #CBD5E1 !important;
+}
+.on-dark .mini-card .step-num,
+.bg-navy .mini-card .step-num,
+.section-tone--dark .mini-card .step-num {
+  color: var(--gold, #C9A968) !important;
+  opacity: 0.9 !important;
+}
+
+/* Études de cas (.case-card) */
+.on-dark .case-card,
+.bg-navy .case-card,
+.section-tone--dark .case-card {
+  background: rgba(255, 255, 255, 0.06) !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35) !important;
+}
+.on-dark .case-card .case-body h3,
+.bg-navy .case-card .case-body h3,
+.section-tone--dark .case-card .case-body h3 {
+  color: #FFFFFF !important;
+}
+.on-dark .case-card .case-row strong,
+.bg-navy .case-card .case-row strong,
+.section-tone--dark .case-card .case-row strong {
+  color: var(--gold, #C9A968) !important;
+}
+.on-dark .case-card .case-row span,
+.bg-navy .case-card .case-row span,
+.section-tone--dark .case-card .case-row span {
+  color: #CBD5E1 !important;
+}
+.on-dark .case-card .case-result,
+.bg-navy .case-card .case-result,
+.section-tone--dark .case-card .case-result {
+  background: rgba(255, 255, 255, 0.06) !important;
+  border-left-color: var(--gold, #C9A968) !important;
+}
+.on-dark .case-card .case-result strong,
+.bg-navy .case-card .case-result strong,
+.section-tone--dark .case-card .case-result strong {
+  color: #FFFFFF !important;
+}
+
+/* Boutons dans sections sombres */
+.on-dark .btn-outline-dark,
+.bg-navy .btn-outline-dark,
+.section-tone--dark .btn-outline-dark {
+  color: #FFFFFF !important;
+  border-color: rgba(255, 255, 255, 0.35) !important;
+}
+.on-dark .btn-outline-dark:hover,
+.bg-navy .btn-outline-dark:hover,
+.section-tone--dark .btn-outline-dark:hover {
+  border-color: var(--gold, #C9A968) !important;
+  color: var(--gold, #C9A968) !important;
+  background: rgba(201, 169, 104, 0.12) !important;
+}
+
+/* Boutons outline dans sections claires & alternées */
+.bg-white .btn-outline,
+.section-tone--light .btn-outline,
+.bg-light .btn-outline,
+.section-tone--alt .btn-outline {
+  border-color: rgba(22, 33, 58, 0.28) !important;
+  color: var(--theme-ink, #16213A) !important;
+}
+.bg-white .btn-outline:hover,
+.section-tone--light .btn-outline:hover,
+.bg-light .btn-outline:hover,
+.section-tone--alt .btn-outline:hover {
+  border-color: var(--coral, #F0624D) !important;
+  color: var(--coral, #F0624D) !important;
+  background: rgba(240, 98, 77, 0.06) !important;
+}
+
+/* Cartes stylisées personnalisées (Variantes Studio) dans section sombre */
 .on-dark .card-design--card-bordered,
-.bg-navy .card-design--card-bordered {
+.bg-navy .card-design--card-bordered,
+.section-tone--dark .card-design--card-bordered {
   background-color: rgba(255, 255, 255, 0.06) !important;
   border-color: rgba(255, 255, 255, 0.15) !important;
   border-top-color: var(--gold, #C9A968) !important;
   color: #F8FAFC !important;
 }
 .on-dark .card-design--card-bordered h3,
-.bg-navy .card-design--card-bordered h3 {
+.bg-navy .card-design--card-bordered h3,
+.section-tone--dark .card-design--card-bordered h3 {
   color: #FFFFFF !important;
 }
 .on-dark .card-design--card-bordered p,
-.bg-navy .card-design--card-bordered p {
+.bg-navy .card-design--card-bordered p,
+.section-tone--dark .card-design--card-bordered p {
   color: #CBD5E1 !important;
 }
 .on-dark .card-design--card-bordered .card-watermark,
-.bg-navy .card-design--card-bordered .card-watermark {
+.bg-navy .card-design--card-bordered .card-watermark,
+.section-tone--dark .card-design--card-bordered .card-watermark {
   color: rgba(255, 255, 255, 0.15) !important;
 }
 
 .on-dark .card-design--card-elevated,
-.bg-navy .card-design--card-elevated {
+.bg-navy .card-design--card-elevated,
+.section-tone--dark .card-design--card-elevated {
   background-color: rgba(255, 255, 255, 0.08) !important;
   border-color: rgba(255, 255, 255, 0.16) !important;
   box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4) !important;
   color: #F8FAFC !important;
 }
 .on-dark .card-design--card-elevated h3,
-.bg-navy .card-design--card-elevated h3 {
+.bg-navy .card-design--card-elevated h3,
+.section-tone--dark .card-design--card-elevated h3 {
   color: #FFFFFF !important;
 }
 .on-dark .card-design--card-elevated p,
-.bg-navy .card-design--card-elevated p {
+.bg-navy .card-design--card-elevated p,
+.section-tone--dark .card-design--card-elevated p {
   color: #CBD5E1 !important;
 }
 
 .on-dark .card-design--card-minimal,
-.bg-navy .card-design--card-minimal {
+.bg-navy .card-design--card-minimal,
+.section-tone--dark .card-design--card-minimal {
   background-color: rgba(255, 255, 255, 0.05) !important;
   border-color: rgba(255, 255, 255, 0.12) !important;
   border-left-color: var(--gold, #C9A968) !important;
   color: #F8FAFC !important;
 }
 .on-dark .card-design--card-minimal h3,
-.bg-navy .card-design--card-minimal h3 {
+.bg-navy .card-design--card-minimal h3,
+.section-tone--dark .card-design--card-minimal h3 {
   color: #FFFFFF !important;
 }
 .on-dark .card-design--card-minimal p,
-.bg-navy .card-design--card-minimal p {
+.bg-navy .card-design--card-minimal p,
+.section-tone--dark .card-design--card-minimal p {
   color: #CBD5E1 !important;
 }
 
 .on-dark .card-design--card-glass,
-.bg-navy .card-design--card-glass {
+.bg-navy .card-design--card-glass,
+.section-tone--dark .card-design--card-glass {
   background-color: rgba(255, 255, 255, 0.08) !important;
   border-color: rgba(255, 255, 255, 0.2) !important;
   color: #F8FAFC !important;
 }
 .on-dark .card-design--card-glass h3,
-.bg-navy .card-design--card-glass h3 {
+.bg-navy .card-design--card-glass h3,
+.section-tone--dark .card-design--card-glass h3 {
   color: #FFFFFF !important;
 }
 .on-dark .card-design--card-glass p,
-.bg-navy .card-design--card-glass p {
+.bg-navy .card-design--card-glass p,
+.section-tone--dark .card-design--card-glass p {
   color: #CBD5E1 !important;
 }
 
-/* Sections claires avec .bg-light */
-.bg-light {
-  background-color: var(--bg-light, #F7F6F2) !important;
-  color: var(--theme-ink, #16213A);
+/* ==========================================================================
+   HERO EN LES 3 TONALITÉS (CLAIR, ALTERNÉ, SOMBRE)
+   ========================================================================== */
+
+/* 1. Hero Clair (Fond blanc pur #FFFFFF) */
+.hero.theme-tone-light,
+.hero.section-tone--light {
+  background: #FFFFFF !important;
+  color: var(--ink, #16213A) !important;
 }
-.bg-light h1, .bg-light h2, .bg-light h3, .bg-light h4,
-.bg-light .section-head h2 {
-  color: var(--theme-ink, #16213A) !important;
-}
-.bg-light p, .bg-light .section-head p {
-  color: var(--slate, #5B6B7C) !important;
+.hero.theme-tone-light::before,
+.hero.section-tone--light::before {
+  background:
+    radial-gradient(800px 600px at 90% 10%, rgba(240,98,77,0.08), transparent 60%),
+    radial-gradient(600px 500px at 10% 90%, rgba(57,173,198,0.08), transparent 60%),
+    radial-gradient(400px 400px at 50% 50%, rgba(245,197,24,0.04), transparent 70%);
 }
 
-/* Hero en tonalité claire */
-.hero.theme-tone-light {
+/* 2. Hero Alterné (Fond doux feutré #F7F6F2) */
+.hero.theme-tone-alt,
+.hero.section-tone--alt {
   background: var(--bg-light, #F7F6F2) !important;
   color: var(--ink, #16213A) !important;
 }
-.hero.theme-tone-light::before {
+.hero.theme-tone-alt::before,
+.hero.section-tone--alt::before {
   background:
     radial-gradient(800px 600px at 90% 10%, rgba(240,98,77,0.12), transparent 60%),
     radial-gradient(600px 500px at 10% 90%, rgba(57,173,198,0.1), transparent 60%),
     radial-gradient(400px 400px at 50% 50%, rgba(245,197,24,0.06), transparent 70%);
 }
+
+/* Textes et éléments du Hero pour les modes Clair et Alterné */
 .hero.theme-tone-light h1,
 .hero.theme-tone-light .hero-title-center,
-.hero.theme-tone-light .hero-minimal-title {
+.hero.theme-tone-light .hero-minimal-title,
+.hero.theme-tone-alt h1,
+.hero.theme-tone-alt .hero-title-center,
+.hero.theme-tone-alt .hero-minimal-title {
   color: var(--ink, #16213A) !important;
 }
 .hero.theme-tone-light p.lead,
 .hero.theme-tone-light .hero-lead-center,
-.hero.theme-tone-light .hero-minimal-lead {
+.hero.theme-tone-light .hero-minimal-lead,
+.hero.theme-tone-alt p.lead,
+.hero.theme-tone-alt .hero-lead-center,
+.hero.theme-tone-alt .hero-minimal-lead {
   color: var(--slate, #5B6B7C) !important;
 }
-.hero.theme-tone-light .hero-badge {
-  background: rgba(14, 31, 61, 0.06);
-  border-color: rgba(14, 31, 61, 0.12);
-  color: var(--ink, #16213A);
+.hero.theme-tone-light .hero-badge,
+.hero.theme-tone-alt .hero-badge {
+  background: rgba(14, 31, 61, 0.06) !important;
+  border-color: rgba(14, 31, 61, 0.12) !important;
+  color: var(--ink, #16213A) !important;
 }
 .hero.theme-tone-light .hero-stats,
-.hero.theme-tone-light .hero-stats-center {
-  background: #FFFFFF;
-  border-color: var(--border, #E7E5DE);
-  box-shadow: 0 10px 30px rgba(14, 31, 61, 0.06);
+.hero.theme-tone-light .hero-stats-center,
+.hero.theme-tone-alt .hero-stats,
+.hero.theme-tone-alt .hero-stats-center {
+  background: #FFFFFF !important;
+  border-color: var(--border, #E7E5DE) !important;
+  box-shadow: 0 10px 30px rgba(14, 31, 61, 0.06) !important;
 }
-.hero.theme-tone-light .hero-stat .num {
-  color: var(--ink, #16213A);
+.hero.theme-tone-light .hero-stat .num,
+.hero.theme-tone-alt .hero-stat .num {
+  color: var(--ink, #16213A) !important;
 }
-.hero.theme-tone-light .hero-stat .lbl {
-  color: var(--slate, #5B6B7C);
+.hero.theme-tone-light .hero-stat .lbl,
+.hero.theme-tone-alt .hero-stat .lbl {
+  color: var(--slate, #5B6B7C) !important;
 }
 .hero.theme-tone-light .hero-bento-main,
-.hero.theme-tone-light .hero-bento-card {
-  background: #FFFFFF;
-  border-color: var(--border, #E7E5DE);
-  box-shadow: 0 8px 24px rgba(14, 31, 61, 0.05);
+.hero.theme-tone-light .hero-bento-card,
+.hero.theme-tone-alt .hero-bento-main,
+.hero.theme-tone-alt .hero-bento-card {
+  background: #FFFFFF !important;
+  border-color: var(--border, #E7E5DE) !important;
+  box-shadow: 0 8px 24px rgba(14, 31, 61, 0.05) !important;
 }
-.hero.theme-tone-light .vip-badge-card .vip-badge-title {
-  color: var(--ink, #16213A);
+.hero.theme-tone-light .vip-badge-card .vip-badge-title,
+.hero.theme-tone-alt .vip-badge-card .vip-badge-title {
+  color: var(--ink, #16213A) !important;
 }
-.hero.theme-tone-light .vip-badge-card .vip-badge-desc {
-  color: var(--slate, #5B6B7C);
+.hero.theme-tone-light .vip-badge-card .vip-badge-desc,
+.hero.theme-tone-alt .vip-badge-card .vip-badge-desc {
+  color: var(--slate, #5B6B7C) !important;
 }
-.hero.theme-tone-light .mosaic-caption {
-  color: var(--ink, #16213A);
+.hero.theme-tone-light .mosaic-caption,
+.hero.theme-tone-alt .mosaic-caption {
+  color: var(--ink, #16213A) !important;
+}
+.hero.theme-tone-light .btn-outline,
+.hero.theme-tone-alt .btn-outline {
+  border-color: rgba(22, 33, 58, 0.28) !important;
+  color: var(--ink, #16213A) !important;
+}
+.hero.theme-tone-light .btn-outline:hover,
+.hero.theme-tone-alt .btn-outline:hover {
+  border-color: var(--coral, #F0624D) !important;
+  color: var(--coral, #F0624D) !important;
+  background: rgba(240, 98, 77, 0.06) !important;
+}
+
+/* 3. Hero Sombre (Marine VIP #0E1F3D) */
+.hero.theme-tone-dark,
+.hero.section-tone--dark {
+  background: var(--navy, #0E1F3D) !important;
+  color: #FFFFFF !important;
+}
+.hero.theme-tone-dark h1,
+.hero.theme-tone-dark .hero-title-center,
+.hero.theme-tone-dark .hero-minimal-title {
+  color: #FFFFFF !important;
+}
+.hero.theme-tone-dark p.lead,
+.hero.theme-tone-dark .hero-lead-center,
+.hero.theme-tone-dark .hero-minimal-lead {
+  color: rgba(255, 255, 255, 0.78) !important;
+}
+.hero.theme-tone-dark .btn-outline {
+  border-color: rgba(255, 255, 255, 0.3) !important;
+  color: #FFFFFF !important;
+}
+.hero.theme-tone-dark .btn-outline:hover {
+  border-color: #FFFFFF !important;
+  background: rgba(255, 255, 255, 0.1) !important;
 }
 
 /* Classes génériques de titres et paragraphes de cartes */
@@ -3180,5 +3447,496 @@ body.chatbot-open .back-top {
     gap: 24px !important;
   }
 }
+
+/* ==========================================================================
+   AMPLIFIED THEME TONES & PRESTIGE DARK MODE (NO MORE ALL-WHITE CARDS)
+   ========================================================================== */
+
+/* 1. SECTIONS SOMBRES (MARINE VIP / NUIT VELOURS #0E1F3D) */
+.on-dark,
+.bg-navy,
+.section-tone--dark,
+section.bg-navy,
+section.on-dark,
+section.section-tone--dark {
+  background-color: var(--navy, #0E1F3D) !important;
+  color: #F8FAFC !important;
+}
+
+.on-dark .section-head h2,
+.bg-navy .section-head h2,
+.section-tone--dark .section-head h2 {
+  color: #FFFFFF !important;
+}
+
+.on-dark .section-head p,
+.bg-navy .section-head p,
+.section-tone--dark .section-head p {
+  color: rgba(255, 255, 255, 0.82) !important;
+}
+
+.on-dark .eyebrow,
+.bg-navy .eyebrow,
+.section-tone--dark .eyebrow {
+  color: var(--gold, #C9A968) !important;
+}
+
+.on-dark .eyebrow::before,
+.bg-navy .eyebrow::before,
+.section-tone--dark .eyebrow::before {
+  background-color: var(--gold, #C9A968) !important;
+}
+
+/* 2. CARTES D'ENGAGEMENT (.card & .service-card) DANS LES SECTIONS SOMBRES */
+.on-dark .card,
+.bg-navy .card,
+.section-tone--dark .card,
+.on-dark .service-card,
+.bg-navy .service-card,
+.section-tone--dark .service-card {
+  background: rgba(255, 255, 255, 0.07) !important;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4) !important;
+  color: #F8FAFC !important;
+}
+
+.on-dark .card:hover,
+.bg-navy .card:hover,
+.section-tone--dark .card:hover {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border-color: rgba(201, 169, 104, 0.45) !important;
+  transform: translateY(-8px);
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.5) !important;
+}
+
+.on-dark .card h3,
+.bg-navy .card h3,
+.section-tone--dark .card h3,
+.on-dark .card .custom-card-title,
+.bg-navy .card .custom-card-title,
+.section-tone--dark .card .custom-card-title {
+  color: #FFFFFF !important;
+}
+
+.on-dark .card p,
+.bg-navy .card p,
+.section-tone--dark .card p,
+.on-dark .card .custom-card-desc,
+.bg-navy .card .custom-card-desc,
+.section-tone--dark .card .custom-card-desc {
+  color: #CBD5E1 !important;
+}
+
+.on-dark .card .card-icon,
+.bg-navy .card .card-icon,
+.section-tone--dark .card .card-icon {
+  background: rgba(201, 169, 104, 0.18) !important;
+  color: var(--gold, #C9A968) !important;
+}
+
+.on-dark .card span[style*="font-size: 48px"],
+.bg-navy .card span[style*="font-size: 48px"],
+.section-tone--dark .card span[style*="font-size: 48px"],
+.on-dark .service-card span,
+.bg-navy .service-card span,
+.section-tone--dark .service-card span {
+  color: rgba(255, 255, 255, 0.15) !important;
+}
+
+/* 3. MINI-CARTES SERVICES (.mini-card) DANS LES SECTIONS SOMBRES */
+.on-dark .mini-card,
+.bg-navy .mini-card,
+.section-tone--dark .mini-card {
+  background: rgba(255, 255, 255, 0.07) !important;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.35) !important;
+  color: #F8FAFC !important;
+}
+
+.on-dark .mini-card:hover,
+.bg-navy .mini-card:hover,
+.section-tone--dark .mini-card:hover {
+  background: rgba(255, 255, 255, 0.11) !important;
+  border-color: rgba(201, 169, 104, 0.45) !important;
+  transform: translateY(-6px);
+}
+
+.on-dark .mini-card h4,
+.bg-navy .mini-card h4,
+.section-tone--dark .mini-card h4,
+.on-dark .mini-card .custom-card-title,
+.bg-navy .mini-card .custom-card-title,
+.section-tone--dark .mini-card .custom-card-title {
+  color: #FFFFFF !important;
+}
+
+.on-dark .mini-card p,
+.bg-navy .mini-card p,
+.section-tone--dark .mini-card p,
+.on-dark .mini-card .custom-card-desc,
+.bg-navy .mini-card .custom-card-desc,
+.section-tone--dark .mini-card .custom-card-desc {
+  color: #CBD5E1 !important;
+}
+
+.on-dark .mini-card .step-num,
+.bg-navy .mini-card .step-num,
+.section-tone--dark .mini-card .step-num {
+  color: var(--gold, #C9A968) !important;
+  opacity: 1 !important;
+}
+
+.on-dark .mini-card.highlight,
+.bg-navy .mini-card.highlight,
+.section-tone--dark .mini-card.highlight {
+  background: rgba(201, 169, 104, 0.12) !important;
+  border-color: rgba(201, 169, 104, 0.38) !important;
+}
+
+/* 4. CARTES CUSTOMISÉES (Elevated, Bordered, Minimal, Glass, Dark) DANS LES SECTIONS SOMBRES */
+.on-dark .card-design--card-elevated,
+.bg-navy .card-design--card-elevated,
+.section-tone--dark .card-design--card-elevated,
+.on-dark .card-design--no-img-minimal,
+.bg-navy .card-design--no-img-minimal,
+.section-tone--dark .card-design--no-img-minimal {
+  background: rgba(255, 255, 255, 0.07) !important;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4) !important;
+  color: #F8FAFC !important;
+}
+
+.on-dark .card-design--card-elevated:hover,
+.bg-navy .card-design--card-elevated:hover,
+.section-tone--dark .card-design--card-elevated:hover {
+  background: rgba(255, 255, 255, 0.11) !important;
+  border-color: rgba(201, 169, 104, 0.5) !important;
+}
+
+.on-dark .card-design--card-bordered,
+.bg-navy .card-design--card-bordered,
+.section-tone--dark .card-design--card-bordered,
+.on-dark .card-design--no-img-architect,
+.bg-navy .card-design--no-img-architect,
+.section-tone--dark .card-design--no-img-architect {
+  background: rgba(255, 255, 255, 0.07) !important;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
+  border-top: 4px solid var(--theme-accent, #F0624D) !important;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4) !important;
+  color: #F8FAFC !important;
+}
+
+.on-dark .card-design--card-bordered .card-watermark,
+.bg-navy .card-design--card-bordered .card-watermark,
+.section-tone--dark .card-design--card-bordered .card-watermark {
+  color: rgba(255, 255, 255, 0.08) !important;
+}
+
+.on-dark .card-design--card-minimal,
+.bg-navy .card-design--card-minimal,
+.section-tone--dark .card-design--card-minimal {
+  background: rgba(255, 255, 255, 0.06) !important;
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+  border-left: 3.5px solid var(--theme-accent, #F0624D) !important;
+  color: #F8FAFC !important;
+}
+
+.on-dark .card-design--card-glass,
+.bg-navy .card-design--card-glass,
+.section-tone--dark .card-design--card-glass,
+.on-dark .card-design--no-img-glass,
+.bg-navy .card-design--no-img-glass,
+.section-tone--dark .card-design--no-img-glass {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  color: #F8FAFC !important;
+}
+
+.on-dark [class*="card-design--"] h3,
+.bg-navy [class*="card-design--"] h3,
+.section-tone--dark [class*="card-design--"] h3,
+.on-dark [class*="card-design--"] .custom-card-title,
+.bg-navy [class*="card-design--"] .custom-card-title,
+.section-tone--dark [class*="card-design--"] .custom-card-title {
+  color: #FFFFFF !important;
+}
+
+.on-dark [class*="card-design--"] p,
+.bg-navy [class*="card-design--"] p,
+.section-tone--dark [class*="card-design--"] p,
+.on-dark [class*="card-design--"] .custom-card-desc,
+.bg-navy [class*="card-design--"] .custom-card-desc,
+.section-tone--dark [class*="card-design--"] .custom-card-desc {
+  color: #CBD5E1 !important;
+}
+
+.on-dark [class*="card-design--"] li,
+.bg-navy [class*="card-design--"] li,
+.section-tone--dark [class*="card-design--"] li {
+  color: #CBD5E1 !important;
+}
+
+.on-dark [class*="card-design--"] strong,
+.bg-navy [class*="card-design--"] strong,
+.section-tone--dark [class*="card-design--"] strong {
+  color: var(--gold, #C9A968) !important;
+}
+
+/* 5. ÉTUDES DE CAS & RÉALISATIONS (TOUTES LES VARIANTES) DANS LES SECTIONS SOMBRES */
+
+/* Variante 00 : .case-card standard */
+.on-dark .case-card,
+.bg-navy .case-card,
+.section-tone--dark .case-card {
+  background: rgba(255, 255, 255, 0.07) !important;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45) !important;
+}
+
+.on-dark .case-media,
+.bg-navy .case-media,
+.section-tone--dark .case-media {
+  background: rgba(0, 0, 0, 0.35) !important;
+}
+
+.on-dark .case-card .case-body h3,
+.bg-navy .case-card .case-body h3,
+.section-tone--dark .case-card .case-body h3 {
+  color: #FFFFFF !important;
+}
+
+.on-dark .case-card .case-row strong,
+.bg-navy .case-card .case-row strong,
+.section-tone--dark .case-card .case-row strong,
+.on-dark .case-field-label,
+.bg-navy .case-field-label,
+.section-tone--dark .case-field-label {
+  color: var(--gold, #C9A968) !important;
+}
+
+.on-dark .case-card .case-row span,
+.bg-navy .case-card .case-row span,
+.section-tone--dark .case-card .case-row span,
+.on-dark .case-field-value,
+.bg-navy .case-field-value,
+.section-tone--dark .case-field-value {
+  color: #CBD5E1 !important;
+}
+
+.on-dark .case-card .case-result,
+.bg-navy .case-card .case-result,
+.section-tone--dark .case-card .case-result {
+  background: rgba(255, 255, 255, 0.06) !important;
+  border-left: 3px solid var(--teal, #6FA0D0) !important;
+  color: #FFFFFF !important;
+}
+
+.on-dark .case-card .case-result strong,
+.bg-navy .case-card .case-result strong,
+.section-tone--dark .case-card .case-result strong {
+  color: #FFFFFF !important;
+}
+
+/* Variante 01 : Grand Éditorial Magazine */
+.on-dark .case-design--case-editorial,
+.bg-navy .case-design--case-editorial,
+.section-tone--dark .case-design--case-editorial {
+  background: rgba(255, 255, 255, 0.07) !important;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.45) !important;
+}
+
+.on-dark .case-design--case-editorial:hover,
+.bg-navy .case-design--case-editorial:hover,
+.section-tone--dark .case-design--case-editorial:hover {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border-color: rgba(201, 169, 104, 0.45) !important;
+}
+
+.on-dark .case-editorial-media,
+.bg-navy .case-editorial-media,
+.section-tone--dark .case-editorial-media {
+  background: rgba(0, 0, 0, 0.35) !important;
+}
+
+.on-dark .case-editorial-title,
+.bg-navy .case-editorial-title,
+.section-tone--dark .case-editorial-title {
+  color: #FFFFFF !important;
+}
+
+.on-dark .case-editorial-step-badge,
+.bg-navy .case-editorial-step-badge,
+.section-tone--dark .case-editorial-step-badge {
+  color: var(--gold, #C9A968) !important;
+}
+
+.on-dark .case-editorial-step p,
+.bg-navy .case-editorial-step p,
+.section-tone--dark .case-editorial-step p {
+  color: #CBD5E1 !important;
+}
+
+.on-dark .case-editorial-result,
+.bg-navy .case-editorial-result,
+.section-tone--dark .case-editorial-result {
+  background: rgba(201, 169, 104, 0.14) !important;
+  border-color: rgba(201, 169, 104, 0.35) !important;
+  border-left: 5px solid var(--gold, #C9A968) !important;
+  color: #FFFFFF !important;
+}
+
+/* Variante 02 : Panoramique Cinéma & Timeline */
+.on-dark .case-design--case-cinema,
+.bg-navy .case-design--case-cinema,
+.section-tone--dark .case-design--case-cinema {
+  background: rgba(255, 255, 255, 0.07) !important;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.45) !important;
+}
+
+.on-dark .case-cinema-header-nomedia,
+.bg-navy .case-cinema-header-nomedia,
+.section-tone--dark .case-cinema-header-nomedia {
+  background: rgba(0, 0, 0, 0.25) !important;
+}
+
+.on-dark .case-cinema-timeline,
+.bg-navy .case-cinema-timeline,
+.section-tone--dark .case-cinema-timeline {
+  background: transparent !important;
+}
+
+.on-dark .case-cinema-card,
+.bg-navy .case-cinema-card,
+.section-tone--dark .case-cinema-card {
+  background: rgba(255, 255, 255, 0.06) !important;
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+}
+
+.on-dark .case-cinema-card strong,
+.bg-navy .case-cinema-card strong,
+.section-tone--dark .case-cinema-card strong {
+  color: #FFFFFF !important;
+}
+
+.on-dark .case-cinema-card p,
+.bg-navy .case-cinema-card p,
+.section-tone--dark .case-cinema-card p {
+  color: #CBD5E1 !important;
+}
+
+.on-dark .case-cinema-card.highlight,
+.bg-navy .case-cinema-card.highlight,
+.section-tone--dark .case-cinema-card.highlight {
+  background: rgba(201, 169, 104, 0.14) !important;
+  border-color: rgba(201, 169, 104, 0.4) !important;
+  border-top: 3px solid var(--gold, #C9A968) !important;
+}
+
+/* Variante 03 : Grille Bento Prestige */
+.on-dark .case-design--case-bento,
+.bg-navy .case-design--case-bento,
+.section-tone--dark .case-design--case-bento {
+  background: rgba(255, 255, 255, 0.07) !important;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.45) !important;
+}
+
+.on-dark .case-bento-hero,
+.bg-navy .case-bento-hero,
+.section-tone--dark .case-bento-hero {
+  background: rgba(255, 255, 255, 0.05) !important;
+}
+
+.on-dark .case-bento-hero-bottom h3,
+.bg-navy .case-bento-hero-bottom h3,
+.section-tone--dark .case-bento-hero-bottom h3 {
+  color: #FFFFFF !important;
+}
+
+.on-dark .case-bento-hero-bottom p,
+.bg-navy .case-bento-hero-bottom p,
+.section-tone--dark .case-bento-hero-bottom p {
+  color: #CBD5E1 !important;
+}
+
+.on-dark .case-bento-card,
+.bg-navy .case-bento-card,
+.section-tone--dark .case-bento-card {
+  background: rgba(255, 255, 255, 0.06) !important;
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+}
+
+.on-dark .case-bento-card p,
+.bg-navy .case-bento-card p,
+.section-tone--dark .case-bento-card p {
+  color: #CBD5E1 !important;
+}
+
+.on-dark .case-bento-card.highlight,
+.bg-navy .case-bento-card.highlight,
+.section-tone--dark .case-bento-card.highlight {
+  background: rgba(201, 169, 104, 0.14) !important;
+  border-color: rgba(201, 169, 104, 0.4) !important;
+}
+
+/* Variante 04 : Carnet VIP / Expédition */
+.on-dark .case-design--case-carnet,
+.bg-navy .case-design--case-carnet,
+.section-tone--dark .case-design--case-carnet {
+  background: rgba(255, 255, 255, 0.07) !important;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.45) !important;
+}
+
+.on-dark .case-carnet-header,
+.bg-navy .case-carnet-header,
+.section-tone--dark .case-carnet-header {
+  background: rgba(0, 0, 0, 0.25) !important;
+  color: #FFFFFF !important;
+}
+
+.on-dark .case-carnet-step,
+.bg-navy .case-carnet-step,
+.section-tone--dark .case-carnet-step {
+  background: rgba(255, 255, 255, 0.06) !important;
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+  color: #CBD5E1 !important;
+}
+
+/* Variante 06 : Relief Flottant 3D */
+.on-dark .case-design--case-floating,
+.bg-navy .case-design--case-floating,
+.section-tone--dark .case-design--case-floating {
+  background: rgba(255, 255, 255, 0.07) !important;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
+}
+
+.on-dark .case-floating-body,
+.bg-navy .case-floating-body,
+.section-tone--dark .case-floating-body {
+  background: transparent !important;
+  color: #FFFFFF !important;
+}
+
+.on-dark .case-floating-body h3,
+.bg-navy .case-floating-body h3,
+.section-tone--dark .case-floating-body h3 {
+  color: #FFFFFF !important;
+}
+
+.on-dark .case-floating-body p,
+.bg-navy .case-floating-body p,
+.section-tone--dark .case-floating-body p {
+  color: #CBD5E1 !important;
+}
+
+.on-dark .case-floating-body strong,
+.bg-navy .case-floating-body strong,
+.section-tone--dark .case-floating-body strong {
+  color: var(--gold, #C9A968) !important;
+}
+
 
 
