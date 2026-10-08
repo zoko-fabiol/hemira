@@ -9,10 +9,10 @@ import {
   ChevronDown, 
   ChevronUp, 
   Upload,
-  Image as ImageIcon
+  Image as ImageIcon,
+  Sparkles
 } from 'lucide-react';
 import { saveContent, uploadImageFile } from '../services/cmsService';
-import CaseAppearancePicker from './CaseAppearancePicker';
 
 export default function CaseStudiesTab({ contentFr, contentEn, showToast, onOpenThemeModal }) {
   const [casesFr, setCasesFr] = useState([]);
@@ -200,17 +200,24 @@ export default function CaseStudiesTab({ contentFr, contentEn, showToast, onOpen
           </div>
         </div>
 
-        {/* Sélecteur de Design (6 options Gros Blocs avec Photos) et Animation pour TOUTE la section Réalisations */}
-        <CaseAppearancePicker
-          design={casesDesign}
-          animation={casesAnimation}
-          onOpenThemeModal={onOpenThemeModal}
-          onUpdate={(field, val) => {
-            if (field === 'design') setCasesDesign(val);
-            if (field === 'animation') setCasesAnimation(val);
-          }}
-          label="Apparence & Animation de 'Nos Réalisations' (Gros Blocs avec Images)"
-        />
+        {/* Bannière de séparation claire Contenu / Apparence */}
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '10px',
+          padding: '10px 14px',
+          background: 'rgba(240, 98, 77, 0.08)',
+          border: '1px solid rgba(240, 98, 77, 0.2)',
+          borderRadius: '10px',
+          margin: '16px 0 10px',
+          fontSize: '12.5px',
+          color: 'var(--admin-text-main)'
+        }}>
+          <Sparkles size={16} color="var(--admin-coral, #F0624D)" style={{ flexShrink: 0 }} />
+          <span>
+            <strong>Gestion ergonomique séparée :</strong> Les variantes de mise en page des réalisations (Éditorial, Écrin Nuit VIP, Grille, Timeline) et leurs animations sont gérées dans l'onglet <strong>🎨 Apparence</strong>.
+          </span>
+        </div>
 
         {/* Language Tabs */}
         <div className="lang-tabs" style={{ marginTop: '20px' }}>

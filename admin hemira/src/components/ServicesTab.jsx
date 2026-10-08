@@ -15,7 +15,6 @@ import {
   Upload
 } from 'lucide-react';
 import { saveContent, uploadImageFile } from '../services/cmsService';
-import CardAppearancePicker from './CardAppearancePicker';
 
 export default function ServicesTab({ contentFr, contentEn, showToast, onOpenThemeModal }) {
   const [servicesFr, setServicesFr] = useState([]);
@@ -213,18 +212,24 @@ export default function ServicesTab({ contentFr, contentEn, showToast, onOpenThe
           </div>
         </div>
 
-        {/* Sélecteur de Design (6 options) et Animation (6 options) pour TOUS les blocs de la section Services */}
-        <CardAppearancePicker
-          design={servicesDesign}
-          animation={servicesAnimation}
-          showMediaUploader={false}
-          onOpenThemeModal={onOpenThemeModal}
-          onUpdate={(field, val) => {
-            if (field === 'design') setServicesDesign(val);
-            if (field === 'animation') setServicesAnimation(val);
-          }}
-          label="Apparence & Animation de la section 'Services' (appliqué à tous les blocs)"
-        />
+        {/* Bannière de séparation claire Contenu / Apparence */}
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '10px',
+          padding: '10px 14px',
+          background: 'rgba(240, 98, 77, 0.08)',
+          border: '1px solid rgba(240, 98, 77, 0.2)',
+          borderRadius: '10px',
+          margin: '16px 0 10px',
+          fontSize: '12.5px',
+          color: 'var(--admin-text-main)'
+        }}>
+          <Sparkles size={16} color="var(--admin-coral, #F0624D)" style={{ flexShrink: 0 }} />
+          <span>
+            <strong>Gestion ergonomique séparée :</strong> Les variantes des cartes de services et leurs animations sont gérées dans l'onglet <strong>🎨 Apparence</strong>.
+          </span>
+        </div>
 
         {/* Language Tabs */}
         <div className="lang-tabs" style={{ marginTop: '20px' }}>

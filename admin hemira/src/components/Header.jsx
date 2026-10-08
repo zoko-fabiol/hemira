@@ -1,5 +1,5 @@
 import React from 'react';
-import { ExternalLink, Menu, Sun, Moon, Palette } from 'lucide-react';
+import { ExternalLink, Menu, Sun, Moon, Sparkles } from 'lucide-react';
 
 export default function Header({ 
   activeTabName, 
@@ -8,8 +8,12 @@ export default function Header({
   onOpenMobileMenu, 
   themeMode = 'light', 
   onToggleTheme,
-  onOpenThemeModal 
+  onNavigateAppearance 
 }) {
+  const publicSiteUrl = typeof window !== 'undefined' && window.location.port === '5174'
+    ? `${window.location.protocol}//${window.location.hostname}:5173/`
+    : 'http://localhost:5173/';
+
   return (
     <header className="admin-header">
       <div className="admin-header-left">
@@ -28,16 +32,16 @@ export default function Header({
       </div>
 
       <div className="admin-header-actions">
-        {/* Global Color Theme Preset Modal */}
+        {/* Visual Appearance Studio button */}
         <button
           type="button"
           className="admin-btn admin-btn-outline"
-          onClick={onOpenThemeModal}
-          title="Choisir le thème couleur unique pour tout le site"
-          style={{ gap: '6px' }}
+          onClick={onNavigateAppearance}
+          title="Ouvrir le studio d'apparence et design visuel"
+          style={{ gap: '6px', background: 'rgba(240, 98, 77, 0.08)', borderColor: 'rgba(240, 98, 77, 0.3)' }}
         >
-          <Palette size={15} color="var(--admin-coral, #F0624D)" />
-          <span className="theme-toggle-text">Thème Couleur</span>
+          <Sparkles size={15} color="var(--admin-coral, #F0624D)" />
+          <span className="theme-toggle-text" style={{ fontWeight: 700 }}>🎨 Apparence</span>
         </button>
 
         {/* Theme mode toggle (Light / Dark) */}
@@ -85,7 +89,7 @@ export default function Header({
         </div>
 
         <a 
-          href="http://localhost:5173/" 
+          href={publicSiteUrl} 
           target="_blank" 
           rel="noopener noreferrer"
           className="admin-btn admin-btn-outline admin-header-site-btn"

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Home, Save, Plus, Trash2, Image as ImageIcon, Upload } from 'lucide-react';
+import { Home, Save, Plus, Trash2, Image as ImageIcon, Upload, Sparkles } from 'lucide-react';
 import { saveContent, uploadImageFile } from '../services/cmsService';
-import CardAppearancePicker from './CardAppearancePicker';
 
 export default function HomeTab({ contentFr, contentEn, showToast, onOpenThemeModal }) {
   const [activeLang, setActiveLang] = useState('fr');
@@ -287,24 +286,24 @@ export default function HomeTab({ contentFr, contentEn, showToast, onOpenThemeMo
               </button>
             </div>
 
-            {/* Sélecteur de Design (6 options) et Animation (6 options) pour TOUS les blocs de la section */}
-            <CardAppearancePicker
-              design={current.commitmentsDesign || 'default'}
-              animation={current.commitmentsAnimation || 'default'}
-              showMediaUploader={false}
-              onOpenThemeModal={onOpenThemeModal}
-              onUpdate={(field, val) => {
-                const map = {
-                  design: 'commitmentsDesign',
-                  animation: 'commitmentsAnimation'
-                };
-                const key = map[field] || field;
-                handleChange(key, val);
-                setHomeFr(prev => ({ ...prev, [key]: val }));
-                setHomeEn(prev => ({ ...prev, [key]: val }));
-              }}
-              label="Apparence & Animation de la section 'Nos Engagements' (appliqué à tous les blocs)"
-            />
+            {/* Bannière de séparation claire Contenu / Apparence */}
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '10px',
+              padding: '10px 14px',
+              background: 'rgba(240, 98, 77, 0.08)',
+              border: '1px solid rgba(240, 98, 77, 0.2)',
+              borderRadius: '10px',
+              marginBottom: '16px',
+              fontSize: '12.5px',
+              color: 'var(--admin-text-main)'
+            }}>
+              <Sparkles size={16} color="var(--admin-coral, #F0624D)" style={{ flexShrink: 0 }} />
+              <span>
+                <strong>Gestion ergonomique séparée :</strong> Les variantes de cartes, les couleurs et les animations de cette section sont pilotées en temps réel dans l'onglet <strong>🎨 Apparence</strong>.
+              </span>
+            </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', marginTop: '16px' }}>
               {(current.commitments || []).map((com, i) => {

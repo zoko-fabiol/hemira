@@ -2,7 +2,7 @@ import React from 'react';
 import { t } from '../translations';
 import CustomSectionCard from '../components/CustomSectionCard';
 
-export default function ServicesPage({ onNavigate, lang = 'fr', content }) {
+export default function ServicesPage({ onNavigate, lang = 'fr', content, appearance }) {
   const s = content?.services || t[lang].services;
   const h = content?.home || t[lang].home;
   const cta = content?.ctaBand || t[lang].ctaBand;
@@ -62,9 +62,9 @@ export default function ServicesPage({ onNavigate, lang = 'fr', content }) {
                 </svg>
               ];
 
-              const comDesign = h.commitmentsDesign || s.commitmentsDesign || 'default';
-              const comAnim = h.commitmentsAnimation || s.commitmentsAnimation || 'default';
-              const comAccent = h.commitmentsAccent || s.commitmentsAccent || 'coral';
+              const comDesign = appearance?.sections?.['home.commitments']?.variant || h.commitmentsDesign || s.commitmentsDesign || 'default';
+              const comAnim = appearance?.motion === 'expressive' ? 'float-gentle' : (h.commitmentsAnimation || s.commitmentsAnimation || 'default');
+              const comAccent = appearance?.palette?.accent ? 'custom' : (h.commitmentsAccent || s.commitmentsAccent || 'coral');
 
               return (
                 <CustomSectionCard
@@ -87,41 +87,49 @@ export default function ServicesPage({ onNavigate, lang = 'fr', content }) {
       </section>
 
       {/* 2. NOTRE PROCESSUS (COMMENT NOUS FAISONS) */}
-      <section className="bg-light reveal">
-        <div className="wrap">
-          <div className="section-head center">
-            <div className="eyebrow">{s.servicesEyebrow}</div>
-            <h2>{s.servicesTitle}</h2>
-            <p style={{ fontSize: '17px', color: 'var(--slate)' }}>
-              {s.servicesSub}
-            </p>
-          </div>
+      {appearance?.sections?.['services.list']?.visible !== false && (
+        <section 
+          className={`reveal ${
+            appearance?.sections?.['services.list']?.tone === 'dark' ? 'bg-navy on-dark' :
+            appearance?.sections?.['services.list']?.tone === 'alt' ? 'bg-light' : 'bg-light'
+          }`}
+          data-section-id="services.list"
+        >
+          <div className="wrap">
+            <div className="section-head center">
+              <div className="eyebrow">{s.servicesEyebrow}</div>
+              <h2>{s.servicesTitle}</h2>
+              <p style={{ fontSize: '17px', color: 'var(--slate)' }}>
+                {s.servicesSub}
+              </p>
+            </div>
 
-          <div className="reveal-stagger" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '24px' }}>
-            {(s.servicesList || s.services || []).map((item, idx) => {
-              const servicesDesign = s.servicesDesign || h.servicesDesign || 'default';
-              const servicesAnim = s.servicesAnimation || h.servicesAnimation || 'default';
-              const servicesAccent = s.servicesAccent || h.servicesAccent || 'coral';
+            <div className="reveal-stagger" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '24px' }}>
+              {(s.servicesList || s.services || []).map((item, idx) => {
+                const servicesDesign = appearance?.sections?.['services.list']?.variant || s.servicesDesign || h.servicesDesign || 'default';
+                const servicesAnim = appearance?.motion === 'expressive' ? 'float-gentle' : (s.servicesAnimation || h.servicesAnimation || 'default');
+                const servicesAccent = appearance?.palette?.accent ? 'custom' : (s.servicesAccent || h.servicesAccent || 'coral');
 
-              return (
-                <CustomSectionCard
-                  key={idx}
-                  type="service"
-                  item={{
-                    ...item,
-                    design: servicesDesign,
-                    animation: servicesAnim,
-                    accentColor: servicesAccent
-                  }}
-                  index={idx}
-                  icon={serviceIcons[idx % serviceIcons.length]}
-                  extraBadge={s.flagshipBadge}
-                />
-              );
-            })}
+                return (
+                  <CustomSectionCard
+                    key={idx}
+                    type="service"
+                    item={{
+                      ...item,
+                      design: servicesDesign,
+                      animation: servicesAnim,
+                      accentColor: servicesAccent
+                    }}
+                    index={idx}
+                    icon={serviceIcons[idx % serviceIcons.length]}
+                    extraBadge={s.flagshipBadge}
+                  />
+                );
+              })}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* 3. PASSERELLE DE DÉPLOIEMENT */}
       <section className="reveal">

@@ -2,7 +2,7 @@ import React from 'react';
 import { 
   LayoutDashboard, 
   BarChart3,
-  Palette, 
+  Sparkles, 
   Image as ImageIcon, 
   Home, 
   Briefcase, 
@@ -15,23 +15,42 @@ import {
 } from 'lucide-react';
 
 export default function Sidebar({ activeTab, setActiveTab, isOpen, onClose }) {
-  const navItems = [
-    { id: 'dashboard', label: 'Tableau de bord', icon: LayoutDashboard },
-    { id: 'analytics', label: 'Statistiques & Visiteurs', icon: BarChart3 },
-    { id: 'theme', label: 'Couleurs & Thème', icon: Palette },
-    { id: 'identity', label: 'Logo & Identité', icon: ImageIcon },
-    { id: 'home', label: 'Page d\'accueil & Chiffres', icon: Home },
-    { id: 'services', label: 'Services de voyage', icon: Briefcase },
-    { id: 'case-studies', label: 'Nos réalisations', icon: Award },
-    { id: 'about', label: 'À propos & Fondatrices', icon: Users },
-    { id: 'texts', label: 'Textes & Navigation', icon: Type },
-    { id: 'contact', label: 'Contact & Chatbot', icon: PhoneCall },
+  const sections = [
+    {
+      title: "Vue Générale",
+      items: [
+        { id: 'dashboard', label: 'Tableau de bord', icon: LayoutDashboard },
+        { id: 'analytics', label: 'Statistiques & Visiteurs', icon: BarChart3 }
+      ]
+    },
+    {
+      title: "Design Visuel",
+      items: [
+        { id: 'appearance', label: 'Apparence & Design (Direct)', icon: Sparkles, badge: 'Nouveau' }
+      ]
+    },
+    {
+      title: "Contenu Textes & Médias",
+      items: [
+        { id: 'home', label: 'Accueil & Chiffres', icon: Home },
+        { id: 'services', label: 'Services de voyage', icon: Briefcase },
+        { id: 'case-studies', label: 'Nos réalisations', icon: Award },
+        { id: 'about', label: 'À propos & Fondatrices', icon: Users },
+        { id: 'texts', label: 'Textes & Navigation', icon: Type },
+        { id: 'contact', label: 'Contact & Chatbot', icon: PhoneCall },
+        { id: 'identity', label: 'Logo & Identité', icon: ImageIcon }
+      ]
+    }
   ];
 
   const handleSelect = (id) => {
     setActiveTab(id);
     if (onClose) onClose();
   };
+
+  const publicSiteUrl = typeof window !== 'undefined' && window.location.port === '5174'
+    ? `${window.location.protocol}//${window.location.hostname}:5173/`
+    : 'http://localhost:5173/';
 
   return (
     <>
@@ -62,26 +81,47 @@ export default function Sidebar({ activeTab, setActiveTab, isOpen, onClose }) {
         </div>
 
         <nav className="admin-nav">
-          <div className="admin-nav-section-title">Navigation principale</div>
-          {navItems.map((item) => {
-            const Icon = item.icon;
-            const isActive = activeTab === item.id;
-            return (
-              <button
-                key={item.id}
-                className={`admin-nav-item ${isActive ? 'active' : ''}`}
-                onClick={() => handleSelect(item.id)}
-              >
-                <Icon size={18} />
-                <span>{item.label}</span>
-              </button>
-            );
-          })}
+          {sections.map((sec, idx) => (
+            <div key={idx} style={{ marginBottom: '14px' }}>
+              <div className="admin-nav-section-title">{sec.title}</div>
+              {sec.items.map((item) => {
+                const Icon = item.icon;
+                const isActive = activeTab === item.id;
+                return (
+                  <button
+                    key={item.id}
+                    className={`admin-nav-item ${isActive ? 'active' : ''}`}
+                    onClick={() => handleSelect(item.id)}
+                    style={item.id === 'appearance' ? { 
+                      background: isActive ? 'rgba(240, 98, 77, 0.15)' : 'rgba(240, 98, 77, 0.05)', 
+                      borderColor: isActive ? 'var(--admin-coral)' : 'rgba(240, 98, 77, 0.2)' 
+                    } : {}}
+                  >
+                    <Icon size={18} color={item.id === 'appearance' ? 'var(--admin-coral, #F0624D)' : 'currentColor'} />
+                    <span style={item.id === 'appearance' ? { fontWeight: 700 } : {}}>{item.label}</span>
+                    {item.badge && (
+                      <span style={{ 
+                        marginLeft: 'auto', 
+                        fontSize: '10px', 
+                        padding: '2px 6px', 
+                        borderRadius: '999px', 
+                        background: 'var(--admin-coral, #F0624D)', 
+                        color: '#fff', 
+                        fontWeight: 700 
+                      }}>
+                        {item.badge}
+                      </span>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+          ))}
         </nav>
 
         <div className="admin-sidebar-footer">
           <a 
-            href="http://localhost:5173/" 
+            href={publicSiteUrl} 
             target="_blank" 
             rel="noopener noreferrer"
             className="admin-btn admin-btn-outline"

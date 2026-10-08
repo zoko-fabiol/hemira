@@ -1,7 +1,7 @@
 import React from 'react';
 import { t } from '../translations';
 
-export default function AboutPage({ onNavigate, lang = 'fr', content }) {
+export default function AboutPage({ onNavigate, lang = 'fr', content, appearance }) {
   const a = content?.about || t[lang].about;
   const cta = content?.ctaBand || t[lang].ctaBand;
 
@@ -42,7 +42,7 @@ export default function AboutPage({ onNavigate, lang = 'fr', content }) {
         </div>
       </section>
 
-      <section className="about-founders-section">
+      <section className="about-founders-section" data-section-id="about.founders">
         <div className="wrap about-layout">
           <div className="about-photo-wrap">
             <img 

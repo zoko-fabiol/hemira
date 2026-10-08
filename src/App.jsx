@@ -57,7 +57,7 @@ const getPageFromUrl = () => {
 function AppContent() {
   const [currentPage, setCurrentPage] = useState(() => getPageFromUrl());
   const [lang, setLang] = useState('fr');
-  const { getContent, settings, theme } = useSiteData();
+  const { getContent, settings, theme, appearance } = useSiteData();
 
   // Handle manual browser scroll restoration to prevent jarring jumps on refresh
   useEffect(() => {
@@ -345,16 +345,16 @@ function AppContent() {
 
       <main id="main">
         {currentPage === 'home' && (
-          <HomePage onNavigate={navigateTo} lang={lang} content={dynamicContent} />
+          <HomePage onNavigate={navigateTo} lang={lang} content={dynamicContent} appearance={appearance} />
         )}
         {currentPage === 'about' && (
-          <AboutPage onNavigate={navigateTo} lang={lang} content={dynamicContent} />
+          <AboutPage onNavigate={navigateTo} lang={lang} content={dynamicContent} appearance={appearance} />
         )}
         {currentPage === 'services' && (
-          <ServicesPage onNavigate={navigateTo} lang={lang} content={dynamicContent} />
+          <ServicesPage onNavigate={navigateTo} lang={lang} content={dynamicContent} appearance={appearance} />
         )}
         {currentPage === 'case-studies' && (
-          <CaseStudiesPage onNavigate={navigateTo} lang={lang} content={dynamicContent} />
+          <CaseStudiesPage onNavigate={navigateTo} lang={lang} content={dynamicContent} appearance={appearance} />
         )}
         {currentPage === 'contact' && (
           <ContactPage lang={lang} content={dynamicContent} settings={settings} />

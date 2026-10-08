@@ -2,14 +2,18 @@ import React from 'react';
 import { t } from '../translations';
 import CustomSectionCard from '../components/CustomSectionCard';
 
-export default function HomePage({ onNavigate, lang = 'fr', content }) {
+export default function HomePage({ onNavigate, lang = 'fr', content, appearance }) {
   const h = content?.home || t[lang].home;
   const cta = content?.ctaBand || t[lang].ctaBand;
+
+  const heroConfig = appearance?.sections?.['home.hero'] || {};
+  const isHeroVisible = heroConfig.visible !== false;
 
   return (
     <>
       {/* HERO SECTION */}
-      <section className="hero">
+      {isHeroVisible && (
+        <section className={`hero ${heroConfig.tone === 'light' ? 'theme-tone-light' : ''}`} data-section-id="home.hero">
         <div className="wrap hero-inner">
           <div>
             <div className="hero-badge">
@@ -62,125 +66,148 @@ export default function HomePage({ onNavigate, lang = 'fr', content }) {
           </div>
         </div>
       </section>
+      )}
 
       {/* POURQUOI HEMIRA - NOS ENGAGEMENTS */}
-      <section className="reveal">
-        <div className="wrap">
-          <div className="section-head center">
-            <div className="eyebrow">{h.commitmentsEyebrow}</div>
-            <h2>{h.commitmentsTitle}</h2>
-          </div>
-          <div className="grid-3 reveal-stagger" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))' }}>
-            {(h.commitments || []).map((com, idx) => {
-              const icons = [
-                // 1. Un point de contact, plusieurs solutions (Target / Bullseye)
-                <svg key="0" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                  <circle cx="12" cy="12" r="8"/>
-                  <circle cx="12" cy="12" r="4"/>
-                  <circle cx="12" cy="12" r="0.6" fill="currentColor"/>
-                </svg>,
-                // 2. Rapidité et disponibilité (Compass / Navigation)
-                <svg key="1" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                  <circle cx="12" cy="12" r="9"/>
-                  <polygon points="15,9 13,13 9,15 11,11" fill="currentColor" stroke="none"/>
-                  <circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/>
-                </svg>,
-                // 3. Confiance et proximité (Users / Team)
-                <svg key="2" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                  <circle cx="8" cy="9" r="3"/>
-                  <circle cx="16" cy="9" r="3"/>
-                  <path d="M3 20c0-3 2.2-5.5 5-5.5s5 2.5 5 5.5"/>
-                  <path d="M11 20c0-3 2.2-5.5 5-5.5s5 2.5 5 5.5"/>
-                </svg>
-              ];
+      {appearance?.sections?.['home.commitments']?.visible !== false && (
+        <section 
+          className={`reveal ${
+            appearance?.sections?.['home.commitments']?.tone === 'dark' ? 'bg-navy on-dark' :
+            appearance?.sections?.['home.commitments']?.tone === 'alt' ? 'bg-light' : ''
+          }`}
+          data-section-id="home.commitments"
+        >
+          <div className="wrap">
+            <div className="section-head center">
+              <div className="eyebrow">{h.commitmentsEyebrow}</div>
+              <h2>{h.commitmentsTitle}</h2>
+            </div>
+            <div className="grid-3 reveal-stagger" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))' }}>
+              {(h.commitments || []).map((com, idx) => {
+                const icons = [
+                  // 1. Un point de contact, plusieurs solutions (Target / Bullseye)
+                  <svg key="0" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <circle cx="12" cy="12" r="8"/>
+                    <circle cx="12" cy="12" r="4"/>
+                    <circle cx="12" cy="12" r="0.6" fill="currentColor"/>
+                  </svg>,
+                  // 2. Rapidité et disponibilité (Compass / Navigation)
+                  <svg key="1" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <circle cx="12" cy="12" r="9"/>
+                    <polygon points="15,9 13,13 9,15 11,11" fill="currentColor" stroke="none"/>
+                    <circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/>
+                  </svg>,
+                  // 3. Confiance et proximité (Users / Team)
+                  <svg key="2" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <circle cx="8" cy="9" r="3"/>
+                    <circle cx="16" cy="9" r="3"/>
+                    <path d="M3 20c0-3 2.2-5.5 5-5.5s5 2.5 5 5.5"/>
+                    <path d="M11 20c0-3 2.2-5.5 5-5.5s5 2.5 5 5.5"/>
+                  </svg>
+                ];
 
-              // Design et animation identiques pour TOUS les blocs de Nos engagements
-              const sectionDesign = h.commitmentsDesign || 'default';
-              const sectionAnimation = h.commitmentsAnimation || 'default';
-              const sectionAccent = h.commitmentsAccent || 'coral';
+                // Priorité à l'apparence unifiée du Studio, sinon repli sur le design sauvegardé
+                const sectionDesign = appearance?.sections?.['home.commitments']?.variant || h.commitmentsDesign || 'default';
+                const sectionAnimation = appearance?.motion === 'expressive' ? 'float-gentle' : (h.commitmentsAnimation || 'default');
+                const sectionAccent = appearance?.palette?.accent ? 'custom' : (h.commitmentsAccent || 'coral');
 
-              return (
-                <CustomSectionCard
-                  key={idx}
-                  type="commitment"
-                  item={{
-                    ...com,
-                    design: sectionDesign,
-                    animation: sectionAnimation,
-                    accentColor: sectionAccent
-                  }}
-                  index={idx}
-                  icon={icons[idx % icons.length]}
-                />
-              );
-            })}
+                return (
+                  <CustomSectionCard
+                    key={idx}
+                    type="commitment"
+                    item={{
+                      ...com,
+                      design: sectionDesign,
+                      animation: sectionAnimation,
+                      accentColor: sectionAccent
+                    }}
+                    index={idx}
+                    icon={icons[idx % icons.length]}
+                  />
+                );
+              })}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* NOS FONDATRICES */}
-      <section className="bg-light reveal">
-        <div className="wrap about-layout" style={{ alignItems: 'center' }}>
-          <div className="about-photo-wrap" style={{ position: 'static' }}>
-            <img 
-              src="/assets/img/uploads/avatar-duo.svg" 
-              alt="Jeanne Helene Epée Nsome &amp; Miriam J. Nguemdo Epse Nouzeda" 
-              className="about-photo" 
-            />
-            <div className="about-photo-name">Jeanne Helene Epée Nsome &amp; Miriam J. Nguemdo Epse Nouzeda</div>
-            <div className="about-photo-title">{h.foundersRole}</div>
+      {appearance?.sections?.['about.founders']?.visible !== false && (
+        <section 
+          className={`reveal ${
+            appearance?.sections?.['about.founders']?.tone === 'dark' ? 'bg-navy on-dark' : 'bg-light'
+          }`}
+          data-section-id="about.founders"
+        >
+          <div className="wrap about-layout" style={{ alignItems: 'center' }}>
+            <div className="about-photo-wrap" style={{ position: 'static' }}>
+              <img 
+                src="/assets/img/uploads/avatar-duo.svg" 
+                alt="Jeanne Helene Epée Nsome &amp; Miriam J. Nguemdo Epse Nouzeda" 
+                className="about-photo" 
+              />
+              <div className="about-photo-name">Jeanne Helene Epée Nsome &amp; Miriam J. Nguemdo Epse Nouzeda</div>
+              <div className="about-photo-title">{h.foundersRole}</div>
+            </div>
+            <div>
+              <div className="eyebrow">{h.foundersEyebrow}</div>
+              <h2 style={{ fontSize: 'clamp(26px,3vw,36px)', marginBottom: '18px' }}>{h.foundersTitle}</h2>
+              <p className="about-intro" style={{ marginBottom: '24px' }}>
+                {h.foundersIntro}
+              </p>
+              <a 
+                href="#about" 
+                onClick={(e) => { e.preventDefault(); onNavigate('about'); }} 
+                className="btn btn-outline-dark"
+              >
+                {h.readMore}{' '}
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M5 12h14M13 6l6 6-6 6"/>
+                </svg>
+              </a>
+            </div>
           </div>
-          <div>
-            <div className="eyebrow">{h.foundersEyebrow}</div>
-            <h2 style={{ fontSize: 'clamp(26px,3vw,36px)', marginBottom: '18px' }}>{h.foundersTitle}</h2>
-            <p className="about-intro" style={{ marginBottom: '24px' }}>
-              {h.foundersIntro}
-            </p>
-            <a 
-              href="#about" 
-              onClick={(e) => { e.preventDefault(); onNavigate('about'); }} 
-              className="btn btn-outline-dark"
-            >
-              {h.readMore}{' '}
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <path d="M5 12h14M13 6l6 6-6 6"/>
-              </svg>
-            </a>
-          </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* NOS 6 SERVICES DE VOYAGE */}
-      <section className="reveal">
-        <div className="wrap">
-          <div className="section-head center">
-            <div className="eyebrow">{h.servicesEyebrow}</div>
-            <h2>{h.servicesTitle}</h2>
-          </div>
-          <div className="grid-6 reveal-stagger">
-            {h.services.map((item, idx) => {
-              // Design et animation identiques pour TOUS les blocs des services
-              const sectionDesign = h.servicesDesign || 'default';
-              const sectionAnimation = h.servicesAnimation || 'default';
-              const sectionAccent = h.servicesAccent || 'coral';
+      {appearance?.sections?.['home.services']?.visible !== false && (
+        <section 
+          className={`reveal ${
+            appearance?.sections?.['home.services']?.tone === 'dark' ? 'bg-navy on-dark' :
+            appearance?.sections?.['home.services']?.tone === 'alt' ? 'bg-light' : ''
+          }`}
+          data-section-id="home.services"
+        >
+          <div className="wrap">
+            <div className="section-head center">
+              <div className="eyebrow">{h.servicesEyebrow}</div>
+              <h2>{h.servicesTitle}</h2>
+            </div>
+            <div className="grid-6 reveal-stagger">
+              {h.services.map((item, idx) => {
+                const sectionDesign = appearance?.sections?.['home.services']?.variant || h.servicesDesign || 'default';
+                const sectionAnimation = appearance?.motion === 'expressive' ? 'float-gentle' : (h.servicesAnimation || 'default');
+                const sectionAccent = appearance?.palette?.accent ? 'custom' : (h.servicesAccent || 'coral');
 
-              return (
-                <CustomSectionCard
-                  key={idx}
-                  type="service-home"
-                  item={{
-                    ...item,
-                    design: sectionDesign,
-                    animation: sectionAnimation,
-                    accentColor: sectionAccent
-                  }}
-                  index={idx}
-                />
-              );
-            })}
+                return (
+                  <CustomSectionCard
+                    key={idx}
+                    type="service-home"
+                    item={{
+                      ...item,
+                      design: sectionDesign,
+                      animation: sectionAnimation,
+                      accentColor: sectionAccent
+                    }}
+                    index={idx}
+                  />
+                );
+              })}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* NOTRE ACCOMPAGNEMENT */}
       <section className="bg-light reveal">

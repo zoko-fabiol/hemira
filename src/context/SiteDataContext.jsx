@@ -12,6 +12,11 @@ import {
   seedAllDefaults,
   uploadImageFile
 } from '../services/cmsService';
+import {
+  DEFAULT_APPEARANCE,
+  subscribeAppearance,
+  applyAppearanceToDOM
+} from '../services/appearanceService';
 import { t as staticTranslations } from '../translations';
 
 const SiteDataContext = createContext(null);
@@ -21,16 +26,22 @@ export function SiteDataProvider({ children }) {
   const [settings, setSettings] = useState(DEFAULT_SETTINGS);
   const [contentFr, setContentFr] = useState(staticTranslations.fr);
   const [contentEn, setContentEn] = useState(staticTranslations.en);
+  const [appearance, setAppearance] = useState(DEFAULT_APPEARANCE);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Initial DOM theme
+    // Initial DOM theme & appearance
     applyThemeToDOM(DEFAULT_THEME);
+    applyAppearanceToDOM(DEFAULT_APPEARANCE);
 
     // Subscriptions
     const unsubTheme = subscribeTheme((newTheme) => {
       setTheme(newTheme);
       setLoading(false);
+    });
+
+    const unsubAppearance = subscribeAppearance((newAppearance) => {
+      setAppearance(newAppearance);
     });
 
     const unsubSettings = subscribeSettings((newSettings) => {
@@ -45,11 +56,36 @@ export function SiteDataProvider({ children }) {
       setContentEn(newContent);
     });
 
+    // Écoute des messages en direct du personnaliseur visuel Admin (iframe postMessage)
+    const handleMessage = (event) => {
+      if (event.data?.type === 'HEMIRA_PREVIEW_APPEARANCE' && event.data.appearance) {
+        setAppearance(event.data.appearance);
+        applyAppearanceToDOM(event.data.appearance);
+      }
+    };
+    window.addEventListener('message', handleMessage);
+
+    // Détection des clics sur sections en mode preview pour inspection directe dans l'admin
+    const handleClick = (e) => {
+      const sectionEl = e.target.closest('[data-section-id]');
+      if (sectionEl && window.parent && window.parent !== window) {
+        const sectionId = sectionEl.getAttribute('data-section-id');
+        window.parent.postMessage({
+          type: 'HEMIRA_SECTION_CLICKED',
+          sectionId
+        }, '*');
+      }
+    };
+    document.addEventListener('click', handleClick);
+
     return () => {
       unsubTheme?.();
+      unsubAppearance?.();
       unsubSettings?.();
       unsubFr?.();
       unsubEn?.();
+      window.removeEventListener('message', handleMessage);
+      document.removeEventListener('click', handleClick);
     };
   }, []);
 
@@ -63,6 +99,7 @@ export function SiteDataProvider({ children }) {
     settings,
     contentFr,
     contentEn,
+    appearance,
     getContent,
     loading,
     saveTheme,
