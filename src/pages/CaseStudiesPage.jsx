@@ -3,8 +3,13 @@ import { t } from '../translations';
 import CustomSectionCard from '../components/CustomSectionCard';
 
 export default function CaseStudiesPage({ onNavigate, lang = 'fr', content }) {
-  const cs = content?.caseStudies || t[lang].caseStudies;
-  const cta = content?.ctaBand || t[lang].ctaBand;
+  const defaultCs = t[lang]?.caseStudies || t.fr.caseStudies;
+  const cs = content?.caseStudies || defaultCs;
+  const cta = content?.ctaBand || t[lang]?.ctaBand || t.fr.ctaBand;
+  const casesList = (cs.cases && cs.cases.length > 0) ? cs.cases : defaultCs.cases;
+  const sectionDesign = cs.casesDesign || 'default';
+  const sectionAnimation = cs.casesAnimation || 'default';
+  const sectionAccent = cs.casesAccent || 'teal';
 
   return (
     <>
@@ -16,13 +21,9 @@ export default function CaseStudiesPage({ onNavigate, lang = 'fr', content }) {
         </div>
       </section>
 
-      <section className="reveal">
-        <div className="wrap reveal-stagger">
-          {(cs.cases || []).map((c, idx) => {
-            const sectionDesign = cs.casesDesign || 'default';
-            const sectionAnimation = cs.casesAnimation || 'default';
-            const sectionAccent = cs.casesAccent || 'teal';
-
+      <section className="reveal visible" style={{ padding: '60px 0' }}>
+        <div className="wrap">
+          {(casesList || []).map((c, idx) => {
             return (
               <CustomSectionCard
                 key={c.id || idx}

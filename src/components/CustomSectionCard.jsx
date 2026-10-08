@@ -40,18 +40,11 @@ export default function CustomSectionCard({
     // Cas A : Étude de cas / Réalisation (Case Studies)
     if (type === 'case') {
       const c = item;
+      const caseImg = c.media || DEFAULT_CASE_IMAGES[index % DEFAULT_CASE_IMAGES.length];
       return (
         <div key={c.id || index} className={`case-card ${animClass}`} id={c.id || `case-${index}`} onClick={onClick}>
-          <div className={`case-media ${c.media ? '' : 'logo-only'}`}>
-            {c.media ? (
-              <img src={c.media} alt={c.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-            ) : (
-              <div className="mosaic-mini" aria-hidden="true">
-                <span className="sq coral"></span>
-                <span className="sq gold"></span>
-                <span className="sq teal"></span>
-              </div>
-            )}
+          <div className="case-media">
+            <img src={caseImg} alt={c.title || ''} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
           </div>
           <div className="case-body">
             <div className="case-tag">{c.tag}</div>

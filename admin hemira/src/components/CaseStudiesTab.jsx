@@ -19,6 +19,7 @@ export default function CaseStudiesTab({ contentFr, contentEn, showToast, onOpen
   const [casesEn, setCasesEn] = useState([]);
   const [casesDesign, setCasesDesign] = useState('default');
   const [casesAnimation, setCasesAnimation] = useState('default');
+  const [casesAccent, setCasesAccent] = useState('teal');
   const [activeLang, setActiveLang] = useState('fr');
   const [expandedIndex, setExpandedIndex] = useState(null);
   const [saving, setSaving] = useState(false);
